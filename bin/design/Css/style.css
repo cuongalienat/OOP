@@ -1,0 +1,45 @@
+.white-background{
+    -fx-background-color: #fff
+}
+
+.transparent{
+    -fx-background-color: rgba(0, 0, 0, 0)
+}
+
+.round-layout{
+    -fx-border-radius: 50;
+    -fx-border-color: #D7D7D7
+}
+
+.selected {
+    -fx-background-color: #F3F3F3
+}
+
+.mouse-moved:hover {
+    -fx-background-color: #E4E4E4;
+}
+
+.shadow{
+    -fx-effect: dropShadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 10)
+}
+
+.book-card:hover {
+    -fx-background-color: #d3d3d3;  /* Màu nền khi di chuột */
+    -fx-scale-x: 1.05;              /* Phóng to khi di chuột */
+    -fx-scale-y: 1.05;              /* Phóng to khi di chuột */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 10, 0.5, 0, 0); /* Tạo bóng */
+}
+
+.card {
+    -fx-background-color: white; /* Màu nền cho card */
+    -fx-background-radius: 15; /* Bo góc cho card */
+    -fx-padding: 10; /* Khoảng cách bên trong */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.0, 0, 0); /* Đổ bóng */
+    -fx-transition: all 0.3s ease; /* Hiệu ứng chuyển tiếp */
+}
+
+.card:hover {
+    -fx-background-color: #f0f0f0; /* Màu nền khi hover */
+    -fx-scale-x: 1.05; /* Tăng kích thước khi hover */
+    -fx-scale-y: 1.05; /* Tăng kích thước khi hover */
+}
