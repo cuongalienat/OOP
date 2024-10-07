@@ -6,6 +6,7 @@
     "configurations": [
         {
             "type": "java",
+<<<<<<< HEAD
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
@@ -18,5 +19,36 @@
             "projectName": "Library_e88af9a0",
             "vmArgs": "--module-path D:/JavaFx/javafx-sdk-17.0.12/lib --add-modules javafx.controls,javafx.fxml"
         }
+=======
+            "name": "mainController",
+            "request": "launch",
+            "mainClass": "view.mainController",
+            "projectName": "",
+            "vmArgs": "--module-path D:/JavaFx/javafx-sdk-17.0.12/lib --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Library.Main",
+            "projectName": "",
+            "vmArgs": "--module-path D:/JavaFx/javafx-sdk-17.0.12/lib --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Library.Main",
+            "projectName": "HelloFx_ea90a29",
+            "vmArgs": "--module-path D:/JavaFx/javafx-sdk-17.0.12/lib --add-modules javafx.controls,javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "view.mainController",
+            "vmArgs": "--module-path D:/JavaFx/javafx-sdk-17.0.12/lib --add-modules javafx.controls,javafx.fxml"
+        },
+>>>>>>> master
     ]
 }
