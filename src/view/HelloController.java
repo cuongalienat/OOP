@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import library.Book;
 
 import java.net.URL;
@@ -51,6 +52,7 @@ public class HelloController implements Initializable {
                 VBox bookBox = fxmlLoader.load();
                 BookController bookController = fxmlLoader.getController();
                 bookController.setData(book);
+                bookBox.setOnMouseClicked(event -> showBookDetails(book));
                 if (column == 6) {
                     column = 0;
                     row++;
@@ -90,6 +92,25 @@ public class HelloController implements Initializable {
 
         return ls;
     }
+
+    private void showBookDetails(Book book) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("bookDetails.fxml"));
+            Parent bookDetailsRoot = fxmlLoader.load();
+
+            // Lấy controller của bookDetails.fxml và truyền thông tin sách vào
+            BookDetailsController bookDetailsController = fxmlLoader.getController();
+            bookDetailsController.setBookDetails(book);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(bookDetailsRoot));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private List<Book> books() {
         List<Book> ls = new ArrayList<>();
