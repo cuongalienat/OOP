@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import view.Book;
+import library.*;
 
 public class BookDetailsController implements Initializable{
 
@@ -24,6 +24,7 @@ public class BookDetailsController implements Initializable{
     private ImageView bookImage;
 
     //khi click vào bookBox, sẽ lấy thông tin từ book để setBookDetails
+    //test
     public void setBookDetails(Book book) {
         Image image = new Image(getClass().getResourceAsStream(book.getImageSrc()));
         bookImage.setImage(image);
