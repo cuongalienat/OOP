@@ -1,12 +1,8 @@
 {
-<<<<<<< HEAD
-    "java.project.sourcePaths": ["src"],
-=======
     "java.project.sourcePaths": [
         "src",
         "lib"
     ],
->>>>>>> master
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar"

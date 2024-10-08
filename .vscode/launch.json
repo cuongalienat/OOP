@@ -6,20 +6,6 @@
     "configurations": [
         {
             "type": "java",
-<<<<<<< HEAD
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "mainController",
-            "request": "launch",
-            "mainClass": "view.mainController",
-            "projectName": "Library_e88af9a0",
-            "vmArgs": "--module-path D:/JavaFx/javafx-sdk-17.0.12/lib --add-modules javafx.controls,javafx.fxml"
-        }
-=======
             "name": "mainController",
             "request": "launch",
             "mainClass": "view.mainController",
@@ -49,6 +35,5 @@
             "mainClass": "view.mainController",
             "vmArgs": "--module-path D:/JavaFx/javafx-sdk-17.0.12/lib --add-modules javafx.controls,javafx.fxml"
         },
->>>>>>> master
     ]
 }
