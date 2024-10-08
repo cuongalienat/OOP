@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import view.Book;
+import library.Book;
 
 import javax.imageio.IIOException;
 import java.net.URL;
