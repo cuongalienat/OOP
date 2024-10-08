@@ -6,17 +6,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import view.Book;
 
 import javax.imageio.IIOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
 
@@ -50,6 +51,8 @@ public class HelloController implements Initializable {
                 VBox bookBox = fxmlLoader.load();
                 BookController bookController = fxmlLoader.getController();
                 bookController.setData(book);
+                bookBox.setOnMouseClicked(event -> showBookDetails(book));
+
                 if(column == 6) {
                     column = 0;
                     row++;
@@ -57,6 +60,24 @@ public class HelloController implements Initializable {
                 bookContainer.add(bookBox, column++, row);
                 GridPane.setMargin(bookBox, new Insets(10));
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showBookDetails(Book book) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("bookDetails.fxml"));
+            Parent bookDetailsRoot = fxmlLoader.load();
+
+            // Lấy controller của bookDetails.fxml
+            BookDetailsController bookDetailsController = fxmlLoader.getController();
+            bookDetailsController.setBookDetails(book); 
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(bookDetailsRoot));
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
