@@ -6,17 +6,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import library.Book;
 
-import javax.imageio.IIOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
 
@@ -25,6 +24,9 @@ public class HelloController implements Initializable {
 
     @FXML
     private GridPane bookContainer;
+
+    @FXML
+    private Label app_Name;
 
     private List<Book> recentlyAdded;
     private List<Book> recommended;
@@ -36,7 +38,7 @@ public class HelloController implements Initializable {
         int column = 0;
         int row = 1;
         try {
-            for (int i = 0; i <recentlyAdded.size(); i++) {
+            for (int i = 0; i < recentlyAdded.size(); i++) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("card.fxml"));
                 HBox cardBox = fxmlLoader.load();
@@ -50,7 +52,8 @@ public class HelloController implements Initializable {
                 VBox bookBox = fxmlLoader.load();
                 BookController bookController = fxmlLoader.getController();
                 bookController.setData(book);
-                if(column == 6) {
+                bookBox.setOnMouseClicked(event -> showBookDetails(book));
+                if (column == 6) {
                     column = 0;
                     row++;
                 }
@@ -60,6 +63,10 @@ public class HelloController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    void setName(String user_Name) {
+        app_Name.setText(user_Name);
     }
 
     private List<Book> recentlyAdded() {
@@ -85,6 +92,25 @@ public class HelloController implements Initializable {
 
         return ls;
     }
+
+    private void showBookDetails(Book book) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("bookDetails.fxml"));
+            Parent bookDetailsRoot = fxmlLoader.load();
+
+            // Lấy controller của bookDetails.fxml và truyền thông tin sách vào
+            BookDetailsController bookDetailsController = fxmlLoader.getController();
+            bookDetailsController.setBookDetails(book);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(bookDetailsRoot));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private List<Book> books() {
         List<Book> ls = new ArrayList<>();
