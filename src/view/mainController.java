@@ -14,9 +14,7 @@ public class mainController extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         Scene scene = new Scene(root);
         stage.setMinWidth(1040);
-        stage.setMaxWidth(1040);
         stage.setMinHeight(585);
-        stage.setMaxHeight(585);
         stage.setScene(scene);
         stage.setTitle("LIBRARY");
         stage.show();
