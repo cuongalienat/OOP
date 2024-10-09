@@ -111,7 +111,6 @@ public class HelloController implements Initializable {
         }
     }
 
-
     private List<Book> books() {
         List<Book> ls = new ArrayList<>();
         Book book = new Book();

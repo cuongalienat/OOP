@@ -16,15 +16,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<<<<<<< HEAD
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.loginController">
-   <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../design/loginDesign.css">
-=======
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.loginController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../design/Css/loginDesign.css">
->>>>>>> master
          <children>
             <AnchorPane fx:id="login_SignUp" layoutY="1.0" prefHeight="585.6" prefWidth="520.0" styleClass="gradient">
                <children>
@@ -39,21 +33,12 @@
                      </font>
                   </Button>
                   <ImageView fitHeight="182.0" fitWidth="203.0" layoutX="146.0" layoutY="129.0" pickOnBounds="true">
-<<<<<<< HEAD
-                     <image>
-                        <Image url="@../../../../Downloads/book-removebg-preview.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="SW_RESIZE" />
-                     </cursor>
-=======
                      <cursor>
                         <Cursor fx:constant="SW_RESIZE" />
                      </cursor>
                      <image>
                         <Image url="@../design/Images/book.png" />
                      </image>
->>>>>>> master
                   </ImageView>
                   <Text layoutX="84.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO LIBRARY !" wrappingWidth="326.363037109375">
                      <font>
@@ -123,11 +108,7 @@
                         </LinearGradient>
                      </textFill>
                   </Hyperlink>
-<<<<<<< HEAD
-                  <Label layoutX="97.0" layoutY="116.0" prefHeight="38.0" prefWidth="218.0" styleClass="head-label" stylesheets="@../design/loginDesign.css" text="Login Account">
-=======
                   <Label layoutX="97.0" layoutY="116.0" prefHeight="38.0" prefWidth="218.0" styleClass="head-label" stylesheets="@../design/Css/loginDesign.css" text="Login Account">
->>>>>>> master
                      <font>
                         <Font size="26.0" />
                      </font>
@@ -167,11 +148,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-<<<<<<< HEAD
-                  <Label layoutX="97.0" layoutY="116.0" prefHeight="38.0" prefWidth="218.0" styleClass="head-label" stylesheets="@../design/loginDesign.css" text="Register Account">
-=======
                   <Label layoutX="97.0" layoutY="116.0" prefHeight="38.0" prefWidth="218.0" styleClass="head-label" stylesheets="@../design/Css/loginDesign.css" text="Register Account">
->>>>>>> master
                      <font>
                         <Font size="26.0" />
                      </font>
