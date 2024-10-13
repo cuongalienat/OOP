@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class User {
-    static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/librarymanagement";
+    static final String DB_URL = "jdbc:mysql://192.168.1.18:3306/librarymanagement";
     static final String USER = "root";
     static final String PASS = "Cuong@2005";
     Scanner sc = new Scanner(System.in);
