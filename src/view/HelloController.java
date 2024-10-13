@@ -6,9 +6,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -151,5 +156,21 @@ public class HelloController implements Initializable {
         ls.add(book5);
         ls.add(book1);
         return ls;
+    }
+
+    @FXML
+    void Log_Out(MouseEvent event) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setContentText("Bạn có muốn chắc chắn đăng xuất không ?");
+        alert.setHeaderText(null);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+        } else {
+            alert.close();
+        }
     }
 }

@@ -1,7 +1,5 @@
 package view;
 
-import java.io.BufferedReader;
-
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,16 +16,30 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import library.User;
-import java.io.FileWriter;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class loginController {
 
     @FXML
+    private Button Change;
+
+    @FXML
+    private PasswordField Confirm_pw;
+
+    @FXML
+    private PasswordField New_pw;
+
+    @FXML
+    private TextField forget_email;
+
+    @FXML
+    private TextField forget_phone;
+
+    @FXML
     private AnchorPane login;
+
+    @FXML
+    private AnchorPane login_Forgot;
 
     @FXML
     private AnchorPane login_SignUp;
@@ -51,10 +63,10 @@ public class loginController {
     private AnchorPane signup;
 
     @FXML
-    private TextField signup_name;
+    private TextField signup_email;
 
     @FXML
-    private TextField signup_age;
+    private TextField signup_name;
 
     @FXML
     private PasswordField signup_password;
@@ -69,7 +81,7 @@ public class loginController {
     private Button signup_toLogin;
 
     private Alert alert;
-    private Map<String, User> Map_user = new HashMap<>();
+    protected String user_Phone;
 
     public void switchForm(ActionEvent event) {
 
@@ -82,6 +94,7 @@ public class loginController {
                 login_toSignup.setVisible(false);
                 signup.setVisible(true);
                 login.setVisible(false);
+                login_Forgot.setVisible(false);
             });
             slider.play();
         } else if (event.getSource() == signup_toLogin) {
@@ -91,6 +104,7 @@ public class loginController {
                 login_toSignup.setVisible(true);
                 signup.setVisible(false);
                 login.setVisible(true);
+                login_Forgot.setVisible(false);
             });
 
             slider.play();
@@ -116,10 +130,8 @@ public class loginController {
         return true;
     }
 
-    public boolean checkAge(int age) {
-        if (age < 1)
-            return false;
-        return true;
+    public boolean checkEmail(String email) {
+        return email.endsWith("@gmail.com");
     }
 
     public void signUp(ActionEvent event) throws IOException {
@@ -127,19 +139,18 @@ public class loginController {
         user.setPhone(signup_phone.getText());
         user.setPassword(signup_password.getText());
         user.setName(signup_name.getText());
+        user.setEmail(signup_email.getText());
 
         if (event.getSource() == signup_signup) {
 
             if (signup_phone.getText().equals("") || signup_password.getText().equals("")
-                    || signup_name.getText().equals("") || signup_age.getText().equals("")) {
+                    || signup_name.getText().equals("") || signup_email.getText().equals("")) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Vui lòng nhập hết thông tin ở cac ô");
                 alert.setHeaderText(null);
                 alert.showAndWait();
                 return;
             }
-
-            user.setAge(Integer.parseInt(signup_age.getText()));
 
             if (!checkPhone(user.getPhone())) {
                 alert = new Alert(AlertType.ERROR);
@@ -159,16 +170,16 @@ public class loginController {
                 return;
             }
 
-            if (!checkAge(user.getAge())) {
+            if (!checkEmail(user.getEmail())) {
                 alert = new Alert(AlertType.ERROR);
-                alert.setContentText("Tuổi không hợp lệ");
+                alert.setContentText("Email không hợp lệ");
                 alert.setHeaderText(null);
                 alert.showAndWait();
-                signup_age.clear();
+                signup_email.clear();
                 return;
             }
 
-            if (Map_user.containsKey(user.getPhone())) {
+            if (User.getUser(user.getPhone()) != null) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Mỗi số điện thoại chỉ đăng kí được 1 tài khoản");
                 alert.setHeaderText(null);
@@ -177,13 +188,7 @@ public class loginController {
                 return;
             }
 
-            try (FileWriter writer = new FileWriter("src/data/User.txt", true)) {
-                writer.write(user.getPhone() + " ");
-                writer.write(user.getPassword() + " ");
-                writer.write(user.getName() + " ");
-                writer.write(user.getAge() + " ");
-                writer.write("\n");
-            }
+            user.addData();
 
             alert = new Alert(AlertType.CONFIRMATION);
             alert.setContentText("Đăng kí thành công");
@@ -193,28 +198,27 @@ public class loginController {
             signup_phone.clear();
             signup_password.clear();
             signup_name.clear();
-            signup_age.clear();
+            signup_email.clear();
+
+            TranslateTransition slider = new TranslateTransition();
+            slider.setOnFinished((ActionEvent e) -> {
+                signup_toLogin.setVisible(false);
+                login_toSignup.setVisible(true);
+                signup.setVisible(false);
+                login.setVisible(true);
+            });
+
+            slider.play();
         }
     }
 
     public void logIn(ActionEvent event) throws IOException {
-        try {
-            BufferedReader ReadFile = new BufferedReader(new FileReader("src/data/User.txt"));
-            String line;
-            while ((line = ReadFile.readLine()) != null) {
-                String words[] = line.split("\\s+");
-                User user = new User(words[2], Integer.parseInt(words[3]), words[0], words[1]);
-                Map_user.put(user.getPhone(), user);
-            }
-            ReadFile.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         String phone = login_phone.getText();
+        user_Phone = phone;
         String password = login_password.getText();
         if (event.getSource() == login_login) {
-            if (!Map_user.containsKey(phone)) {
+            if (User.getUser(phone) == null) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Tài khoản không tồn tại");
                 alert.setHeaderText(null);
@@ -223,8 +227,8 @@ public class loginController {
                 login_password.clear();
                 return;
             }
-
-            if (!password.equals(Map_user.get(phone).getPassword())) {
+            User user = User.getUser(phone);
+            if (!password.equals(user.getPassword())) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Mật khẩu sai");
                 alert.setHeaderText(null);
@@ -239,7 +243,7 @@ public class loginController {
             Parent newRoot = loader.load();
 
             HelloController helloController = loader.getController();
-            helloController.setName(Map_user.get(phone).getName());
+            helloController.setName(user.getName());
 
             Stage newStage = new Stage();
             Scene scene = new Scene(newRoot);
@@ -251,4 +255,70 @@ public class loginController {
         }
     }
 
+    public void forgetPassword(ActionEvent event) throws IOException {
+        if (event.getSource() == login_forgot) {
+            TranslateTransition slider = new TranslateTransition();
+            slider.setOnFinished((ActionEvent e) -> {
+                signup_toLogin.setVisible(true);
+                login_toSignup.setVisible(false);
+                login_Forgot.setVisible(true);
+                login.setVisible(false);
+                signup.setVisible(false);
+            });
+            slider.play();
+        }
+
+        String fPhone = forget_phone.getText();
+        String fEmail = forget_email.getText();
+        String nPassword = New_pw.getText();
+        String cfPassword = Confirm_pw.getText();
+
+        if (event.getSource() == Change) {
+            if (fPhone.equals("") || fEmail.equals("")
+                    || nPassword.equals("") || cfPassword.equals("")) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setContentText("Vui lòng nhập hết thông tin ở cac ô");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+                return;
+            }
+            User user = User.getUser(fPhone);
+            if (user == null) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setContentText("Không tồn tại tài khoản này !");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+                login_password.clear();
+                return;
+            }
+            if (!user.getEmail().equals(fEmail)) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setContentText("Sai email !");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+                return;
+            }
+            if (!checkPassword(nPassword)) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setContentText("Mật khẩu phải có tối thiểu 6 kí tự");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+                signup_password.clear();
+                return;
+            }
+            if (!cfPassword.equals(nPassword)) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setContentText("Xác nhận mật khẩu sai !");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+                return;
+            }
+            user.setPassword(cfPassword);
+            user.Update();
+            signup_toLogin.setVisible(false);
+            login_toSignup.setVisible(true);
+            login_Forgot.setVisible(false);
+            login.setVisible(true);
+        }
+    }
 }
