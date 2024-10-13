@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.loginController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.loginController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../design/Css/loginDesign.css">
          <children>
@@ -85,7 +85,7 @@
                         </LinearGradient>
                      </textFill>
                   </Button>
-                  <Hyperlink fx:id="login_forgot" layoutX="127.0" layoutY="333.0" prefHeight="38.0" prefWidth="110.0" text="Forgot password?">
+                  <Hyperlink fx:id="login_forgot" layoutX="127.0" layoutY="333.0" onAction="#forgetPassword" prefHeight="38.0" prefWidth="110.0" text="Forgot password?">
                      <textFill>
                         <LinearGradient endX="1.0" endY="1.0">
                            <stops>
@@ -169,7 +169,7 @@
                         </LinearGradient>
                      </textFill>
                   </Label>
-                  <TextField fx:id="signup_age" layoutX="126.0" layoutY="325.0" prefHeight="30.0" prefWidth="203.0" promptText="Age">
+                  <TextField fx:id="signup_email" layoutX="126.0" layoutY="325.0" prefHeight="30.0" prefWidth="203.0" promptText="Email">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -184,6 +184,40 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="login_Forgot" layoutX="520.0" layoutY="1.0" prefHeight="585.0" prefWidth="520.0" visible="false">
+               <children>
+                  <PasswordField fx:id="New_pw" layoutX="163.0" layoutY="290.0" promptText="New Password" />
+                  <PasswordField fx:id="Confirm_pw" layoutX="163.0" layoutY="335.0" promptText="Confirm Password" />
+                  <Button fx:id="Change" layoutX="141.0" layoutY="425.0" mnemonicParsing="false" onAction="#forgetPassword" prefHeight="40.0" prefWidth="193.0" styleClass="login" stylesheets="@../design/Css/loginDesign.css" text="Change Password">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <textFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </textFill>
+                  </Button>
+                  <TextField fx:id="forget_email" layoutX="163.0" layoutY="245.0" promptText="Email" />
+                  <TextField fx:id="forget_phone" layoutX="163.0" layoutY="200.0" promptText="Phone" />
+                  <Label layoutX="69.0" layoutY="110.0" prefHeight="46.0" prefWidth="243.0" styleClass="head-label" stylesheets="@../design/Css/loginDesign.css" text="Forgot Password">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>
