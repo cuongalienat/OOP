@@ -1,6 +1,6 @@
 package library;
 
-import java.io.IOException;
+import java.util.Properties;
 //import java.util.Map;
 //import java.util.HashMap;
 import java.util.Scanner;
@@ -11,9 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class User {
-    static final String DB_URL = "jdbc:mysql://192.168.1.18:3306/librarymanagement";
-    static final String USER = "root";
-    static final String PASS = "Cuong@2005";
     Scanner sc = new Scanner(System.in);
 
     private String name;
@@ -64,10 +61,10 @@ public class User {
         this.email = email;
     }
 
-    public void addData() throws IOException {
+    public void addData() throws Exception {
         String query = "INSERT INTO user (name, phone, password, email) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, name);
             stmt.setString(2, phone);
@@ -79,9 +76,9 @@ public class User {
         }
     }
 
-    public static User getUser(String phoneIn) {
+    public static User getUser(String phoneIn) throws Exception {
         String query = "SELECT * FROM user WHERE phone = ? ";
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, phoneIn);
             ResultSet rs = stmt.executeQuery();
@@ -101,10 +98,10 @@ public class User {
         return null;
     }
 
-    public void Update() throws IOException {
+    public void Update() throws Exception {
         String query = "UPDATE user SET password = ? WHERE phone = ?";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, password);

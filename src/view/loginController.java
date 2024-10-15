@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import library.User;
-import java.io.IOException;
 
 public class loginController {
 
@@ -134,7 +133,7 @@ public class loginController {
         return email.endsWith("@gmail.com");
     }
 
-    public void signUp(ActionEvent event) throws IOException {
+    public void signUp(ActionEvent event) throws Exception {
         User user = new User();
         user.setPhone(signup_phone.getText());
         user.setPassword(signup_password.getText());
@@ -212,7 +211,7 @@ public class loginController {
         }
     }
 
-    public void logIn(ActionEvent event) throws IOException {
+    public void logIn(ActionEvent event) throws Exception {
 
         String phone = login_phone.getText();
         user_Phone = phone;
@@ -255,7 +254,7 @@ public class loginController {
         }
     }
 
-    public void forgetPassword(ActionEvent event) throws IOException {
+    public void forgetPassword(ActionEvent event) throws Exception {
         if (event.getSource() == login_forgot) {
             TranslateTransition slider = new TranslateTransition();
             slider.setOnFinished((ActionEvent e) -> {
