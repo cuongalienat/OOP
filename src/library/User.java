@@ -5,10 +5,11 @@ import java.util.Properties;
 //import java.util.HashMap;
 import java.util.Scanner;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class User {
     Scanner sc = new Scanner(System.in);
@@ -17,6 +18,8 @@ public class User {
     private String password;
     private String phone;
     private String email;
+    private int quantityBorrowedBook;
+    private int quantityOverduedateBook;
     // private Map <String, Book> myMap_Book = new HashMap<>();
 
     public User() {
@@ -27,6 +30,8 @@ public class User {
         password = _password;
         name = _name;
         phone = _phone;
+        quantityBorrowedBook = 0;
+        quantityOverduedateBook = 0;
     }
 
     public String getPassword() {
@@ -59,6 +64,59 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getQuantityBorrowedBook() {
+        return quantityBorrowedBook;
+    }
+
+    public void setQuantityBorrowedBook(int quantityBorrowedBook) {
+        this.quantityBorrowedBook = quantityBorrowedBook;
+    }
+
+    public int getQuantityOverduedateBook() {
+        return quantityOverduedateBook;
+    }
+
+    public void setQuantityOverduedateBook(int quantityOverduedateBook) {
+        this.quantityOverduedateBook = quantityOverduedateBook;
+    }
+
+    public void countQuantity() throws Exception {
+        String query = "Select Count(*) as quantityBorrowedBook From booklogs WHERE phone_user = ?";
+
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, phone);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                this.quantityBorrowedBook = rs.getInt("quantityBorrowedBook");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = currentDate.format(formatter);
+
+        String query2 = "Select Count(*) as quantityOverDueDateBook From booklogs WHERE phone_user = ? and dueDate > ?";
+
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query2)) {
+
+            stmt.setString(1, phone);
+            stmt.setString(2, formattedDate);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                this.quantityOverduedateBook = rs.getInt("quantityOverDueDateBook");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addData() throws Exception {
@@ -111,6 +169,36 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void DeleteUser(String phone_user) throws Exception {
+        String query2 = "DELETE FROM booklogs WHERE phone_user = ?";
+
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query2)) {
+
+            stmt.setString(1, phone_user);
+
+            stmt.executeUpdate(); // Thực hiện câu lệnh DELETE
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String query = "DELETE FROM user WHERE phone = ?";
+
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, phone_user);
+
+            stmt.executeUpdate();
+            ; // Thực hiện câu lệnh DELETE
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showData() {
+        System.out.println(name + " " + phone + " " + email + " " + password);
     }
 
     /*

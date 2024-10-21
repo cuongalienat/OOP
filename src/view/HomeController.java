@@ -3,7 +3,6 @@ package view;
 import java.io.IOException;
 import java.util.*;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,10 +19,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 
-
 public class HomeController implements Initializable {
-
-    
 
     @FXML
     private HBox cardLayout;
@@ -47,8 +43,8 @@ public class HomeController implements Initializable {
                 HBox cardBox = fxmlLoader.load();
                 CardController cardController = fxmlLoader.getController();
                 cardController.setData(recentlyAdded.get(i));
-                final Book book = recentlyAdded.get(i);  
-                cardBox.setOnMouseClicked(event -> showBookDetails(book));                
+                final Book book = recentlyAdded.get(i);
+                cardBox.setOnMouseClicked(event -> showBookDetails(book));
                 cardLayout.getChildren().add(cardBox);
             }
             for (Book book : recommended) {
@@ -69,6 +65,7 @@ public class HomeController implements Initializable {
             e.printStackTrace();
         }
     }
+
     private List<Book> recentlyAdded() {
         List<Book> ls = new ArrayList<>();
         Book book = new Book();
@@ -152,4 +149,5 @@ public class HomeController implements Initializable {
         ls.add(book1);
         return ls;
     }
+
 }

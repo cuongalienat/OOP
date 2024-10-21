@@ -15,6 +15,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import library.Admin;
 import library.User;
 
 public class loginController {
@@ -80,7 +81,11 @@ public class loginController {
     private Button signup_toLogin;
 
     private Alert alert;
-    protected String user_Phone;
+    protected static User user_now;
+
+    public static User getUser_now() {
+        return user_now;
+    }
 
     public void switchForm(ActionEvent event) {
 
@@ -214,10 +219,9 @@ public class loginController {
     public void logIn(ActionEvent event) throws Exception {
 
         String phone = login_phone.getText();
-        user_Phone = phone;
         String password = login_password.getText();
         if (event.getSource() == login_login) {
-            if (User.getUser(phone) == null) {
+            if (User.getUser(phone) == null && Admin.getUser(phone) == null) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Tài khoản không tồn tại");
                 alert.setHeaderText(null);
@@ -226,8 +230,13 @@ public class loginController {
                 login_password.clear();
                 return;
             }
-            User user = User.getUser(phone);
-            if (!password.equals(user.getPassword())) {
+            if (User.getUser(phone) == null) {
+                user_now = Admin.getUser(phone);
+            } else {
+                user_now = User.getUser(phone);
+            }
+            System.out.println(user_now.getPassword());
+            if (!password.equals(user_now.getPassword())) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Mật khẩu sai");
                 alert.setHeaderText(null);
@@ -242,7 +251,7 @@ public class loginController {
             Parent newRoot = loader.load();
 
             HelloController helloController = loader.getController();
-            helloController.setName(user.getName());
+            helloController.setName(user_now.getName());
 
             Stage newStage = new Stage();
             Scene scene = new Scene(newRoot);
