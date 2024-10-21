@@ -11,16 +11,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class User {
-    static final String DB_URL = "jdbc:mysql://192.168.1.2:3306/librarymanagement";
+    static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/user";
     static final String USER = "root";
-    static final String PASS = "Cuong@2005";
+    static final String PASS = "thoitri0909";
     Scanner sc = new Scanner(System.in);
 
     private String name;
     private String password;
     private String phone;
     private String email;
-    // private Map <String, Book> myMap_Book = new HashMap<>();
 
     public User() {
     }
@@ -65,8 +64,8 @@ public class User {
     }
 
     public void addData() throws Exception {
-        String query = "INSERT INTO user (name, phone, password, email) VALUES (?, ?, ?, ?)";
-
+        String query = "INSERT INTO user.user (name, phone, password, email) VALUES (?, ?, ?, ?)";
+        // Cập nhật tên bảng với schema user
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, name);
@@ -78,20 +77,21 @@ public class User {
             e.printStackTrace();
         }
     }
-
+    
     public static User getUser(String phoneIn) throws Exception {
-        String query = "SELECT * FROM user WHERE phone = ? ";
+        String query = "SELECT * FROM user.user WHERE phone = ?"; 
+        // Cập nhật tên bảng với schema user
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, phoneIn);
             ResultSet rs = stmt.executeQuery();
-
+    
             if (rs.next()) {
                 String name = rs.getString("name");
                 String phone = rs.getString("phone");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
-
+    
                 User user = new User(name, email, phone, password);
                 return user;
             }
@@ -100,54 +100,21 @@ public class User {
         }
         return null;
     }
-
+    
     public void Update() throws Exception {
-        String query = "UPDATE user SET password = ? WHERE phone = ?";
-
+        String query = "UPDATE user.user SET password = ? WHERE phone = ?"; 
+        // Cập nhật tên bảng với schema user
+    
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
-
+    
             stmt.setString(1, password);
             stmt.setString(2, phone);
-
+    
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    /*
-     * public Map<String, Book> getMyMap_Book() {
-     * return myMap_Book;
-     * }
-     * 
-     * 
-     * public void setMyMap_Book(Map<String, Book> myMap_Book) {
-     * this.myMap_Book = myMap_Book;
-     * }
-     * 
-     * public void rentBook(Book book) {
-     * myMap_Book.put(book.getNameB(), book);
-     * }
-     * 
-     * public void returnBook(Book book) {
-     * String nameB = sc.nextLine();
-     * if (!myMap_Book.containsKey(nameB)){
-     * System.out.println("ban da tra sach r");
-     * } else {
-     * myMap_Book.remove(nameB);
-     * System.out.println("tra sach thanh cong");
-     * }
-     * }
-     * 
-     * public void showRentedBook() {
-     * int count = 1;
-     * for (Map.Entry<String, Book> entry : myMap_Book.entrySet()){
-     * System.out.println("");
-     * System.out.print(count + ", ");
-     * entry.getValue().showBookUser();
-     * count++;
-     * }
-     * }
-     */
+    
 }

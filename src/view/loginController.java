@@ -250,7 +250,6 @@ public class loginController {
             newStage.setScene(scene);
             newStage.setTitle("LIBRARY");
             newStage.show();
-
         }
     }
 
