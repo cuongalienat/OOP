@@ -6,16 +6,18 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="459.2" prefWidth="856.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="459.2" prefWidth="856.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BorrowedBooksController">
     <children>
         <Label layoutX="20.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Borrowed books" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="14.0" />
         
         <TableView fx:id="borrowedBooksTable" layoutX="20.0" layoutY="60.0" maxWidth="-Infinity" prefWidth="572.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
             <columns>
-                <TableColumn fx:id="titleColumn" prefWidth="204.0" text="Title" />
-                <TableColumn fx:id="authorColumn" prefWidth="204.0" text="Author" />
-                <TableColumn fx:id="borrowedDateColumn" prefWidth="204.0" text="Borrowed Date" />
-                <TableColumn fx:id="dueDateColumn" prefWidth="204.0" text="Due Date" />
+            <TableColumn fx:id="idColumn" prefWidth="66.0" text="ID" />
+                <TableColumn fx:id="collectionColumn" prefWidth="143.0" text="Offer Collection" />
+                <TableColumn fx:id="titleColumn" prefWidth="217.0" text="Book Title" />
+                <TableColumn fx:id="authorColumn" prefWidth="147.0" text="Contributors" />
+                <TableColumn fx:id="borrowedDateColumn" prefWidth="121.5" text="Borrowed Date" />
+                <TableColumn fx:id="dueDateColumn" prefWidth="121.5" text="Due Date" />
             </columns>
         </TableView>
         

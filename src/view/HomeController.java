@@ -1,21 +1,25 @@
 package view;
 
 import java.io.IOException;
-import java.util.*;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import library.Book;
-import javafx.scene.input.MouseEvent;
+import library.DbConfig;
 
 import java.net.URL;
 
@@ -27,30 +31,35 @@ public class HomeController implements Initializable {
     @FXML
     private GridPane bookContainer;
 
-    private List<Book> recentlyAdded;
-    private List<Book> recommended;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        recentlyAdded = new ArrayList<>(recentlyAdded());
-        recommended = new ArrayList<>(books());
-        int column = 0;
-        int row = 1;
         try {
-            for (int i = 0; i < recentlyAdded.size(); i++) {
+            // Lấy tất cả sách từ database
+            List<Book> books = getAllBooks();
+
+            List<Book> randomBooks = getRandomBooks(books, 20);
+
+            // Hiển thị sách trong HBox
+            for (Book book : randomBooks) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("card.fxml"));
                 HBox cardBox = fxmlLoader.load();
+                
+                // Set dữ liệu từ database vào card
                 CardController cardController = fxmlLoader.getController();
-                cardController.setData(recentlyAdded.get(i));
-                final Book book = recentlyAdded.get(i);
+                cardController.setData(book);
                 cardBox.setOnMouseClicked(event -> showBookDetails(book));
                 cardLayout.getChildren().add(cardBox);
             }
-            for (Book book : recommended) {
+
+            // Hiển thị sách trong GridPane
+            int column = 0;
+            int row = 1;
+            for (Book book : randomBooks) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("book.fxml"));
                 VBox bookBox = fxmlLoader.load();
+                
                 BookController bookController = fxmlLoader.getController();
                 bookController.setData(book);
                 bookBox.setOnMouseClicked(event -> showBookDetails(book));
@@ -66,31 +75,49 @@ public class HomeController implements Initializable {
         }
     }
 
-    private List<Book> recentlyAdded() {
-        List<Book> ls = new ArrayList<>();
-        Book book = new Book();
-        book.setName("THE ROAD");
-        book.setImageSrc("/design/Images/theroad.png");
-        book.setAuthor("NguyenTT");
-        ls.add(book);
+    private List<Book> getAllBooks() {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM user.book"; // Truy vấn lấy tất cả sách
+        try (Connection conn = DbConfig.connect();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+    
+                Book book = new Book(collection, name, author, id);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();  // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();  // Xử lý lỗi khác
+        }
+        return bookList;
+    }    
 
-        Book book1 = new Book();
-        book1.setName("THE WITCHES");
-        book1.setImageSrc("/design/Images/the-witches.png");
-        book1.setAuthor("Roald Dahl");
-        ls.add(book1);
-
-        Book book2 = new Book();
-        book2.setName("THE FAMOUS FIVE");
-        book2.setImageSrc("/design/Images/the-famous-five.png");
-        book2.setAuthor("Gui Blyton");
-        ls.add(book2);
-        ls.add(book1);
-
-        return ls;
+    private List<Book> getRandomBooks(List<Book> books, int cnt) {
+        List<Book> randomBooks = new ArrayList<>();
+        if(books.size() <= cnt) {
+            return books;
+        }
+        List<Integer> usedIdx = new ArrayList<>();
+        while (randomBooks.size() < cnt) {
+            int randomIdx = (int) (Math.random() * books.size());
+            if (!usedIdx.contains(randomIdx)) {
+                randomBooks.add(books.get(randomIdx));
+                usedIdx.add(randomIdx);
+            }
+        }
+        return randomBooks;
     }
 
-    private void showBookDetails(Book book) {
+     private void showBookDetails(Book book) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("bookDetails.fxml"));
@@ -106,48 +133,6 @@ public class HomeController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private List<Book> books() {
-        List<Book> ls = new ArrayList<>();
-        Book book = new Book();
-        book.setName("THE ROAD");
-        book.setImageSrc("/design/Images/theroad.png");
-        book.setAuthor("NguyenTT");
-        ls.add(book);
-
-        Book book1 = new Book();
-        book1.setName("THE WITCHES");
-        book1.setImageSrc("/design/Images/the-witches.png");
-        book1.setAuthor("Roald Dahl");
-        ls.add(book1);
-
-        Book book2 = new Book();
-        book2.setName("THE FAMOUS FIVE");
-        book2.setImageSrc("/design/Images/the-famous-five.png");
-        book2.setAuthor("Gui Blyton");
-        ls.add(book2);
-        ls.add(book1);
-
-        Book book3 = new Book();
-        book3.setName("THE ROAD");
-        book3.setImageSrc("/design/Images/theroad.png");
-        book3.setAuthor("NguyenTT");
-        ls.add(book3);
-
-        Book book4 = new Book();
-        book4.setName("THE WITCHES");
-        book4.setImageSrc("/design/Images/the-witches.png");
-        book4.setAuthor("Roald Dahl");
-        ls.add(book4);
-
-        Book book5 = new Book();
-        book5.setName("THE FAMOUS FIVE");
-        book5.setImageSrc("/design/Images/the-famous-five.png");
-        book5.setAuthor("Gui Blyton");
-        ls.add(book5);
-        ls.add(book1);
-        return ls;
     }
 
 }

@@ -1,11 +1,14 @@
 package view;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -27,29 +30,40 @@ public class BookDetailsController implements Initializable{
     @FXML
     private TextArea bookDetails;
 
-    @FXML
-    private ImageView bookImage;
+    private Book curBook;
+
+    private BorrowedBooks curBorrowedBook;
+
+    // @FXML
+    // private ImageView bookImage;
 
     //khi click vào bookBox, sẽ lấy thông tin từ book để setBookDetails
     //test
     public void setBookDetails(Book book) {
-        Image image = new Image(getClass().getResourceAsStream(book.getImageSrc()));
-        bookImage.setImage(image);
+        // Image image = new Image(getClass().getResourceAsStream(book.getImageSrc()));
+        // bookImage.setImage(image);
+        curBook = book;
         bookDetails.setText("Title: " + book.getName() + "\nAuthor: " + book.getAuthor());
     }
+
+    protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();
+    protected static ObservableList<BorrowedBooks> borrowList = FXCollections.observableArrayList();
 
     private boolean isFirstClick = true;
 
     @FXML
 
-    public void borrow(MouseEvent event) {
+    public void borrow(MouseEvent event) throws Exception {
+        LocalDate bDate = LocalDate.now();
+        LocalDate dDate = bDate.plusWeeks(2);
         if(isFirstClick) {
             showBorrwedStatus(successfull);
             isFirstClick = false;
+            curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(), curBook.getAuthor(), curBook.getId(), bDate, dDate);
+            borrowedBooksController.addBorrowedBook(curBorrowedBook, borrowList);
+            return;
         }
-        else {
-            showBorrwedStatus(borrowed);
-        }
+        showBorrwedStatus(borrowed);
     }
 
     @FXML

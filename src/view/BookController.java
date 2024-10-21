@@ -17,8 +17,6 @@ public class BookController {
     private Label bookName;
 
     public void setData(Book book) {
-        Image image = new Image(getClass().getResourceAsStream(book.getImageSrc()));
-        bookImage.setImage(image);
         bookName.setText(book.getName());
         authorName.setText(book.getAuthor());
     }
