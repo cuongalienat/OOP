@@ -47,7 +47,7 @@ public class BookDetailsController implements Initializable{
     }
 
     protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();
-    protected static ObservableList<BorrowedBooks> borrowList = FXCollections.observableArrayList(BorrowedBooks.getBorrowedBooks());
+    protected static ObservableList<BorrowedBooks> borrowList = FXCollections.observableArrayList();
 
     private boolean isFirstClick = true;
 

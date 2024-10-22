@@ -47,39 +47,39 @@ public class BorrowedBooks extends Book {
         this.dueDate = dueDate;
     }
 
-    public static List<BorrowedBooks> getBorrowedBooks() {
-        List<BorrowedBooks> borrowedBooksList = new ArrayList<>();
-        String query = "SELECT b.ID, b.`Offer Collection`, b.`Book Title`, b.Contributors, bl.borrowedDate, bl.dueDate " +
-                       "FROM book b " +
-                       "JOIN booklogs bl ON b.ID = bl.book_id " +
-                       "WHERE bl.phone_user = ?";
+    // public static List<BorrowedBooks> getBorrowedBooks() {
+    //     List<BorrowedBooks> borrowedBooksList = new ArrayList<>();
+    //     String query = "SELECT b.ID, b.`Offer Collection`, b.`Book Title`, b.Contributors, bl.borrowedDate, bl.dueDate " +
+    //                    "FROM book b " +
+    //                    "JOIN booklogs bl ON b.ID = bl.book_id " +
+    //                    "WHERE bl.phone_user = ?";
     
-        try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+    //     try (Connection conn = DbConfig.connect();
+    //          PreparedStatement stmt = conn.prepareStatement(query)) {
              
-            stmt.setString(1, loginController.getUser_now().getPhone());
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    int id = rs.getInt("ID");
-                    String offerCollection = rs.getString("Offer Collection");
-                    String bookTitle = rs.getString("Book Title");
-                    String contributors = rs.getString("Contributors");
-                    LocalDate borrowDate = rs.getDate("borrowedDate").toLocalDate();
-                    LocalDate dueDate = rs.getDate("dueDate").toLocalDate();
+    //         stmt.setString(1, loginController.getUser_now().getPhone());
+    //         try (ResultSet rs = stmt.executeQuery()) {
+    //             while (rs.next()) {
+    //                 int id = rs.getInt("ID");
+    //                 String offerCollection = rs.getString("Offer Collection");
+    //                 String bookTitle = rs.getString("Book Title");
+    //                 String contributors = rs.getString("Contributors");
+    //                 LocalDate borrowDate = rs.getDate("borrowedDate").toLocalDate();
+    //                 LocalDate dueDate = rs.getDate("dueDate").toLocalDate();
     
-                    BorrowedBooks borrowedBook = new BorrowedBooks(offerCollection, bookTitle, contributors, id, 0, borrowDate, dueDate);
-                    borrowedBooksList.add(borrowedBook);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return borrowedBooksList;
-    }
+    //                 BorrowedBooks borrowedBook = new BorrowedBooks(offerCollection, bookTitle, contributors, id, 0, borrowDate, dueDate);
+    //                 borrowedBooksList.add(borrowedBook);
+    //             }
+    //         }
+    //     } catch (SQLException e) {
+    //         System.out.println("SQL Error: " + e.getMessage());
+    //         e.printStackTrace();
+    //     } catch (Exception e) {
+    //         System.out.println("Error: " + e.getMessage());
+    //         e.printStackTrace();
+    //     }
+    //     return borrowedBooksList;
+    // }
 
     public void addBorrowedBookToDB() throws Exception {
         User nUser = loginController.getUser_now();
