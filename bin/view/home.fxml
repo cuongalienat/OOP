@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="459.2" prefWidth="856.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HomeController">
+    <children>
+        <Label prefHeight="45.0" prefWidth="261.0" text="Top books">
+            <font>
+                <Font name=".VnBlack" size="18.0" />
+            </font>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" />
+            </padding>
+        </Label>
+        <ScrollPane prefHeight="154.0" prefWidth="856.0" stylesheets="@../design/Css/style.css" vbarPolicy="NEVER">
+            <content>
+                <HBox fx:id="cardLayout" alignment="CENTER" prefHeight="146.0" prefWidth="1042.0" spacing="15.0" stylesheets="@../design/Css/style.css">
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding></HBox>
+            </content>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+        </ScrollPane>
+        <Label prefHeight="48.0" prefWidth="221.0" text="Recommend for you">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <font>
+                <Font name=".VnBlack" size="18.0" />
+            </font>
+        </Label>
+        <ScrollPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../design/Css/style.css" VBox.vgrow="ALWAYS">
+            <content>
+                <GridPane fx:id="bookContainer" />
+            </content>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+        </ScrollPane>
+    </children>
+</VBox>

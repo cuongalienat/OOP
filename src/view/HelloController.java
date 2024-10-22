@@ -19,6 +19,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import library.Admin;
+import library.Book;
 import library.User;
 
 import java.net.URL;
@@ -106,6 +107,26 @@ public class HelloController implements Initializable {
         } else {
             alert.close();
         }
+    }
+
+    @FXML
+    public void showAvailableBook(MouseEvent event) {
+                // select style css
+                borrowedBooks.getStyleClass().add("selected");
+                home.getStyleClass().remove("selected");
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("availableBook.fxml"));
+                    Parent availableBooksRoot = fxmlLoader.load();
+        
+                    //updating Borrowed Books
+                    choosedScene.getChildren().clear(); //clear Home
+                    choosedScene.getChildren().add(availableBooksRoot); //loading borrowedBooks.fxml
+        
+                    AvailableBookController ABC = fxmlLoader.getController(); 
+                    ABC.setBookData(Book.getAvailableBooks());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
     }
 
     @FXML
