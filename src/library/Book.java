@@ -1,4 +1,5 @@
 package library;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,19 +9,17 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import javax.naming.spi.DirStateFactory.Result;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Book {
-    static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/user";
-    static final String USER = "root";
-    static final String PASS = "thoitri0909";
     Scanner sc = new Scanner(System.in);
-    
+
     private String name;
     private String imageSrc;
     private String author;
     private String collection;
     private int id;
-
 
     public Book() {
 
@@ -74,11 +73,11 @@ public class Book {
     }
 
     public void addData() throws Exception {
-        //using " ` " to border collumns contain space
-        String query = "INSERT INTO user.book (`Offer Collection`, `Book Title`, `Contributors`, `ID`) VALUES (?, ?, ?, ?)";
+        // using " ` " to border collumns contain space
+        String query = "INSERT INTO book (`Offer Collection`, `Book Title`, `Contributors`, `ID`) VALUES (?, ?, ?, ?)";
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, collection);
             stmt.setString(2, name);
             stmt.setString(3, author);
@@ -90,13 +89,13 @@ public class Book {
     }
 
     public static Book getBook(String inputID) throws Exception {
-        String query = "SELECT * FROM user.book WHERE ID = ?";
+        String query = "SELECT * FROM book WHERE ID = ?";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, inputID);
-            ResultSet rs = stmt.executeQuery();        
-            
-            if(rs.next()) {
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
                 String collection = rs.getString("Offer Collection");
                 String name = rs.getString("Book Title");
                 String author = rs.getString("Contributors");
@@ -109,5 +108,31 @@ public class Book {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static List<Book> getLibrary() {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM book"; // Truy vấn lấy tất cả sách
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+
+                Book book = new Book(collection, name, author, id);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi khác
+        }
+        return bookList;
     }
 }

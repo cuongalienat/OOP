@@ -44,7 +44,7 @@ public class HomeController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("card.fxml"));
                 HBox cardBox = fxmlLoader.load();
-                
+
                 // Set dữ liệu từ database vào card
                 CardController cardController = fxmlLoader.getController();
                 cardController.setData(book);
@@ -59,7 +59,7 @@ public class HomeController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("book.fxml"));
                 VBox bookBox = fxmlLoader.load();
-                
+
                 BookController bookController = fxmlLoader.getController();
                 bookController.setData(book);
                 bookBox.setOnMouseClicked(event -> showBookDetails(book));
@@ -77,33 +77,13 @@ public class HomeController implements Initializable {
 
     private List<Book> getAllBooks() {
         List<Book> bookList = new ArrayList<>();
-        String query = "SELECT * FROM user.book"; // Truy vấn lấy tất cả sách
-        try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            
-            while (rs.next()) {
-                String collection = rs.getString("Offer Collection");
-                String name = rs.getString("Book Title");
-                String author = rs.getString("Contributors");
-                Integer id = rs.getInt("ID");
-    
-                Book book = new Book(collection, name, author, id);
-                bookList.add(book); // Thêm vào danh sách
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace();  // Xử lý lỗi kết nối database
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            e.printStackTrace();  // Xử lý lỗi khác
-        }
+        bookList = Book.getLibrary();
         return bookList;
-    }    
+    }
 
     private List<Book> getRandomBooks(List<Book> books, int cnt) {
         List<Book> randomBooks = new ArrayList<>();
-        if(books.size() <= cnt) {
+        if (books.size() <= cnt) {
             return books;
         }
         List<Integer> usedIdx = new ArrayList<>();
@@ -117,7 +97,7 @@ public class HomeController implements Initializable {
         return randomBooks;
     }
 
-     private void showBookDetails(Book book) {
+    private void showBookDetails(Book book) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("bookDetails.fxml"));
