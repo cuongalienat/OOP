@@ -34,6 +34,13 @@ public class Book {
         this.available = available;
     }
 
+    public Book(String collection, String name, String author, Integer id) {
+        this.collection = collection;
+        this.name = name;
+        this.author = author;
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

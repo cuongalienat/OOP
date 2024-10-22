@@ -59,7 +59,7 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    private void showBorrowedBooks() {
+    private void showBorrowedBooks() throws Exception {
         // select style css
         borrowedBooks.getStyleClass().add("selected");
         home.getStyleClass().remove("selected");
@@ -73,7 +73,7 @@ public class HelloController implements Initializable {
             choosedScene.getChildren().add(borrowedBooksRoot); //loading borrowedBooks.fxml
 
             BorrowedBooksController BBC = fxmlLoader.getController(); 
-            BBC.showBorrowedBooks(BookDetailsController.borrowList);
+            BBC.showBorrowedBooks();
         } catch (IOException e) {
             e.printStackTrace();
         }

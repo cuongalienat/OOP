@@ -48,13 +48,16 @@ public class BorrowedBooksController {
         book.addBorrowedBookToDB();
     }
 
-    public void showBorrowedBooks(ObservableList<BorrowedBooks> borrowList) {
+    public void showBorrowedBooks() throws Exception {
+        ObservableList<BorrowedBooks> borrowedList = BorrowedBooks.getAllBorrowedBooks();
+        
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         collectionColumn.setCellValueFactory(new PropertyValueFactory<>("collection"));
         borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
-        borrowedBooksTable.setItems(borrowList);
+        
+        borrowedBooksTable.setItems(borrowedList); // Hiển thị danh sách sách đã mượn
     }
 }

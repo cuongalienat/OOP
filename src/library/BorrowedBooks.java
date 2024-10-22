@@ -10,6 +10,11 @@ import java.util.List;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import com.mysql.cj.xdevapi.Result;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import view.BookDetailsController;
 import view.loginController;
 
 public class BorrowedBooks extends Book {
@@ -33,6 +38,11 @@ public class BorrowedBooks extends Book {
 
     public BorrowedBooks(String collection, String name, String author, int id, int available, LocalDate borrowDate, LocalDate dueDate) {
         super(collection, name, author, id, available);
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+    }
+    public BorrowedBooks(String collection, String name, String author, int id, LocalDate borrowDate, LocalDate dueDate) {
+        super(collection, name, author, id);
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
     }
@@ -129,4 +139,39 @@ public class BorrowedBooks extends Book {
                     }
         }
     }
+
+    public static ObservableList<BorrowedBooks> getAllBorrowedBooks() throws Exception {
+        User user = loginController.getUser_now();
+        String userPhone = user.getPhone();
+        ObservableList<BorrowedBooks> borrowedBooksList = FXCollections.observableArrayList();
+        
+        String query = """
+            SELECT b.ID AS book_id, b.`Offer Collection`, b.`Book Title`, b.Contributors, bl.borrowedDate, bl.dueDate
+            FROM booklogs bl 
+            JOIN book b ON bl.book_id = b.ID
+            WHERE bl.phone_user = ?     
+        """;
+    
+        try (Connection conn = DbConfig.connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, userPhone);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                int id = rs.getInt("book_id");
+                String collection = rs.getString("Offer Collection");
+                String title = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                LocalDate bDate = rs.getDate("borrowedDate").toLocalDate();
+                LocalDate dDate = rs.getDate("dueDate").toLocalDate();
+    
+                BorrowedBooks book = new BorrowedBooks(collection, title, author, id, bDate, dDate);
+                borrowedBooksList.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return borrowedBooksList;
+    }    
 }
