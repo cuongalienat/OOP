@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AvailableBookController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AvailableBookController">
     <children>
         <Label layoutX="20.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Available books" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="14.0" />
         
@@ -19,6 +19,7 @@
                 <TableColumn fx:id="available_col" prefWidth="126.0" text="Available" />
             </columns>
         </TableView>
-        <Button layoutX="20.0" layoutY="413.0" prefWidth="120" text="View Details" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />
+        <Button layoutX="20.0" layoutY="413.0" onMouseClicked="#borrowBook" prefWidth="120" text="Borrow" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />
+      <Button layoutX="151.0" layoutY="409.0" prefWidth="120" text="View Details" />
     </children>
 </AnchorPane>

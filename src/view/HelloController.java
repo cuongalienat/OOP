@@ -134,9 +134,6 @@ public class HelloController implements Initializable {
         if (loginController.getUser_now() instanceof Admin) {
             Admin admin = (Admin) loginController.getUser_now();
             Map<String, User> map_user = admin.showUserData();
-            borrowedBooks.getStyleClass().add("selected");
-            home.getStyleClass().remove("selected");
-
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UserManagement.fxml"));
                 Parent userManagement = fxmlLoader.load();

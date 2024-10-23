@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BookDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BookDetailsController">
    <children>
       <TextArea fx:id="bookDetails" layoutX="105.0" layoutY="60.0" prefHeight="230.0" prefWidth="150.0" styleClass="transparent" stylesheets="@../design/Css/style.css" AnchorPane.rightAnchor="104.6" />
       <Button layoutX="150.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#borrow" stylesheets="@../design/Css/style.css" text="Borrow">

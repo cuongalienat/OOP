@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="459.2" prefWidth="856.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HomeController">
+<VBox prefHeight="459.2" prefWidth="856.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HomeController">
     <children>
         <Label prefHeight="45.0" prefWidth="261.0" text="Top books">
             <font>

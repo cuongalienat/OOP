@@ -20,6 +20,7 @@ import view.loginController;
 public class BorrowedBooks extends Book {
     private LocalDate borrowDate;
     private LocalDate dueDate;
+    public static ObservableList<BorrowedBooks> borrowedBooksList = FXCollections.observableArrayList();
     public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
     }
@@ -27,7 +28,7 @@ public class BorrowedBooks extends Book {
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
-
+    
     public LocalDate getBorrowDate() {
         return borrowDate;
     }
@@ -80,7 +81,8 @@ public class BorrowedBooks extends Book {
     //     }
     //     return borrowedBooksList;
     // }
-
+    
+    @Override
     public void addBorrowedBookToDB() throws Exception {
         User nUser = loginController.getUser_now();
         String checkAvailableQuery = "SELECT Available FROM book WHERE ID = ?";
@@ -143,7 +145,6 @@ public class BorrowedBooks extends Book {
     public static ObservableList<BorrowedBooks> getAllBorrowedBooks() throws Exception {
         User user = loginController.getUser_now();
         String userPhone = user.getPhone();
-        ObservableList<BorrowedBooks> borrowedBooksList = FXCollections.observableArrayList();
         
         String query = """
             SELECT b.ID AS book_id, b.`Offer Collection`, b.`Book Title`, b.Contributors, bl.borrowedDate, bl.dueDate
