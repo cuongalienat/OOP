@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="box" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="280.0" spacing="8.0" style="-fx-background-radius: 15;" styleClass="card" stylesheets="@../design/Css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CardController">
+<HBox fx:id="box" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="280.0" spacing="8.0" style="-fx-background-radius: 15;" styleClass="card" stylesheets="@../design/Css/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CardController">
    <children>
-      <ImageView fx:id="bookImage" fitHeight="127.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../design/Images/theroad.png" />
-         </image>
-      </ImageView>
       <VBox alignment="CENTER_LEFT" prefHeight="140.0" prefWidth="147.0">
          <children>
             <Label fx:id="bookName" prefHeight="0.0" prefWidth="138.0" text="THE ROAD">
@@ -27,14 +19,6 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ImageView fx:id="rateImae" fitHeight="48.0" fitWidth="111.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../design/Images/5rate.png" />
-               </image>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </ImageView>
          </children>
       </VBox>
    </children>

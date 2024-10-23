@@ -10,7 +10,6 @@ public class mainController extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
         Scene scene = new Scene(root);
         stage.setMinWidth(1040);
@@ -18,7 +17,6 @@ public class mainController extends Application {
         stage.setScene(scene);
         stage.setTitle("LIBRARY");
         stage.show();
-
     }
 
     public static void main(String[] args) {

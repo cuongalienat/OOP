@@ -37,10 +37,11 @@ public class HomeController implements Initializable {
             // Lấy tất cả sách từ database
             List<Book> books = getAllBooks();
 
-            List<Book> randomBooks = getRandomBooks(books, 20);
+            List<Book> randomBooks1 = getRandomBooks(books, 20);
+            List<Book> randomBooks2 = getRandomBooks(books, 20);
 
             // Hiển thị sách trong HBox
-            for (Book book : randomBooks) {
+            for (Book book : randomBooks1) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("card.fxml"));
                 HBox cardBox = fxmlLoader.load();
@@ -55,7 +56,7 @@ public class HomeController implements Initializable {
             // Hiển thị sách trong GridPane
             int column = 0;
             int row = 1;
-            for (Book book : randomBooks) {
+            for (Book book : randomBooks2) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("book.fxml"));
                 VBox bookBox = fxmlLoader.load();
@@ -77,7 +78,27 @@ public class HomeController implements Initializable {
 
     private List<Book> getAllBooks() {
         List<Book> bookList = new ArrayList<>();
-        bookList = Book.getLibrary();
+        String query = "SELECT * FROM librarymanagement.book"; // Truy vấn lấy tất cả sách
+        try (Connection conn = DbConfig.connect();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+    
+                Book book = new Book(collection, name, author, id);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();  // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();  // Xử lý lỗi khác
+        }
         return bookList;
     }
 

@@ -48,8 +48,7 @@ public class BorrowedBooksController {
     @FXML
     private TableColumn<BorrowedBooks, String> titleColumn;
 
-    public void addBorrowedBook(BorrowedBooks book, ObservableList<BorrowedBooks> borrowList) throws Exception {
-        borrowList.add(book);
+    public void addBorrowedBook(BorrowedBooks book) throws Exception {
         book.addBorrowedBookToDB();
     }
 
@@ -80,6 +79,7 @@ public class BorrowedBooksController {
                 if (response == ButtonType.OK) {
                     // Xóa ở database
                     try {
+                        updateAvailableCount(selectedBook.getId());
                         deleteBookFromDatabase(selectedBook.getId());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -96,6 +96,20 @@ public class BorrowedBooksController {
             alert.setHeaderText("Không có sách nào được chọn.");
             alert.setContentText("Vui lòng chọn một sách để xóa.");
             alert.showAndWait();
+        }
+    }
+
+    private void updateAvailableCount(int bookId) throws Exception {
+        String updateAvailableQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
+    
+        try (Connection conn = DbConfig.connect();
+             PreparedStatement stmt = conn.prepareStatement(updateAvailableQuery)) {
+            stmt.setInt(1, bookId); 
+            stmt.executeUpdate();
+            System.out.println("Cập nhật Available thành công.");
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi cập nhật Available: " + e.getMessage());
+            throw e;
         }
     }
 

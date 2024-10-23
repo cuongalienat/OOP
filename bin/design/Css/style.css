@@ -43,3 +43,7 @@
     -fx-scale-x: 1.05; /* Tăng kích thước khi hover */
     -fx-scale-y: 1.05; /* Tăng kích thước khi hover */
 }
+
+.button-hover {
+    -fx-cursor: hand !important;
+}

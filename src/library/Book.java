@@ -20,9 +20,18 @@ public class Book {
     private String author;
     private String collection;
     private int id;
+    private int available;
 
     public Book() {
 
+    }
+
+    public Book(String collection, String name, String author, Integer id, Integer available) {
+        this.collection = collection;
+        this.name = name;
+        this.author = author;
+        this.id = id;
+        this.available = available;
     }
 
     public Book(String collection, String name, String author, Integer id) {
@@ -72,9 +81,12 @@ public class Book {
         this.collection = collection;
     }
 
+    public int getAvailable() {
+        return this.available;
+    }
     public void addData() throws Exception {
         // using " ` " to border collumns contain space
-        String query = "INSERT INTO book (`Offer Collection`, `Book Title`, `Contributors`, `ID`) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO book (`Offer Collection`, `Book Title`, `Contributors`, `ID`, `available`) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -82,6 +94,7 @@ public class Book {
             stmt.setString(2, name);
             stmt.setString(3, author);
             stmt.setInt(4, id);
+            stmt.setInt(5, available);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,8 +113,9 @@ public class Book {
                 String name = rs.getString("Book Title");
                 String author = rs.getString("Contributors");
                 int id = rs.getInt("ID");
+                int available = rs.getInt("Available");
 
-                Book book = new Book(collection, name, author, id);
+                Book book = new Book(collection, name, author, id, available);
                 return book;
             }
         } catch (Exception e) {
@@ -122,8 +136,36 @@ public class Book {
                 String name = rs.getString("Book Title");
                 String author = rs.getString("Contributors");
                 Integer id = rs.getInt("ID");
+                Integer available = rs.getInt("Available");
 
-                Book book = new Book(collection, name, author, id);
+                Book book = new Book(collection, name, author, id, available);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi khác
+        }
+        return bookList;
+    }
+
+    public static List<Book> getAvailableBooks() {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM book WHERE Available > 0"; 
+        try (Connection conn = DbConfig.connect();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+    
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+                Integer available = rs.getInt("Available");
+    
+                Book book = new Book(collection, name, author, id, available);
                 bookList.add(book); // Thêm vào danh sách
             }
         } catch (SQLException e) {

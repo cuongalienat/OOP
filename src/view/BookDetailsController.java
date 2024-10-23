@@ -47,7 +47,7 @@ public class BookDetailsController implements Initializable{
     }
 
     protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();
-    public static ObservableList<BorrowedBooks> borrowList = FXCollections.observableArrayList();
+    //protected static ObservableList<BorrowedBooks> borrowList = FXCollections.observableArrayList();
 
     private boolean isFirstClick = true;
 
@@ -59,8 +59,8 @@ public class BookDetailsController implements Initializable{
         if(isFirstClick) {
             showBorrwedStatus(successfull);
             isFirstClick = false;
-            curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(), curBook.getAuthor(), curBook.getId(), bDate, dDate);
-            borrowedBooksController.addBorrowedBook(curBorrowedBook, borrowList);
+            curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(), curBook.getAuthor(), curBook.getId(), curBook.getAvailable(), bDate, dDate);
+            borrowedBooksController.addBorrowedBook(curBorrowedBook);
             return;
         }
         showBorrwedStatus(borrowed);
