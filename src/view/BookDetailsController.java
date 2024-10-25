@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import library.*;
 
-public class BookDetailsController implements Initializable{
+public class BookDetailsController implements Initializable {
 
     @FXML
     private TextField borrowed;
@@ -37,8 +37,8 @@ public class BookDetailsController implements Initializable{
     // @FXML
     // private ImageView bookImage;
 
-    //khi click vào bookBox, sẽ lấy thông tin từ book để setBookDetails
-    //test
+    // khi click vào bookBox, sẽ lấy thông tin từ book để setBookDetails
+    // test
     public void setBookDetails(Book book) {
         // Image image = new Image(getClass().getResourceAsStream(book.getImageSrc()));
         // bookImage.setImage(image);
@@ -47,7 +47,8 @@ public class BookDetailsController implements Initializable{
     }
 
     protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();
-    //protected static ObservableList<BorrowedBooks> borrowList = FXCollections.observableArrayList();
+    // protected static ObservableList<BorrowedBooks> borrowList =
+    // FXCollections.observableArrayList();
 
     private boolean isFirstClick = true;
 
@@ -56,10 +57,11 @@ public class BookDetailsController implements Initializable{
     public void borrow(MouseEvent event) throws Exception {
         LocalDate bDate = LocalDate.now();
         LocalDate dDate = bDate.plusWeeks(2);
-        if(isFirstClick) {
+        if (isFirstClick) {
             showBorrwedStatus(successfull);
             isFirstClick = false;
-            curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(), curBook.getAuthor(), curBook.getId(), curBook.getAvailable(), bDate, dDate);
+            curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(), curBook.getAuthor(),
+                    curBook.getId(), curBook.getAvailable(), bDate, dDate, "Pending");
             borrowedBooksController.addBorrowedBook(curBorrowedBook);
             return;
         }
@@ -69,29 +71,29 @@ public class BookDetailsController implements Initializable{
     @FXML
     public void showBorrwedStatus(TextField textField) {
         textField.setVisible(true);
-        //Appear gradually in 0.25s
+        // Appear gradually in 0.25s
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.25), textField);
-        fadeIn.setFromValue(0); //fully transparent
-        fadeIn.setToValue(1);//opaque
-        //after finishing fadeIn
+        fadeIn.setFromValue(0); // fully transparent
+        fadeIn.setToValue(1);// opaque
+        // after finishing fadeIn
         fadeIn.setOnFinished(e -> {
-            //textField will display in 0.75s
+            // textField will display in 0.75s
             Timeline timeLine = new Timeline(new KeyFrame(Duration.seconds(0.75), ae -> {
-                //Disappear gradually in 0.25s  
+                // Disappear gradually in 0.25s
                 FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.25), textField);
                 fadeOut.setFromValue(1);
                 fadeOut.setToValue(0);
-                fadeOut.setOnFinished(a -> textField.setVisible(false)); //after disappearing, set -> false
+                fadeOut.setOnFinished(a -> textField.setVisible(false)); // after disappearing, set -> false
                 fadeOut.play();
             }));
-            timeLine.play();    
+            timeLine.play();
         });
         fadeIn.play();
     }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        successfull.setVisible(false); //default
+        successfull.setVisible(false); // default
         borrowed.setVisible(false);
     }
 }
-

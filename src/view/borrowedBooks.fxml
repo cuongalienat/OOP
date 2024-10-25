@@ -6,21 +6,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="459.2" prefWidth="856.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BorrowedBooksController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="459.2" prefWidth="856.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BorrowedBooksController">
     <children>
         <Label layoutX="20.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Borrowed books" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="14.0" />
         
         <TableView fx:id="borrowedBooksTable" layoutX="20.0" layoutY="60.0" maxWidth="-Infinity" prefWidth="572.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
             <columns>
             <TableColumn fx:id="idColumn" prefWidth="66.0" text="ID" />
-                <TableColumn fx:id="collectionColumn" prefWidth="143.0" text="Offer Collection" />
-                <TableColumn fx:id="titleColumn" prefWidth="217.0" text="Book Title" />
-                <TableColumn fx:id="authorColumn" prefWidth="147.0" text="Contributors" />
-                <TableColumn fx:id="borrowedDateColumn" prefWidth="121.5" text="Borrowed Date" />
-                <TableColumn fx:id="dueDateColumn" prefWidth="121.5" text="Due Date" />
+                <TableColumn fx:id="collectionColumn" prefWidth="116.00006103515625" text="Offer Collection" />
+                <TableColumn fx:id="titleColumn" prefWidth="172.79998779296875" text="Book Title" />
+                <TableColumn fx:id="authorColumn" prefWidth="158.4000244140625" text="Contributors" />
+                <TableColumn fx:id="borrowedDateColumn" prefWidth="110.0" text="Borrowed Date" />
+                <TableColumn fx:id="dueDateColumn" prefWidth="110.0" text="Due Date" />
+            <TableColumn fx:id="statusColumn" prefWidth="79.199951171875" text="Status" />
             </columns>
         </TableView>
         
-        <Button fx:id="returnBookButton" layoutX="20.0" layoutY="413.0" onMouseClicked="#returnBook" prefWidth="120" text="Return book" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />
+        <Button fx:id="returnBookButton" layoutX="162.0" layoutY="413.0" prefWidth="120" text="Remove book" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="162.0" />
+        <Button fx:id="viewDetailsButton" layoutX="20.0" layoutY="413.0" prefWidth="120" text="View Details" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />
     </children>
 </AnchorPane>

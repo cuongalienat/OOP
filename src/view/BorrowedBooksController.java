@@ -1,15 +1,10 @@
 package view;
 
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
 
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -48,20 +43,24 @@ public class BorrowedBooksController {
     @FXML
     private TableColumn<BorrowedBooks, String> titleColumn;
 
+    @FXML
+    private TableColumn<BorrowedBooks, String> statusColumn;
+
     public void addBorrowedBook(BorrowedBooks book) throws Exception {
         book.addBorrowedBookToDB();
     }
 
     public void showBorrowedBooks() throws Exception {
         ObservableList<BorrowedBooks> borrowedList = BorrowedBooks.getAllBorrowedBooks();
-        
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         collectionColumn.setCellValueFactory(new PropertyValueFactory<>("collection"));
         borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
-        
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+
         borrowedBooksTable.setItems(borrowedList); // Hiển thị danh sách sách đã mượn
     }
 
@@ -90,9 +89,9 @@ public class BorrowedBooksController {
                 }
             });
         } else {
-            //Nếu chưa chọn quyển nào
+            // Nếu chưa chọn quyển nào
             Alert alert = new Alert(AlertType.WARNING);
-            //alert.setTitle("");
+            // alert.setTitle("");
             alert.setHeaderText("Không có sách nào được chọn.");
             alert.setContentText("Vui lòng chọn một sách để xóa.");
             alert.showAndWait();
@@ -100,11 +99,11 @@ public class BorrowedBooksController {
     }
 
     private void updateAvailableCount(int bookId) throws Exception {
-        String updateAvailableQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
-    
+        String updateAvailableQuery = "UPDATE book SET Available = Available + 1 From book WHERE ID = ?";
+
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(updateAvailableQuery)) {
-            stmt.setInt(1, bookId); 
+                PreparedStatement stmt = conn.prepareStatement(updateAvailableQuery)) {
+            stmt.setInt(1, bookId);
             stmt.executeUpdate();
             System.out.println("Cập nhật Available thành công.");
         } catch (SQLException e) {
@@ -116,7 +115,7 @@ public class BorrowedBooksController {
     private void deleteBookFromDatabase(int bookId) throws Exception {
         String query = "DELETE FROM booklogs WHERE book_id = ?";
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, bookId);
             stmt.executeUpdate();
             System.out.println("deleted in database");
