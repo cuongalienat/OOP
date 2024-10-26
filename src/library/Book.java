@@ -1,14 +1,11 @@
 package library;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import javax.naming.spi.DirStateFactory.Result;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -23,7 +20,10 @@ public class Book {
     private int available;
 
     public Book() {
+    }
 
+    public Book(int id) {
+        this.id = id;
     }
 
     public Book(String collection, String name, String author, Integer id, Integer available) {
@@ -84,6 +84,7 @@ public class Book {
     public int getAvailable() {
         return this.available;
     }
+
     public void addData() throws Exception {
         // using " ` " to border collumns contain space
         String query = "INSERT INTO book (`Offer Collection`, `Book Title`, `Contributors`, `ID`, `available`) VALUES (?, ?, ?, ?, ?)";
@@ -153,18 +154,18 @@ public class Book {
 
     public static List<Book> getAvailableBooks() {
         List<Book> bookList = new ArrayList<>();
-        String query = "SELECT * FROM book WHERE Available > 0"; 
+        String query = "SELECT * FROM book WHERE Available > 0";
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-    
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 String collection = rs.getString("Offer Collection");
                 String name = rs.getString("Book Title");
                 String author = rs.getString("Contributors");
                 Integer id = rs.getInt("ID");
                 Integer available = rs.getInt("Available");
-    
+
                 Book book = new Book(collection, name, author, id, available);
                 bookList.add(book); // Thêm vào danh sách
             }

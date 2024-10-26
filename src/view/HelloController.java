@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -36,7 +37,7 @@ public class HelloController implements Initializable {
 
     @FXML
     private AnchorPane choosedScene;
-    
+
     @FXML
     private HBox logout;
 
@@ -65,7 +66,7 @@ public class HelloController implements Initializable {
         setting.getStyleClass().remove("selected");
         logout.getStyleClass().remove("selected");
     }
-    
+
     @FXML
     private void returnHome(MouseEvent event) {
         resetMenuSelection();
@@ -91,11 +92,11 @@ public class HelloController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("borrowedBooks.fxml"));
             Parent borrowedBooksRoot = fxmlLoader.load();
 
-            //updating Borrowed Books
-            choosedScene.getChildren().clear(); //clear Home
-            choosedScene.getChildren().add(borrowedBooksRoot); //loading borrowedBooks.fxml
+            // updating Borrowed Books
+            choosedScene.getChildren().clear(); // clear Home
+            choosedScene.getChildren().add(borrowedBooksRoot); // loading borrowedBooks.fxml
 
-            BorrowedBooksController BBC = fxmlLoader.getController(); 
+            BorrowedBooksController BBC = fxmlLoader.getController();
             BBC.showBorrowedBooks();
         } catch (IOException e) {
             e.printStackTrace();
@@ -117,7 +118,7 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    public void Log_Out(MouseEvent event) {
+    public void Log_Out(MouseEvent event) throws IOException {
         resetMenuSelection();
         logout.getStyleClass().add("selected");
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -129,6 +130,14 @@ public class HelloController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
+            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setMinWidth(1040);
+            stage.setMinHeight(585);
+            stage.setScene(scene);
+            stage.setTitle("LIBRARY");
+            stage.show();
         } else {
             alert.close();
         }
@@ -141,12 +150,12 @@ public class HelloController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("availableBook.fxml"));
             Parent availableBooksRoot = fxmlLoader.load();
-        
-                    //updating Borrowed Books
-            choosedScene.getChildren().clear(); //clear Home
-            choosedScene.getChildren().add(availableBooksRoot); //loading borrowedBooks.fxml
-        
-            AvailableBookController ABC = fxmlLoader.getController(); 
+
+            // updating Borrowed Books
+            choosedScene.getChildren().clear(); // clear Home
+            choosedScene.getChildren().add(availableBooksRoot); // loading borrowedBooks.fxml
+
+            AvailableBookController ABC = fxmlLoader.getController();
             ABC.setBookData(Book.getAvailableBooks());
         } catch (IOException e) {
             e.printStackTrace();
@@ -159,7 +168,7 @@ public class HelloController implements Initializable {
         userManagement.getStyleClass().add("selected");
         if (loginController.getUser_now() instanceof Admin) {
             Admin admin = (Admin) loginController.getUser_now();
-            Map<String, User> map_user = admin.showUserData();
+            List<User> List_user = admin.showUserData();
             borrowedBooks.getStyleClass().add("selected");
             home.getStyleClass().remove("selected");
 
@@ -170,7 +179,7 @@ public class HelloController implements Initializable {
                 choosedScene.getChildren().add(userManagement);
 
                 UserManagementController Um = fxmlLoader.getController();
-                Um.setUserData(map_user);
+                Um.setUserData(List_user);
 
             } catch (IOException e) {
                 e.printStackTrace();
