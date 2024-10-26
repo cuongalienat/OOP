@@ -10,13 +10,13 @@
     <children>
         <Label layoutX="20.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Available books" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="14.0" />
         
-        <TableView fx:id="availableBook_tableview" layoutX="-4.0" layoutY="57.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="344.0" prefWidth="850.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="57.0">
+        <TableView fx:id="availableBook_tableview" editable="true" layoutX="4.0" layoutY="57.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="344.0" prefWidth="842.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
             <columns>
                 <TableColumn fx:id="id_col" prefWidth="66.0" text="ID" />
                 <TableColumn fx:id="offerCollection_col" prefWidth="193.0" text="Offer Collection" />
                 <TableColumn fx:id="bookTitle_col" prefWidth="245.0" text="Book Title" />
-                <TableColumn fx:id="contributors_col" prefWidth="231.0" text="Contributors" />
-                <TableColumn fx:id="available_col" prefWidth="126.0" text="Available" />
+                <TableColumn fx:id="contributors_col" prefWidth="200.0" text="Contributors" />
+                <TableColumn fx:id="available_col" prefWidth="104.0" text="Available" />
             </columns>
         </TableView>
         <Button layoutX="20.0" layoutY="413.0" onMouseClicked="#borrowBook" prefWidth="120" text="Borrow" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />

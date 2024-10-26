@@ -120,8 +120,7 @@ public class User {
     }
 
     public void addData() throws Exception {
-        String query = "INSERT INTO user (name, phone, password, email) VALUES (?, ?, ?, ?)";
-
+        String query = "INSERT INTO user.user (name, phone, password, email) VALUES (?, ?, ?, ?)";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, name);
@@ -133,20 +132,21 @@ public class User {
             e.printStackTrace();
         }
     }
-
+    
     public static User getUser(String phoneIn) throws Exception {
-        String query = "SELECT * FROM user WHERE phone = ? ";
+        String query = "SELECT * FROM librarymanagement.user WHERE phone = ?"; 
+        // Cập nhật tên bảng với schema user
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, phoneIn);
             ResultSet rs = stmt.executeQuery();
-
+    
             if (rs.next()) {
                 String name = rs.getString("name");
                 String phone = rs.getString("phone");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
-
+    
                 User user = new User(name, email, phone, password);
                 return user;
             }
@@ -155,16 +155,17 @@ public class User {
         }
         return null;
     }
-
+    
     public void Update() throws Exception {
-        String query = "UPDATE user SET password = ? WHERE phone = ?";
-
+        String query = "UPDATE librarymanagement.user SET password = ? WHERE phone = ?"; 
+        // Cập nhật tên bảng với schema user
+    
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
-
+    
             stmt.setString(1, password);
             stmt.setString(2, phone);
-
+    
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
