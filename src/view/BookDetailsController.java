@@ -1,4 +1,5 @@
 package view;
+import org.json.JSONObject;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -20,6 +22,8 @@ import javafx.util.Duration;
 import library.*;
 
 public class BookDetailsController implements Initializable {
+    @FXML
+    private ImageView image;
 
     @FXML
     private TextField borrowed;
@@ -44,6 +48,53 @@ public class BookDetailsController implements Initializable {
         // bookImage.setImage(image);
         curBook = book;
         bookDetails.setText("Title: " + book.getName() + "\nAuthor: " + book.getAuthor());
+
+        GoogleBooksAPI.searchBookByTitle(book.getName(), this::updateBookDetailsFromAPI);
+
+    }
+
+    private void updateBookDetailsFromAPI(String jsonResponse) {
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        JSONObject volumeInfo = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
+
+        String title = volumeInfo.getString("title");
+        String authors = volumeInfo.getJSONArray("authors").getString(0);
+        String description = volumeInfo.has("description") ? volumeInfo.getString("description") : "No description available.";
+        String imageUrl = "";
+        if (volumeInfo.has("imageLinks")) {
+            JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
+            imageUrl = imageLinks.has("thumbnail") ? imageLinks.getString("thumbnail") : "No image available.";
+        } else {
+            imageUrl = "No image available.";
+        }
+
+        // Cập nhật TextArea với thông tin từ API
+        bookDetails.setText("Title: " + title + "\nAuthor: " + authors + "\n\nDescription:\n" + description);
+        loadBookImage(imageUrl);
+    }
+
+    private void loadBookImage(String imageUrl) {
+        Task<Image> task = new Task<Image>() {
+            @Override
+            protected Image call() throws Exception {
+                return new Image(imageUrl);
+            }
+
+            @Override
+            protected void succeeded() {
+                // Cập nhật ImageView với hình ảnh đã tải
+                image.setImage(getValue());
+            }
+
+            @Override
+            protected void failed() {
+                // Xử lý lỗi nếu tải hình ảnh không thành công
+                image.setImage(null); // hoặc một hình ảnh mặc định
+            }
+        };
+
+        // Khởi động Task trong Thread mới
+        new Thread(task).start();
     }
 
     protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();

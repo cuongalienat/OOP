@@ -1,14 +1,19 @@
 package view;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import library.Book;
 import library.User;
 
@@ -41,5 +46,34 @@ public class AvailableBookController {
         offerCollection_col.setCellValueFactory(new PropertyValueFactory<>("collection"));
 
         availableBook_tableview.setItems(books);
+    }
+
+    private void showBookDetails(Book book) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("bookDetails.fxml"));
+            Parent bookDetailsRoot = fxmlLoader.load();
+
+            // Lấy controller của bookDetails.fxml và truyền thông tin sách vào
+            BookDetailsController bookDetailsController = fxmlLoader.getController();
+            bookDetailsController.setBookDetails(book);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(bookDetailsRoot));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initialize() {
+        availableBook_tableview.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) { // Kiểm tra nếu nhấp đúp
+                Book selectedBook = availableBook_tableview.getSelectionModel().getSelectedItem();
+                if (selectedBook != null) {
+                    showBookDetails(selectedBook);
+                }
+            }
+        });
     }
 }
