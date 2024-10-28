@@ -13,11 +13,16 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import library.*;
 
@@ -106,17 +111,62 @@ public class BookDetailsController implements Initializable {
     @FXML
 
     public void borrow(MouseEvent event) throws Exception {
-        LocalDate bDate = LocalDate.now();
-        LocalDate dDate = bDate.plusWeeks(2);
         if (isFirstClick) {
-            showBorrwedStatus(successfull);
-            isFirstClick = false;
-            curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(), curBook.getAuthor(),
-                    curBook.getId(), curBook.getAvailable(), bDate, dDate, "Pending");
-            borrowedBooksController.addBorrowedBook(curBorrowedBook);
-            return;
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Xác nhận mượn sách");
+            alert.setHeaderText("Bạn có chắc chắn muốn mượn sách này không?");
+            alert.setContentText(curBook.getName()); // Hiển thị tiêu đề sách
+
+            DatePicker datePicker = new DatePicker();
+            datePicker.setValue(LocalDate.now()); // Set default value to current date
+            
+            // Add the DatePicker to the Alert's content
+            VBox vbox = new VBox(datePicker);
+            vbox.setSpacing(10);
+            alert.getDialogPane().setContent(vbox);
+            
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    // Xóa ở database
+                    try {
+                        LocalDate selectedDate = datePicker.getValue();
+                        if (selectedDate.isBefore(LocalDate.now())) {
+                            Alert dateAlert = new Alert(Alert.AlertType.WARNING);
+                            dateAlert.setHeaderText("Ngày mượn không hợp lệ.");
+                            dateAlert.setContentText("Vui lòng chọn ngày mượn hợp lệ.");
+                            dateAlert.showAndWait();
+                            return;
+                        } else if (selectedDate.isAfter(LocalDate.now().plusDays(31))) {
+                            Alert dateAlert = new Alert(Alert.AlertType.WARNING);
+                            dateAlert.setHeaderText("Ngày mượn không hợp lệ.");
+                            dateAlert.setContentText("Sách chỉ được mượn tối đa 31 ngày.");
+                            dateAlert.showAndWait();
+                            return;
+                        }
+                        else {
+                            LocalDate bDate = LocalDate.now();
+                            LocalDate dDate = datePicker.getValue();
+                            //  showBorrwedStatus(successfull);
+                            isFirstClick = false;
+                            curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(), curBook.getAuthor(),
+                            curBook.getId(), curBook.getAvailable(), bDate, dDate, "Pending");
+                            borrowedBooksController.addBorrowedBook(curBorrowedBook);
+                            // if(curBook.getAvailable() > 0) {
+                            //     Alert successAlert = new Alert(AlertType.INFORMATION);
+                            //     successAlert.setHeaderText("Mượn sách thành công.");
+                            //     successAlert.setContentText("Bạn đã mượn sách " + curBook.getName() + " thành công.");
+                            //     successAlert.showAndWait();
+                            // }
+                            return;
+                        }
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e);
+                        }
+                    }
+                });
+                return;
         }
-        showBorrwedStatus(borrowed);
+            showBorrwedStatus(borrowed);
     }
 
     @FXML

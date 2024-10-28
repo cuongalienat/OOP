@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserManagementController">
@@ -34,5 +38,14 @@
       <Button fx:id="BookLogs" layoutX="22.0" layoutY="7.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="143.0" text="Book Logs" />
       <Button fx:id="Update" layoutX="300.0" layoutY="408.0" mnemonicParsing="false" onAction="#UpdateBookLogs" text="UPDATE" visible="false" />
       <Button fx:id="Return" layoutX="483.0" layoutY="408.0" mnemonicParsing="false" onAction="#ReturnBook" text="RETURN" visible="false" />
+      <TextField fx:id="Um_search" layoutX="281.0" layoutY="15.0" prefHeight="26.0" prefWidth="226.0" promptText="Search Phone" />
+      <ComboBox fx:id="SearchOptions" layoutX="180.0" layoutY="16.0" prefHeight="26.0" prefWidth="86.0" visible="false" />
+      <TextField fx:id="Booklogs_Search" layoutX="283.0" layoutY="15.0" prefHeight="26.0" prefWidth="225.0" promptText="Search" visible="false" />
+      <Button fx:id="Cancel" layoutX="578.0" layoutY="12.0" mnemonicParsing="false" onMouseClicked="#Cancel" prefHeight="30.0" prefWidth="94.0" text="Cancel" />
+      <ImageView fx:id="Search" fitHeight="18.0" fitWidth="36.0" layoutX="483.0" layoutY="19.0" onMouseClicked="#Search" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../design/Images/magnifying-glass.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

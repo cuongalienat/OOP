@@ -185,9 +185,9 @@ public class Book {
         return bookList;
     }
 
-    public void addBorrowedBookToDB() throws Exception {
+    public void addBorrowedBookToDB(LocalDate selectedDate) throws Exception {
         LocalDate borrowedDate = LocalDate.now();
-        LocalDate dueDate = borrowedDate.plusDays(14);
+        LocalDate dueDate = selectedDate;
         User nUser = loginController.getUser_now();
         String checkAvailableQuery = "SELECT Available FROM book WHERE ID = ?";
         String insertQuery = "INSERT INTO booklogs (book_id, phone_user, borrowedDate, dueDate, status) VALUES (?, ?, ?, ?, ?)";
