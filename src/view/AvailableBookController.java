@@ -1,6 +1,7 @@
 package view;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import library.Book;
 import library.BorrowedBooks;
@@ -67,26 +71,53 @@ public class AvailableBookController {
             alert.setHeaderText("Bạn có chắc chắn muốn mượn sách này không?");
             alert.setContentText(selectedBook.getName()); // Hiển thị tiêu đề sách
 
+            DatePicker datePicker = new DatePicker();
+            datePicker.setValue(LocalDate.now()); // Set default value to current date
+
+            // Add the DatePicker to the Alert's content
+            VBox vbox = new VBox(datePicker);
+            vbox.setSpacing(10);
+            vbox.getChildren().addAll( new javafx.scene.control.Label("Xác nhận ngày trả sách"),datePicker);
+            alert.getDialogPane().setContent(vbox);
+
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     // Xóa ở database
                     try {
-                        selectedBook.addBorrowedBookToDB();
+                        LocalDate selectedDate = datePicker.getValue();
+                        if(selectedDate.isBefore(LocalDate.now())) {
+                            Alert dateAlert = new Alert(AlertType.WARNING);
+                            dateAlert.setHeaderText("Ngày trả sách không hợp lệ.");
+                            dateAlert.setContentText("Vui lòng chọn ngày trả sách hợp lệ.");
+                            dateAlert.showAndWait();
+                            return;
+                        }
+                        else if(selectedDate.isAfter(LocalDate.now().plusDays(31)))  {
+                            Alert dateAlert = new Alert(AlertType.WARNING);
+                            dateAlert.setHeaderText("Ngày mượn không hợp lệ.");
+                            dateAlert.setContentText("Sách chỉ được mượn tối đa 31 ngày.");
+                            dateAlert.showAndWait();
+                            return;
+                        }
+                        selectedBook.addBorrowedBookToDB(selectedDate);
                         this.setBookData(Book.getAvailableBooks());
+                        Alert successAlert = new Alert(AlertType.INFORMATION);
+                        successAlert.setHeaderText("Mượn sách thành công.");
+                        successAlert.setContentText("Bạn đã mượn sách " + selectedBook.getName() + " thành công.");
+                        successAlert.showAndWait();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     // Xóa khỏi TableView
-                    // availableBook_tableview.getItems().remove(selectedBook);
-                    // availableBook_tableview.getSelectionModel().clearSelection();
+                    //availableBook_tableview.getItems().remove(selectedBook);
+                   // availableBook_tableview.getSelectionModel().clearSelection();
                 }
             });
         } else {
-            // Nếu chưa chọn quyển nào
             Alert alert = new Alert(AlertType.WARNING);
-            // alert.setTitle("");
+            //alert.setTitle("");
             alert.setHeaderText("Không có sách nào được chọn.");
-            alert.setContentText("Vui lòng chọn một sách để xóa.");
+            alert.setContentText("Vui lòng chọn một sách để mượn.");
             alert.showAndWait();
         }
     }
@@ -117,7 +148,13 @@ public class AvailableBookController {
 
             Stage stage = new Stage();
             stage.setScene(new Scene(bookDetailsRoot));
+
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
+
+            stage.setOnCloseRequest(event -> {
+                setBookData(Book.getAvailableBooks());
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }

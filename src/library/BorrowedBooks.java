@@ -112,6 +112,10 @@ public class BorrowedBooks extends Book {
 
                     insertStmt.executeUpdate();
                     System.out.println("Thêm vào cơ sở dữ liệu thành công!");
+                        Alert successAlert = new Alert(AlertType.INFORMATION);
+                        successAlert.setHeaderText("Mượn sách thành công.");
+                        //successAlert.setContentText("Bạn đã mượn sách " + " thành công.");
+                        successAlert.showAndWait();
                 } catch (SQLException e) {
                     System.err.println("Lỗi khi thêm vào CSDL: " + e.getMessage());
                     throw e; // Ném lại ngoại lệ
