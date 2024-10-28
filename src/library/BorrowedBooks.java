@@ -43,7 +43,7 @@ public class BorrowedBooks extends Book {
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
-    
+
     public LocalDate getBorrowDate() {
         return borrowDate;
     }
@@ -206,6 +206,78 @@ public class BorrowedBooks extends Book {
 
             ResultSet rs = stmt.executeQuery();
 
+            while (rs.next()) {
+                String phone_user = rs.getString("phone_user");
+                int id = rs.getInt("book_id");
+                LocalDate bDate = rs.getDate("borrowedDate").toLocalDate();
+                LocalDate dDate = rs.getDate("dueDate").toLocalDate();
+                String status = rs.getString("status");
+
+                BorrowedBooks book = new BorrowedBooks(id, phone_user, bDate, dDate, status);
+                bookLogsList.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookLogsList;
+    }
+
+    public static ObservableList<BorrowedBooks> searchIdBookLogs(int Id) throws Exception {
+        ObservableList<BorrowedBooks> bookLogsList = FXCollections.observableArrayList();
+        String query = "SELECT * FROM booklogs where book_id = ?";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, Id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String phone_user = rs.getString("phone_user");
+                int id = rs.getInt("book_id");
+                LocalDate bDate = rs.getDate("borrowedDate").toLocalDate();
+                LocalDate dDate = rs.getDate("dueDate").toLocalDate();
+                String status = rs.getString("status");
+
+                BorrowedBooks book = new BorrowedBooks(id, phone_user, bDate, dDate, status);
+                bookLogsList.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookLogsList;
+    }
+
+    public static ObservableList<BorrowedBooks> searchPhoneBookLogs(String phone) throws Exception {
+        ObservableList<BorrowedBooks> bookLogsList = FXCollections.observableArrayList();
+        String query = "SELECT * FROM booklogs where Phone_user = ?";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, phone);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String phone_user = rs.getString("phone_user");
+                int id = rs.getInt("book_id");
+                LocalDate bDate = rs.getDate("borrowedDate").toLocalDate();
+                LocalDate dDate = rs.getDate("dueDate").toLocalDate();
+                String status = rs.getString("status");
+
+                BorrowedBooks book = new BorrowedBooks(id, phone_user, bDate, dDate, status);
+                bookLogsList.add(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookLogsList;
+    }
+
+    public static ObservableList<BorrowedBooks> searchStatusBookLogs(String Status) throws Exception {
+        ObservableList<BorrowedBooks> bookLogsList = FXCollections.observableArrayList();
+        String query = "SELECT * FROM booklogs where Status = ?";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, Status);
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String phone_user = rs.getString("phone_user");
                 int id = rs.getInt("book_id");
