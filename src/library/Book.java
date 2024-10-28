@@ -184,18 +184,19 @@ public class Book {
         }
         return bookList;
     }
+
     public void addBorrowedBookToDB() throws Exception {
         LocalDate borrowedDate = LocalDate.now();
         LocalDate dueDate = borrowedDate.plusDays(14);
         User nUser = loginController.getUser_now();
         String checkAvailableQuery = "SELECT Available FROM book WHERE ID = ?";
-        String insertQuery = "INSERT INTO booklogs (book_id, phone_user, borrowedDate, dueDate) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO booklogs (book_id, phone_user, borrowedDate, dueDate, status) VALUES (?, ?, ?, ?, ?)";
         String updateAvailableQuery = "UPDATE book SET Available = Available - 1 WHERE ID = ?";
-    
+
         try (Connection conn = DbConfig.connect()) { // Kết nối đến CSDL
             String userPhone = nUser.getPhone();
             int available = 0;
-    
+
             // Kiểm tra giá trị available
             try (PreparedStatement checkStmt = conn.prepareStatement(checkAvailableQuery)) {
                 checkStmt.setInt(1, this.getId());
@@ -205,43 +206,44 @@ public class Book {
                     }
                 }
             }
-    
+
             if (available > 0) {
                 // Tắt kiểm tra khóa ngoại
                 try (PreparedStatement stmtSafeOff = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 0")) {
                     stmtSafeOff.executeUpdate();
                 }
-    
+
                 // Thực hiện câu lệnh INSERT
                 try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
                     insertStmt.setInt(1, this.getId()); // book_id
                     insertStmt.setString(2, userPhone); // phone_user
                     insertStmt.setDate(3, Date.valueOf(borrowedDate)); // borrowedDate
                     insertStmt.setDate(4, Date.valueOf(dueDate)); // dueDate
-    
+                    insertStmt.setString(5, "Pending");
+
                     insertStmt.executeUpdate();
                     System.out.println("Thêm vào cơ sở dữ liệu thành công!");
                 } catch (SQLException e) {
                     System.err.println("Lỗi khi thêm vào CSDL: " + e.getMessage());
                     throw e; // Ném lại ngoại lệ
                 }
-    
+
                 // Cập nhật giá trị available
                 try (PreparedStatement updateStmt = conn.prepareStatement(updateAvailableQuery)) {
                     updateStmt.setInt(1, this.getId());
                     updateStmt.executeUpdate();
                 }
-    
+
                 // Bật lại kiểm tra khóa ngoại
                 try (PreparedStatement stmtSafeOn = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")) {
                     stmtSafeOn.executeUpdate();
                 }
             } else {
-                        Alert alert = new Alert(AlertType.CONFIRMATION);
-                        alert.setContentText("Không thể mượn sách vì không còn sách có sẵn.");
-                        alert.setHeaderText(null);
-                        alert.showAndWait();
-                    }
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setContentText("Không thể mượn sách vì không còn sách có sẵn.");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
         }
     }
 }
