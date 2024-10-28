@@ -246,4 +246,88 @@ public class Book {
             }
         }
     }
+
+    public static List<Book> searchBookByTitle(String Title) {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM book WHERE `Book Title` LIKE ? ";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, "%" + Title + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+                Integer available = rs.getInt("Available");
+
+                Book book = new Book(collection, name, author, id, available);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi khác
+        }
+        return bookList;
+    }
+
+    public static List<Book> searchBookByCollections(String Collection) {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM book WHERE `Offer Collection` LIKE ? ";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, "%" + Collection + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+                Integer available = rs.getInt("Available");
+
+                Book book = new Book(collection, name, author, id, available);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi khác
+        }
+        return bookList;
+    }
+
+    public static List<Book> searchBookByAuthor(String Contributor) {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM book WHERE `Contributors` LIKE ? ";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, "%" + Contributor + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+                Integer available = rs.getInt("Available");
+
+                Book book = new Book(collection, name, author, id, available);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi khác
+        }
+        return bookList;
+    }
 }
