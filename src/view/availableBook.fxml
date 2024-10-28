@@ -19,6 +19,7 @@
                 <TableColumn fx:id="available_col" prefWidth="104.0" text="Available" />
             </columns>
         </TableView>
-        <Button layoutX="20.0" layoutY="413.0" prefWidth="120" text="View Details" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />
+        <Button layoutX="20.0" layoutY="413.0" onMouseClicked="#borrowBook" prefWidth="120" text="Borrow" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />
+      <Button layoutX="151.0" layoutY="409.0" prefWidth="120" text="View Details" />
     </children>
 </AnchorPane>
