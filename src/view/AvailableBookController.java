@@ -1,28 +1,43 @@
 package view;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import library.Book;
 import library.BorrowedBooks;
 import library.User;
 
 public class AvailableBookController {
+    @FXML
+    private TextField Search;
+
+    @FXML
+    private ComboBox<String> SearchOptions;
+
     @FXML
     private TableView<Book> availableBook_tableview;
 
@@ -42,6 +57,11 @@ public class AvailableBookController {
     private TableColumn<Book, String> offerCollection_col;
 
     @FXML
+    private Button Cancel;
+
+    private ObservableList<Book> books = FXCollections.observableArrayList();
+
+    @FXML
     void borrowBook(MouseEvent event) {
         Book selectedBook = availableBook_tableview.getSelectionModel().getSelectedItem();
         if (selectedBook != null) {
@@ -51,12 +71,39 @@ public class AvailableBookController {
             alert.setHeaderText("Bạn có chắc chắn muốn mượn sách này không?");
             alert.setContentText(selectedBook.getName()); // Hiển thị tiêu đề sách
 
+            DatePicker datePicker = new DatePicker();
+            datePicker.setValue(LocalDate.now()); // Set default value to current date
+
+            // Add the DatePicker to the Alert's content
+            VBox vbox = new VBox(datePicker);
+            vbox.setSpacing(10);
+            alert.getDialogPane().setContent(vbox);
+
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     // Xóa ở database
                     try {
-                       selectedBook.addBorrowedBookToDB();
-                       this.setBookData(Book.getAvailableBooks());
+                        LocalDate selectedDate = datePicker.getValue();
+                        if(selectedDate.isBefore(LocalDate.now())) {
+                            Alert dateAlert = new Alert(AlertType.WARNING);
+                            dateAlert.setHeaderText("Ngày mượn không hợp lệ.");
+                            dateAlert.setContentText("Vui lòng chọn ngày mượn hợp lệ.");
+                            dateAlert.showAndWait();
+                            return;
+                        }
+                        else if(selectedDate.isAfter(LocalDate.now().plusDays(31)))  {
+                            Alert dateAlert = new Alert(AlertType.WARNING);
+                            dateAlert.setHeaderText("Ngày mượn không hợp lệ.");
+                            dateAlert.setContentText("Sách chỉ được mượn tối đa 31 ngày.");
+                            dateAlert.showAndWait();
+                            return;
+                        }
+                        selectedBook.addBorrowedBookToDB(selectedDate);
+                        this.setBookData(Book.getAvailableBooks());
+                        Alert successAlert = new Alert(AlertType.INFORMATION);
+                        successAlert.setHeaderText("Mượn sách thành công.");
+                        successAlert.setContentText("Bạn đã mượn sách " + selectedBook.getName() + " thành công.");
+                        successAlert.showAndWait();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -66,16 +113,18 @@ public class AvailableBookController {
                 }
             });
         } else {
-            //Nếu chưa chọn quyển nào
             Alert alert = new Alert(AlertType.WARNING);
             //alert.setTitle("");
             alert.setHeaderText("Không có sách nào được chọn.");
-            alert.setContentText("Vui lòng chọn một sách để xóa.");
+            alert.setContentText("Vui lòng chọn một sách để mượn.");
             alert.showAndWait();
         }
     }
+
     public void setBookData(List<Book> bookData) {
-        ObservableList<Book> books = FXCollections.observableArrayList(bookData);
+        ObservableList<String> searchOptions = FXCollections.observableArrayList("Title", "Collection", "Contributor");
+        SearchOptions.setItems(searchOptions);
+        books = FXCollections.observableArrayList(bookData);
 
         id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
         bookTitle_col.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -98,7 +147,13 @@ public class AvailableBookController {
 
             Stage stage = new Stage();
             stage.setScene(new Scene(bookDetailsRoot));
+
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
+
+            stage.setOnCloseRequest(event -> {
+                setBookData(Book.getAvailableBooks());
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,5 +168,38 @@ public class AvailableBookController {
                 }
             }
         });
+    }
+
+    @FXML
+    void Search(MouseEvent event) {
+
+        // Kiểm tra giá trị tìm kiếm có trống không
+        if (Search.getText().trim().isEmpty()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setHeaderText("Vui lòng nhập từ khóa tìm kiếm.");
+            alert.showAndWait();
+            return;
+        }
+
+        List<Book> result = new ArrayList<>();
+
+        if ("Title".equals(SearchOptions.getValue())) {
+            result = Book.searchBookByTitle(Search.getText().trim());
+        } else if ("Collection".equals(SearchOptions.getValue())) {
+            result = Book.searchBookByCollections(Search.getText().trim());
+        } else if ("Contributor".equals(SearchOptions.getValue())) {
+            result = Book.searchBookByAuthor(Search.getText().trim());
+        }
+
+        ObservableList<Book> books = FXCollections.observableArrayList(result);
+        availableBook_tableview.setItems(books);
+        Search.clear();
+    }
+
+    @FXML
+    void Cancel(ActionEvent event) {
+        if (event.getSource() == Cancel) {
+            setBookData(books);
+        }
     }
 }

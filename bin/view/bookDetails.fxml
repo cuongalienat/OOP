@@ -5,11 +5,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BookDetailsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BookDetailsController">
    <children>
-      <TextArea fx:id="bookDetails" layoutX="105.0" layoutY="60.0" prefHeight="230.0" prefWidth="150.0" styleClass="transparent" stylesheets="@../design/Css/style.css" AnchorPane.rightAnchor="104.6" />
+      <TextArea fx:id="bookDetails" layoutX="381.0" layoutY="60.0" prefHeight="230.0" prefWidth="150.0" styleClass="transparent" stylesheets="@../design/Css/style.css" AnchorPane.rightAnchor="82.60000000000002" />
       <Button layoutX="150.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#borrow" stylesheets="@../design/Css/style.css" text="Borrow">
          <styleClass>
             <String fx:value="mouse-moved" />
@@ -28,6 +29,7 @@
             <String fx:value="transparent" />
          </styleClass>
       </TextField>
+      <ImageView fx:id="image" fitHeight="230.0" fitWidth="176.0" layoutX="104.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="9.0" />

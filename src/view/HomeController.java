@@ -88,7 +88,7 @@ public class HomeController implements Initializable {
                 String name = rs.getString("Book Title");
                 String author = rs.getString("Contributors");
                 Integer id = rs.getInt("ID");
-                Integer available = rs.getInt("available");
+                Integer available = rs.getInt("Available");
     
                 Book book = new Book(collection, name, author, id, available);
                 bookList.add(book); // Thêm vào danh sách

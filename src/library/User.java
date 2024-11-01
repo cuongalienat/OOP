@@ -102,7 +102,7 @@ public class User {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = currentDate.format(formatter);
 
-        String query2 = "Select Count(*) as quantityOverDueDateBook From booklogs WHERE phone_user = ? and dueDate > ?";
+        String query2 = "Select Count(*) as quantityOverDueDateBook From booklogs WHERE phone_user = ? and dueDate < ?";
 
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query2)) {
@@ -132,21 +132,21 @@ public class User {
             e.printStackTrace();
         }
     }
-    
+
     public static User getUser(String phoneIn) throws Exception {
-        String query = "SELECT * FROM librarymanagement.user WHERE phone = ?"; 
+        String query = "SELECT * FROM librarymanagement.user WHERE phone = ?";
         // Cập nhật tên bảng với schema user
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, phoneIn);
             ResultSet rs = stmt.executeQuery();
-    
+
             if (rs.next()) {
                 String name = rs.getString("name");
                 String phone = rs.getString("phone");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
-    
+
                 User user = new User(name, email, phone, password);
                 return user;
             }
@@ -155,17 +155,17 @@ public class User {
         }
         return null;
     }
-    
+
     public void Update() throws Exception {
-        String query = "UPDATE librarymanagement.user SET password = ? WHERE phone = ?"; 
+        String query = "UPDATE librarymanagement.user SET password = ? WHERE phone = ?";
         // Cập nhật tên bảng với schema user
-    
+
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
-    
+
             stmt.setString(1, password);
             stmt.setString(2, phone);
-    
+
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -202,38 +202,7 @@ public class User {
         System.out.println(name + " " + phone + " " + email + " " + password);
     }
 
-    /*
-     * public Map<String, Book> getMyMap_Book() {
-     * return myMap_Book;
-     * }
-     * 
-     * 
-     * public void setMyMap_Book(Map<String, Book> myMap_Book) {
-     * this.myMap_Book = myMap_Book;
-     * }
-     * 
-     * public void rentBook(Book book) {
-     * myMap_Book.put(book.getNameB(), book);
-     * }
-     * 
-     * public void returnBook(Book book) {
-     * String nameB = sc.nextLine();
-     * if (!myMap_Book.containsKey(nameB)){
-     * System.out.println("ban da tra sach r");
-     * } else {
-     * myMap_Book.remove(nameB);
-     * System.out.println("tra sach thanh cong");
-     * }
-     * }
-     * 
-     * public void showRentedBook() {
-     * int count = 1;
-     * for (Map.Entry<String, Book> entry : myMap_Book.entrySet()){
-     * System.out.println("");
-     * System.out.print(count + ", ");
-     * entry.getValue().showBookUser();
-     * count++;
-     * }
-     * }
-     */
+    public void Search_phone() {
+
+    }
 }
