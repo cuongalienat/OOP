@@ -87,6 +87,10 @@ public class Book {
         this.collection = collection;
     }
 
+    public void setAvailable(int available) {
+        this.available = available;
+    }
+
     public int getAvailable() {
         return this.available;
     }

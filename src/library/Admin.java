@@ -68,5 +68,4 @@ public class Admin extends User {
         }
         return List_user;
     }
-
 }

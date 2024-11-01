@@ -48,12 +48,11 @@ public class BookDetailsController implements Initializable {
         // bookImage.setImage(image);
         curBook = book;
         bookDetails.setText("Title: " + book.getName() + "\nAuthor: " + book.getAuthor());
-
         GoogleBooksAPI.searchBookByTitle(book.getName(), this::updateBookDetailsFromAPI);
 
     }
 
-    private void updateBookDetailsFromAPI(String jsonResponse) {
+    public String updateBookDetailsFromAPI(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         JSONObject volumeInfo = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
 
@@ -71,6 +70,7 @@ public class BookDetailsController implements Initializable {
         // Cập nhật TextArea với thông tin từ API
         bookDetails.setText("Title: " + title + "\nAuthor: " + authors + "\n\nDescription:\n" + description);
         loadBookImage(imageUrl);
+        return imageUrl;
     }
 
     private void loadBookImage(String imageUrl) {
@@ -114,6 +114,7 @@ public class BookDetailsController implements Initializable {
             curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(), curBook.getAuthor(),
                     curBook.getId(), curBook.getAvailable(), bDate, dDate, "Pending");
             borrowedBooksController.addBorrowedBook(curBorrowedBook);
+            System.out.println(curBorrowedBook.getName());
             return;
         }
         showBorrwedStatus(borrowed);
@@ -137,7 +138,7 @@ public class BookDetailsController implements Initializable {
                 fadeOut.setOnFinished(a -> textField.setVisible(false)); // after disappearing, set -> false
                 fadeOut.play();
             }));
-            timeLine.play();
+            timeLine.play();    
         });
         fadeIn.play();
     }

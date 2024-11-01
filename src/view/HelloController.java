@@ -51,6 +51,9 @@ public class HelloController implements Initializable {
     private HBox userManagement;
 
     @FXML
+    private HBox bookManagementBox;
+
+    @FXML
     private HBox availableBooks;
 
     void setName(String user_Name) {
@@ -65,6 +68,7 @@ public class HelloController implements Initializable {
         reports.getStyleClass().remove("selected");
         setting.getStyleClass().remove("selected");
         logout.getStyleClass().remove("selected");
+        bookManagementBox.getStyleClass().remove("selected");
     }
 
     @FXML
@@ -140,6 +144,25 @@ public class HelloController implements Initializable {
             stage.show();
         } else {
             alert.close();
+        }
+    }
+
+    @FXML
+    public void bookManagement(MouseEvent event) {
+        resetMenuSelection();
+        bookManagementBox.getStyleClass().add("selected");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("bookManagement.fxml"));
+            Parent bookManagementRoot = fxmlLoader.load();
+
+            // updating Borrowed Books
+            choosedScene.getChildren().clear(); // clear Home
+            choosedScene.getChildren().add(bookManagementRoot); // loading borrowedBooks.fxml
+
+            // AvailableBookController ABC = fxmlLoader.getController();
+            // ABC.setBookData(Book.getAvailableBooks());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
