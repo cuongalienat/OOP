@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import library.Book;
 import library.BorrowedBooks;
 import library.DbConfig;
 
@@ -68,6 +69,13 @@ public class BorrowedBooksController {
     public void returnBook(MouseEvent event) {
         BorrowedBooks selectedBook = borrowedBooksTable.getSelectionModel().getSelectedItem();
         if (selectedBook != null) {
+            if (!"Pending".equals(selectedBook.getStatus())) {
+                System.out.println("Không được trả sách này");
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setContentText("Vui lòng chọn sách có trạng thái 'pending'.");
+                alert.showAndWait();
+                return;
+            }
             // Hiển thị hộp thoại xác nhận
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Xác nhận trả sách");
@@ -87,7 +95,7 @@ public class BorrowedBooksController {
                     borrowedBooksTable.getItems().remove(selectedBook);
                     borrowedBooksTable.getSelectionModel().clearSelection();
                 }
-            });
+            });     
         } else {
             // Nếu chưa chọn quyển nào
             Alert alert = new Alert(AlertType.WARNING);
@@ -95,11 +103,11 @@ public class BorrowedBooksController {
             alert.setHeaderText("Không có sách nào được chọn.");
             alert.setContentText("Vui lòng chọn một sách để xóa.");
             alert.showAndWait();
-        }
+        }   
     }
 
     private void updateAvailableCount(int bookId) throws Exception {
-        String updateAvailableQuery = "UPDATE book SET Available = Available + 1 From book WHERE ID = ?";
+        String updateAvailableQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
 
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(updateAvailableQuery)) {
@@ -112,7 +120,7 @@ public class BorrowedBooksController {
         }
     }
 
-    private void deleteBookFromDatabase(int bookId) throws Exception {
+    public void deleteBookFromDatabase(int bookId) throws Exception {
         String query = "DELETE FROM booklogs WHERE book_id = ?";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {

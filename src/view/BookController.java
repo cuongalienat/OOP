@@ -16,8 +16,8 @@ public class BookController {
     @FXML
     private Label bookName;
 
+    BookDetailsController bookDetailsController = new BookDetailsController();
     public void setData(Book book) {
         bookName.setText(book.getName());
-        authorName.setText(book.getAuthor());
     }
 }
