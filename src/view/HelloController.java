@@ -80,7 +80,10 @@ public class HelloController implements Initializable {
             // Initially set the Home view
             choosedScene.getChildren().clear();
             choosedScene.getChildren().add(homeRoot);
-
+            AnchorPane.setTopAnchor(homeRoot, 0.0);
+            AnchorPane.setBottomAnchor(homeRoot, 0.0);
+            AnchorPane.setLeftAnchor(homeRoot, 0.0);
+            AnchorPane.setRightAnchor(homeRoot, 0.0);
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception here (e.g., logging or showing an error message)
         }
@@ -98,6 +101,11 @@ public class HelloController implements Initializable {
             choosedScene.getChildren().clear(); // clear Home
             choosedScene.getChildren().add(borrowedBooksRoot); // loading borrowedBooks.fxml
 
+            AnchorPane.setTopAnchor(borrowedBooksRoot, 0.0);
+            AnchorPane.setBottomAnchor(borrowedBooksRoot, 0.0);
+            AnchorPane.setLeftAnchor(borrowedBooksRoot, 0.0);
+            AnchorPane.setRightAnchor(borrowedBooksRoot, 0.0);
+
             BorrowedBooksController BBC = fxmlLoader.getController();
             BBC.showBorrowedBooks();
         } catch (IOException e) {
@@ -113,7 +121,10 @@ public class HelloController implements Initializable {
             // Initially set the Home view
             choosedScene.getChildren().clear();
             choosedScene.getChildren().add(homeRoot);
-
+            AnchorPane.setTopAnchor(homeRoot, 0.0);
+            AnchorPane.setBottomAnchor(homeRoot, 0.0);
+            AnchorPane.setLeftAnchor(homeRoot, 0.0);
+            AnchorPane.setRightAnchor(homeRoot, 0.0);
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception here (e.g., logging or showing an error message)
         }
@@ -157,6 +168,11 @@ public class HelloController implements Initializable {
             choosedScene.getChildren().clear(); // clear Home
             choosedScene.getChildren().add(bookManagementRoot); // loading borrowedBooks.fxml
 
+            AnchorPane.setTopAnchor(bookManagementRoot, 0.0);
+            AnchorPane.setBottomAnchor(bookManagementRoot, 0.0);
+            AnchorPane.setLeftAnchor(bookManagementRoot, 0.0);
+            AnchorPane.setRightAnchor(bookManagementRoot, 0.0);
+
             // AvailableBookController ABC = fxmlLoader.getController();
             // ABC.setBookData(Book.getAvailableBooks());
         } catch (IOException e) {
@@ -175,7 +191,10 @@ public class HelloController implements Initializable {
             // updating Borrowed Books
             choosedScene.getChildren().clear(); // clear Home
             choosedScene.getChildren().add(availableBooksRoot); // loading borrowedBooks.fxml
-
+            AnchorPane.setTopAnchor(availableBooksRoot, 0.0);
+            AnchorPane.setBottomAnchor(availableBooksRoot, 0.0);
+            AnchorPane.setLeftAnchor(availableBooksRoot, 0.0);
+            AnchorPane.setRightAnchor(availableBooksRoot, 0.0);
             AvailableBookController ABC = fxmlLoader.getController();
             ABC.setBookData(Book.getAvailableBooks());
         } catch (IOException e) {
@@ -196,6 +215,11 @@ public class HelloController implements Initializable {
                 Parent userManagement = fxmlLoader.load();
                 choosedScene.getChildren().clear();
                 choosedScene.getChildren().add(userManagement);
+
+                AnchorPane.setTopAnchor(userManagement, 0.0);
+                AnchorPane.setBottomAnchor(userManagement, 0.0);
+                AnchorPane.setLeftAnchor(userManagement, 0.0);
+                AnchorPane.setRightAnchor(userManagement, 0.0);
 
                 UserManagementController Um = fxmlLoader.getController();
                 Um.setUserData(List_user);

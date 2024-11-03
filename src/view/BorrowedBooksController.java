@@ -62,6 +62,18 @@ public class BorrowedBooksController {
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        // Set the column resize policy to constrained resize policy
+        borrowedBooksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        // Set the preferred width for each column (proportional to the total width)
+        idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        collectionColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
+        titleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
+        authorColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
+        borrowedDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
+        dueDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
+        statusColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        
         borrowedBooksTable.setItems(borrowedList); // Hiển thị danh sách sách đã mượn
     }
 

@@ -37,8 +37,8 @@ public class HomeController implements Initializable {
             // Lấy tất cả sách từ database
             List<Book> books = getAllBooks();
 
-            List<Book> randomBooks1 = getRandomBooks(books, 20);
-            List<Book> randomBooks2 = getRandomBooks(books, 20);
+            List<Book> randomBooks1 = getRandomBooks(books, 40);
+            List<Book> randomBooks2 = getRandomBooks(books, 40);
 
             // Hiển thị sách trong HBox
             for (Book book : randomBooks1) {
@@ -64,7 +64,7 @@ public class HomeController implements Initializable {
                 BookController bookController = fxmlLoader.getController();
                 bookController.setData(book);
                 bookBox.setOnMouseClicked(event -> showBookDetails(book));
-                if (column == 6) {
+                if (column == 10) {
                     column = 0;
                     row++;
                 }

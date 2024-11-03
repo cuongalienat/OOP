@@ -12,6 +12,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -102,6 +103,14 @@ public class UserManagementController {
         Um_BorrowedBook.setCellValueFactory(new PropertyValueFactory<>("quantityBorrowedBook"));
         Um_OverdueDate.setCellValueFactory(new PropertyValueFactory<>("quantityOverduedateBook"));
 
+        Table_Um.setColumnResizePolicy(Table_Um.CONSTRAINED_RESIZE_POLICY);
+        Um_Name.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        Um_Phone.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        Um_Email.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        Um_BorrowedBook.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        Um_OverdueDate.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+
+
         Table_Um.setItems(users);
         allUsers = userData;
     }
@@ -114,6 +123,14 @@ public class UserManagementController {
         BookLogs_BDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         BookLogs_DDate.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         Booklogs_Status.setCellValueFactory(new PropertyValueFactory<>("Status"));
+
+        Table_BookLogs.setColumnResizePolicy(Table_BookLogs.CONSTRAINED_RESIZE_POLICY);
+        BookLogs_ID.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        BookLogs_PU.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        BookLogs_BDate.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        BookLogs_DDate.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        Booklogs_Status.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        
         ObservableList<String> statusOptions = FXCollections.observableArrayList("Pending", "Active", "Overdue",
                 "Returned", "Lost");
         Booklogs_Status.setCellFactory(ComboBoxTableCell.forTableColumn(statusOptions));

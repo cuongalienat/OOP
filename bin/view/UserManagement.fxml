@@ -9,18 +9,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserManagementController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserManagementController">
    <children>
-      <TableView fx:id="Table_BookLogs" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="850.0" visible="false">
+      <TableView fx:id="Table_BookLogs" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="850.0" visible="false" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
          <columns>
-            <TableColumn fx:id="BookLogs_ID" prefWidth="131.20000612735748" text="ID_Books" />
-            <TableColumn fx:id="BookLogs_PU" prefWidth="210.39999389648438" text="Phone_User" />
-            <TableColumn fx:id="BookLogs_BDate" prefWidth="228.80007934570312" text="BorrowDate" />
-            <TableColumn fx:id="BookLogs_DDate" prefWidth="182.39990234375" text="DueDate" />
-            <TableColumn fx:id="Booklogs_Status" prefWidth="95.19992675781248" text="Status" />
+            <TableColumn fx:id="BookLogs_ID" text="ID_Books" />
+            <TableColumn fx:id="BookLogs_PU" text="Phone_User" />
+            <TableColumn fx:id="BookLogs_BDate" text="BorrowDate" />
+            <TableColumn fx:id="BookLogs_DDate" text="DueDate" />
+            <TableColumn fx:id="Booklogs_Status" text="Status" />
          </columns>
       </TableView>
-      <TableView fx:id="Table_Um" editable="true" layoutX="-1.0" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="354.0" prefWidth="850.0">
+      <TableView fx:id="Table_Um" editable="true" layoutX="-1.0" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="354.0" prefWidth="850.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
          <columns>
             <TableColumn fx:id="Um_Name" prefWidth="200.0" text="Name" />
             <TableColumn fx:id="Um_Phone" prefWidth="200.0" text="Phone" />
@@ -33,11 +33,11 @@
             </TableColumn>
          </columns>
       </TableView>
-      <Button fx:id="DeleteUser" layoutX="382.0" layoutY="420.0" mnemonicParsing="false" onAction="#DeleteUser" prefHeight="30.0" prefWidth="86.0" text="DELETE USER" />
+      <Button fx:id="DeleteUser" layoutX="382.0" layoutY="420.0" mnemonicParsing="false" onAction="#DeleteUser" prefHeight="30.0" prefWidth="86.0" text="DELETE USER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="382.0" />
       <Button fx:id="UserManagement" layoutX="22.0" layoutY="7.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="143.0" text="USER MANAGEMENT" visible="false" />
       <Button fx:id="BookLogs" layoutX="22.0" layoutY="7.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="143.0" text="Book Logs" />
-      <Button fx:id="Update" layoutX="300.0" layoutY="408.0" mnemonicParsing="false" onAction="#UpdateBookLogs" text="UPDATE" visible="false" />
-      <Button fx:id="Return" layoutX="483.0" layoutY="408.0" mnemonicParsing="false" onAction="#ReturnBook" text="RETURN" visible="false" />
+      <Button fx:id="Update" layoutX="300.0" layoutY="408.0" mnemonicParsing="false" onAction="#UpdateBookLogs" text="UPDATE" visible="false" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="300.0" />
+      <Button fx:id="Return" layoutX="483.0" layoutY="408.0" mnemonicParsing="false" onAction="#ReturnBook" text="RETURN" visible="false" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="483.0" />
       <TextField fx:id="Um_search" layoutX="281.0" layoutY="15.0" prefHeight="26.0" prefWidth="226.0" promptText="Search Phone" />
       <ComboBox fx:id="SearchOptions" layoutX="180.0" layoutY="16.0" prefHeight="26.0" prefWidth="86.0" visible="false" />
       <TextField fx:id="Booklogs_Search" layoutX="283.0" layoutY="15.0" prefHeight="26.0" prefWidth="225.0" promptText="Search" visible="false" />

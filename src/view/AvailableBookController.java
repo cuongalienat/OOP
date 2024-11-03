@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -133,6 +134,16 @@ public class AvailableBookController {
         available_col.setCellValueFactory(new PropertyValueFactory<>("available"));
         offerCollection_col.setCellValueFactory(new PropertyValueFactory<>("collection"));
 
+         // Set the column resize policy to constrained resize policy
+         availableBook_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+         // Set the preferred width for each column (proportional to the total width)
+         id_col.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+         offerCollection_col.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
+         bookTitle_col.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 30% width
+         contributors_col.setMaxWidth(1f * Integer.MAX_VALUE * 25); // 25% width
+         available_col.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
+    
         availableBook_tableview.setItems(books);
     }
 

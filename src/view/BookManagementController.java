@@ -115,6 +115,13 @@ public class BookManagementController implements Initializable {
         collectionColManage.setOnEditCommit(event -> handleEditCommit(event));
         availableColManage.setOnEditCommit(event -> handleEditCommit(event));
 
+        bookManagementTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        idColManage.setMaxWidth(1f * Integer.MAX_VALUE * 10);
+        collectionColManage.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        bookTitleColManage.setMaxWidth(1f * Integer.MAX_VALUE * 30);
+        contributorsColManage.setMaxWidth(1f * Integer.MAX_VALUE * 25);
+        availableColManage.setMaxWidth(1f * Integer.MAX_VALUE * 15);
+
         setBookData(Book.getLibrary());
     }
 

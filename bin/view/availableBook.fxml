@@ -16,14 +16,15 @@
         
         <TableView fx:id="availableBook_tableview" editable="true" layoutX="4.0" layoutY="57.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="344.0" prefWidth="842.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
             <columns>
-                <TableColumn fx:id="id_col" prefWidth="66.0" text="ID" />
-                <TableColumn fx:id="offerCollection_col" prefWidth="193.0" text="Offer Collection" />
-                <TableColumn fx:id="bookTitle_col" prefWidth="245.0" text="Book Title" />
-                <TableColumn fx:id="contributors_col" prefWidth="200.0" text="Contributors" />
-                <TableColumn fx:id="available_col" prefWidth="104.0" text="Available" />
+                <TableColumn fx:id="id_col" text="ID" />
+                <TableColumn fx:id="offerCollection_col" text="Offer Collection" />
+                <TableColumn fx:id="bookTitle_col" text="Book Title" />
+                <TableColumn fx:id="contributors_col" text="Contributors" />
+                <TableColumn fx:id="available_col" text="Available" />
             </columns>
         </TableView>
         <Button layoutX="20.0" layoutY="413.0" onMouseClicked="#borrowBook" prefWidth="120" text="Borrow" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />
+      <Button fx:id="Cancel" layoutX="155.0" layoutY="409.0" mnemonicParsing="false" onAction="#Cancel" prefHeight="26.0" prefWidth="88.0" text="Cancel" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="155.0" />
       <TextField fx:id="Search" layoutX="254.0" layoutY="19.0" prefHeight="26.0" prefWidth="302.0" promptText="Search" />
       <ComboBox fx:id="SearchOptions" layoutX="622.0" layoutY="19.0" prefWidth="150.0" />
       <ImageView fitHeight="26.0" fitWidth="25.0" layoutX="531.0" layoutY="20.0" onMouseClicked="#Search" pickOnBounds="true" preserveRatio="true">
@@ -31,6 +32,5 @@
             <Image url="@../design/Images/magnifying-glass.png" />
          </image>
       </ImageView>
-      <Button fx:id="Cancel" layoutX="165.0" layoutY="415.0" mnemonicParsing="false" onAction="#Cancel" prefHeight="26.0" prefWidth="88.0" text="Cancel" />
     </children>
 </AnchorPane>
