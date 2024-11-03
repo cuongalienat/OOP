@@ -15,8 +15,11 @@
     -fx-background-color: #F3F3F3
 }
 
-.mouse-moved:hover {
-    -fx-background-color: #E4E4E4;
+ .mouse-moved:hover {
+    -fx-background-color: #f1f1f1; 
+    /* -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 10, 0.5, 0, 0);  */
+    -fx-scale-x: 1.05;              /* Phóng to khi di chuột */
+    -fx-scale-y: 1.05;              /* Phóng to khi di chuột */
 }
 
 .shadow{
