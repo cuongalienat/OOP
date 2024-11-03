@@ -17,11 +17,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import library.*;
@@ -53,12 +58,11 @@ public class BookDetailsController implements Initializable {
         // bookImage.setImage(image);
         curBook = book;
         bookDetails.setText("Title: " + book.getName() + "\nAuthor: " + book.getAuthor());
-
         GoogleBooksAPI.searchBookByTitle(book.getName(), this::updateBookDetailsFromAPI);
 
     }
 
-    private void updateBookDetailsFromAPI(String jsonResponse) {
+    public String updateBookDetailsFromAPI(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         JSONObject volumeInfo = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
 
@@ -76,6 +80,7 @@ public class BookDetailsController implements Initializable {
         // Cập nhật TextArea với thông tin từ API
         bookDetails.setText("Title: " + title + "\nAuthor: " + authors + "\n\nDescription:\n" + description);
         loadBookImage(imageUrl);
+        return imageUrl;
     }
 
     private void loadBookImage(String imageUrl) {
@@ -188,7 +193,7 @@ public class BookDetailsController implements Initializable {
                 fadeOut.setOnFinished(a -> textField.setVisible(false)); // after disappearing, set -> false
                 fadeOut.play();
             }));
-            timeLine.play();
+            timeLine.play();    
         });
         fadeIn.play();
     }

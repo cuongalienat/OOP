@@ -75,7 +75,7 @@ public class AvailableBookController {
             datePicker.setValue(LocalDate.now()); // Set default value to current date
 
             // Add the DatePicker to the Alert's content
-            VBox vbox = new VBox(datePicker);
+            VBox vbox = new VBox();
             vbox.setSpacing(10);
             vbox.getChildren().addAll( new javafx.scene.control.Label("Xác nhận ngày trả sách"),datePicker);
             alert.getDialogPane().setContent(vbox);
