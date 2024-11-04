@@ -151,8 +151,6 @@ public class HelloController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("LIBRARY");
             stage.show();
-        } else {
-            alert.close();
         }
     }
 
@@ -160,24 +158,31 @@ public class HelloController implements Initializable {
     public void bookManagement(MouseEvent event) {
         resetMenuSelection();
         bookManagementBox.getStyleClass().add("selected");
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("bookManagement.fxml"));
-            Parent bookManagementRoot = fxmlLoader.load();
+        if (loginController.getUser_now() instanceof Admin) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("bookManagement.fxml"));
+                Parent bookManagementRoot = fxmlLoader.load();
 
-            // updating Borrowed Books
-            choosedScene.getChildren().clear(); // clear Home
-            choosedScene.getChildren().add(bookManagementRoot); // loading borrowedBooks.fxml
+                // updating Borrowed Books
+                choosedScene.getChildren().clear(); // clear Home
+                choosedScene.getChildren().add(bookManagementRoot); // loading borrowedBooks.fxml
 
-            AnchorPane.setTopAnchor(bookManagementRoot, 0.0);
-            AnchorPane.setBottomAnchor(bookManagementRoot, 0.0);
-            AnchorPane.setLeftAnchor(bookManagementRoot, 0.0);
-            AnchorPane.setRightAnchor(bookManagementRoot, 0.0);
+                AnchorPane.setTopAnchor(bookManagementRoot, 0.0);
+                AnchorPane.setBottomAnchor(bookManagementRoot, 0.0);
+                AnchorPane.setLeftAnchor(bookManagementRoot, 0.0);
+                AnchorPane.setRightAnchor(bookManagementRoot, 0.0);
 
-            // AvailableBookController ABC = fxmlLoader.getController();
-            // ABC.setBookData(Book.getAvailableBooks());
-        } catch (IOException e) {
-            e.printStackTrace();
+                BookManagementController BMC = fxmlLoader.getController();
+                BMC.setBookData(Book.getLibrary());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
         }
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setContentText("Only Admin account can access this !");
+        alert.setHeaderText(null);
+        alert.showAndWait();
     }
 
     @FXML
@@ -230,7 +235,7 @@ public class HelloController implements Initializable {
             return;
         }
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setContentText("Bạn không phải admin ");
+        alert.setContentText("Only Admin account can access this !");
         alert.setHeaderText(null);
         alert.showAndWait();
     }

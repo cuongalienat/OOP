@@ -9,36 +9,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import library.Book;
 import library.BorrowedBooks;
 import library.DbConfig;
 import library.User;
-import java.util.HashSet;
-import java.util.Set;
 
+import java.util.ArrayList;
 
-public class BookManagementController implements Initializable {
+public class BookManagementController {
     @FXML
     private TableView<Book> bookManagementTableView;
 
@@ -66,34 +64,26 @@ public class BookManagementController implements Initializable {
     @FXML
     private Button addBook;
 
+    @FXML
+    private ComboBox<String> searchOptions;
+
+    @FXML
+    private Button cancelSearch;
+
+    @FXML
+    private TextField Search;
+
+    private ObservableList<Book> allBooks = FXCollections.observableArrayList();
+    private int id_newbook;
+
     // private Set<Book> editedBooks = new HashSet<>();
 
     public void setBookData(List<Book> bookData) {
         // Chuyển danh sách sách thành ObservableList để hiển thị trong TableView
         ObservableList<Book> books = FXCollections.observableArrayList(bookData);
-    
+        allBooks = FXCollections.observableArrayList(bookData);
         // Đặt dữ liệu vào TableView
         bookManagementTableView.setItems(books);
-    }
-
-    // private void addToEditedBooks(Book book) {
-    //     editedBooks.add(book);
-    //     System.out.println("da them sach duoc sua: " + book.getName());
-    // }
-
-    @FXML
-    private void addNewBook(MouseEvent event) {
-        Book newBook = new Book("", "", "", 0, 0); // Tạo sách mới với ID = 0
-        Platform.runLater(() -> {
-            bookManagementTableView.getItems().add(newBook);
-            bookManagementTableView.scrollTo(newBook);
-            System.out.println("Thêm dòng thành công");
-        });
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // Thiết lập các cột có thể chỉnh sửa
         bookManagementTableView.setEditable(true);
 
         // Các thiết lập khác cho TableView và cột
@@ -122,17 +112,31 @@ public class BookManagementController implements Initializable {
         contributorsColManage.setMaxWidth(1f * Integer.MAX_VALUE * 25);
         availableColManage.setMaxWidth(1f * Integer.MAX_VALUE * 15);
 
-        setBookData(Book.getLibrary());
+        ObservableList<String> SearchOptions = FXCollections.observableArrayList("Id", "Title", "Collections",
+                "Contributors");
+        searchOptions.setItems(SearchOptions);
+    }
+
+    // private void addToEditedBooks(Book book) {
+    // editedBooks.add(book);
+    // System.out.println("da them sach duoc sua: " + book.getName());
+    // }
+
+    @FXML
+    private void addNewBook(MouseEvent event) throws Exception {
+        id_newbook = generateNewId();
+        Book newBook = new Book("", "", "", id_newbook, 0);
+        Platform.runLater(() -> {
+            bookManagementTableView.getItems().add(newBook);
+            bookManagementTableView.scrollTo(newBook);
+            System.out.println("Thêm dòng thành công");
+        });
     }
 
     private <T> void handleEditCommit(TableColumn.CellEditEvent<Book, T> event) {
         Book book = event.getRowValue();
         T newValue = event.getNewValue();
 
-        // Cập nhật giá trị cột phù hợp
-        if (event.getTableColumn() == idColManage) {
-            book.setId((int) newValue);
-        }
         if (event.getTableColumn() == bookTitleColManage) {
             book.setName((String) newValue);
         } else if (event.getTableColumn() == contributorsColManage) {
@@ -143,18 +147,18 @@ public class BookManagementController implements Initializable {
             book.setAvailable((Integer) newValue);
         }
 
-        // Kiểm tra nếu sách mới, thêm vào cơ sở dữ liệu, nếu không thì cập nhật
-        if (book.getId() == 0) { // Nếu ID là 0, tức là sách mới
-            try {
-                int generatedId = insertBookToDatabase(book); // Thêm vào CSDL và lấy ID mới
-                book.setId(generatedId); // Cập nhật ID cho đối tượng Book
-            } catch (Exception e) {
-                e.printStackTrace();
-                showAlert(AlertType.ERROR, "Lỗi", "Không thể thêm sách vào cơ sở dữ liệu.");
+        if (book.getId() == id_newbook) {
+            if (isBookDataComplete(book)) {
+                try {
+                    book.addData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showAlert(AlertType.ERROR, "Lỗi", "Không thể thêm sách vào cơ sở dữ liệu.");
+                }
             }
         } else {
             try {
-                updateBookInDatabase(book); // Cập nhật sách đã có ID vào cơ sở dữ liệu
+                book.updateBookInDatabase(); // Cập nhật sách đã có ID vào cơ sở dữ liệu
             } catch (Exception e) {
                 e.printStackTrace();
                 showAlert(AlertType.ERROR, "Lỗi", "Không thể cập nhật sách trong cơ sở dữ liệu.");
@@ -162,19 +166,40 @@ public class BookManagementController implements Initializable {
         }
     }
 
+    private boolean isBookDataComplete(Book book) {
+        return book.getName() != null && !book.getName().isEmpty() &&
+                book.getAuthor() != null && !book.getAuthor().isEmpty() &&
+                book.getCollection() != null && !book.getCollection().isEmpty() &&
+                book.getAvailable() != 0;
+    }
+
     public void remove(MouseEvent event) throws Exception {
         Book selectedBook = bookManagementTableView.getSelectionModel().getSelectedItem();
-        if (selectedBook != null) {
-            try {
-                deleteBookFromDatabase(selectedBook.getId());
-                bookManagementTableView.getItems().remove(selectedBook);
-                bookManagementTableView.getSelectionModel().clearSelection();
-            } catch (Exception e) {
-                e.printStackTrace();
-                showAlert(AlertType.ERROR, "Lỗi", "Không thể xóa sách.");
-            }
-        } else {
+        if (selectedBook == null) {
             showAlert(AlertType.WARNING, "Không có sách nào được chọn.", "Vui lòng chọn một sách để xóa.");
+            return;
+        }
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setContentText("Are you sure to delete this book ?");
+        alert.setHeaderText(null);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (!BorrowedBooks.CheckBookBeforeDelete(selectedBook.getId())) {
+                try {
+                    selectedBook.deleteBookFromDatabase(selectedBook.getId());
+                    bookManagementTableView.getItems().remove(selectedBook);
+                    bookManagementTableView.getSelectionModel().clearSelection();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showAlert(AlertType.ERROR, "Lỗi", "Không thể xóa sách.");
+                }
+                return;
+            } else {
+                Alert alertFail = new Alert(AlertType.ERROR);
+                alertFail.setContentText("This book can't be deleted if it is borrowed or overdue.");
+                alertFail.setHeaderText(null);
+                alertFail.showAndWait(); // Đảm bảo thông báo lỗi được hiển thị
+            }
         }
     }
 
@@ -185,22 +210,11 @@ public class BookManagementController implements Initializable {
         alert.showAndWait();
     }
 
-    public void deleteBookFromDatabase(int bookId) throws Exception {
-        String query = "DELETE FROM book WHERE ID = ?";
-        try (Connection conn = DbConfig.connect();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, bookId);
-            stmt.executeUpdate();
-            System.out.println("deleted in database");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private int generateNewId() throws Exception {
+
         String query = "SELECT MAX(ID) FROM book";
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(query)) {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1) + 1; // Tăng ID lớn nhất thêm 1
@@ -209,63 +223,45 @@ public class BookManagementController implements Initializable {
             }
         }
     }
-    
-    private int insertBookToDatabase(Book book) throws Exception {
-        int newId = generateNewId(); // Gọi phương thức để tạo ID mới
-        String query = "INSERT INTO book (`ID`, `Offer Collection`, `Book Title`, `Contributors`, `Available`) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, newId); // Sử dụng ID mới tạo
-            stmt.setString(2, book.getCollection());
-            stmt.setString(3, book.getName());
-            stmt.setString(4, book.getAuthor());
-            stmt.setInt(5, book.getAvailable());
-            stmt.executeUpdate();
-    
-            book.setId(newId); // Cập nhật ID vào đối tượng book
-            return newId;
-        }
-    }
-    
 
     @FXML
-    private void updateAllBooks(MouseEvent event) {
-        // if (editedBooks.isEmpty()) {
-        //     showAlert(Alert.AlertType.INFORMATION, "Thông báo", "Không có thay đổi nào để cập nhật.");
-        //     return;
-        // }
-        // for (Book book : editedBooks) {
-        //     try {
-        //         updateBookInDatabase(book); 
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //         showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể cập nhật sách có ID: " + book.getId());
-        //     }
-        // }
-        // // Xóa danh sách sách đã chỉnh sửa sau khi cập nhật thành công
-        // editedBooks.clear();
-        // showAlert(Alert.AlertType.INFORMATION, "Thành công", "Thông tin sách đã được cập nhật.");
-    }
-    
-    private void updateBookInDatabase(Book book) throws Exception {
-        String query = "UPDATE book SET `Book Title` = ?, Contributors = ?, `Offer Collection` = ?, Available = ? WHERE ID = ?";
-        try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, book.getName());
-            stmt.setString(2, book.getAuthor());
-            stmt.setString(3, book.getCollection());
-            stmt.setInt(4, book.getAvailable());
-            stmt.setInt(5, book.getId());
-            
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Successfully updated book with ID: " + book.getId());
-            } else {
-                System.out.println("No rows updated for book with ID: " + book.getId());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new Exception("Error updating book with ID: " + book.getId());
+    void Search(MouseEvent event) {
+        if (Search.getText().trim().isEmpty()) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setHeaderText("Vui lòng nhập từ khóa tìm kiếm.");
+            alert.showAndWait();
+            return;
         }
-    }    
+
+        List<Book> result = new ArrayList<>();
+
+        if ("Title".equals(searchOptions.getValue())) {
+            result = Book.searchBookByTitle(Search.getText().trim());
+        } else if ("Collection".equals(searchOptions.getValue())) {
+            result = Book.searchBookByCollections(Search.getText().trim());
+        } else if ("Contributors".equals(searchOptions.getValue())) {
+            result = Book.searchBookByAuthor(Search.getText().trim());
+        } else if ("Id".equals(searchOptions.getValue())) {
+            try {
+                int id = Integer.parseInt(Search.getText().trim());
+                result = Book.searchBookByID(id);
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText("Invalid Input, Id should be a valid integer.");
+                alert.showAndWait();
+                return;
+            }
+        }
+
+        ObservableList<Book> books = FXCollections.observableArrayList(result);
+        bookManagementTableView.setItems(books);
+        Search.clear();
+    }
+
+    @FXML
+    void cancel(ActionEvent e) {
+        if (e.getSource() == cancelSearch) {
+            setBookData(allBooks);
+        }
+    }
 }
