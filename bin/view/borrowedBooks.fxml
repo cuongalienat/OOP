@@ -12,13 +12,13 @@
         
         <TableView fx:id="borrowedBooksTable" layoutX="20.0" layoutY="60.0" maxWidth="-Infinity" prefWidth="572.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
             <columns>
-            <TableColumn fx:id="idColumn" prefWidth="66.0" text="ID" />
-                <TableColumn fx:id="collectionColumn" prefWidth="116.00006103515625" text="Offer Collection" />
-                <TableColumn fx:id="titleColumn" prefWidth="172.79998779296875" text="Book Title" />
-                <TableColumn fx:id="authorColumn" prefWidth="158.4000244140625" text="Contributors" />
-                <TableColumn fx:id="borrowedDateColumn" prefWidth="110.0" text="Borrowed Date" />
-                <TableColumn fx:id="dueDateColumn" prefWidth="110.0" text="Due Date" />
-            <TableColumn fx:id="statusColumn" prefWidth="79.199951171875" text="Status" />
+            <TableColumn fx:id="idColumn"  text="ID" />
+                <TableColumn fx:id="collectionColumn"  text="Offer Collection" />
+                <TableColumn fx:id="titleColumn"  text="Book Title" />
+                <TableColumn fx:id="authorColumn"  text="Contributors" />
+                <TableColumn fx:id="borrowedDateColumn"  text="Borrowed Date" />
+                <TableColumn fx:id="dueDateColumn"  text="Due Date" />
+            <TableColumn fx:id="statusColumn"  text="Status" />
             </columns>
         </TableView>
         

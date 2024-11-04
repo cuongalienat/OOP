@@ -20,6 +20,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -27,6 +31,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -107,7 +112,8 @@ public class BookDetailsController implements Initializable {
             JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
             imageUrl = imageLinks.has("thumbnail") ? imageLinks.getString("thumbnail") : "No image available.";
         } else {
-            imageUrl = "No image available.";
+            imageUrl = "/design/Images/default_book.png";
+            
         }
 
         nameText.setText(title);
@@ -160,8 +166,9 @@ public class BookDetailsController implements Initializable {
             datePicker.setValue(LocalDate.now()); // Set default value to current date
             
             // Add the DatePicker to the Alert's content
-            VBox vbox = new VBox(datePicker);
+            VBox vbox = new VBox();
             vbox.setSpacing(10);
+            vbox.getChildren().addAll( new javafx.scene.control.Label("Xác nhận ngày trả sách"),datePicker);
             alert.getDialogPane().setContent(vbox);
             
             alert.showAndWait().ifPresent(response -> {
@@ -171,13 +178,13 @@ public class BookDetailsController implements Initializable {
                         LocalDate selectedDate = datePicker.getValue();
                         if (selectedDate.isBefore(LocalDate.now())) {
                             Alert dateAlert = new Alert(Alert.AlertType.WARNING);
-                            dateAlert.setHeaderText("Ngày mượn không hợp lệ.");
-                            dateAlert.setContentText("Vui lòng chọn ngày mượn hợp lệ.");
+                            dateAlert.setHeaderText("Ngày trả sách không hợp lệ.");
+                            dateAlert.setContentText("Vui lòng chọn ngày hợp lệ.");
                             dateAlert.showAndWait();
                             return;
                         } else if (selectedDate.isAfter(LocalDate.now().plusDays(31))) {
                             Alert dateAlert = new Alert(Alert.AlertType.WARNING);
-                            dateAlert.setHeaderText("Ngày mượn không hợp lệ.");
+                            dateAlert.setHeaderText("Ngày trả sách không hợp lệ.");
                             dateAlert.setContentText("Sách chỉ được mượn tối đa 31 ngày.");
                             dateAlert.showAndWait();
                             return;
