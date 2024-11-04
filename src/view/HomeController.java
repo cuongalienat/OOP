@@ -18,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import library.Book;
 import library.DbConfig;
 
@@ -60,7 +61,6 @@ public class HomeController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("book.fxml"));
                 VBox bookBox = fxmlLoader.load();
-
                 BookController bookController = fxmlLoader.getController();
                 bookController.setData(book);
                 bookBox.setOnMouseClicked(event -> showBookDetails(book));
@@ -130,11 +130,11 @@ public class HomeController implements Initializable {
             bookDetailsController.setBookDetails(book);
 
             Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED); // Tắt thanh tiêu đề
             stage.setScene(new Scene(bookDetailsRoot));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

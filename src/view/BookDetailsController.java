@@ -12,23 +12,40 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import library.*;
 
 public class BookDetailsController implements Initializable {
     @FXML
+    private ImageView cancelButton;
+
+    @FXML
     private ImageView image;
+
+    @FXML
+    private TextArea authorText;
+
+    @FXML
+    private TextArea nameText;
 
     @FXML
     private TextField borrowed;
@@ -43,6 +60,29 @@ public class BookDetailsController implements Initializable {
 
     private BorrowedBooks curBorrowedBook;
 
+    private double xOffset = 0;
+
+    private double yOffset = 0;
+    @FXML
+    private AnchorPane rootPane;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        successfull.setVisible(false); // default
+        borrowed.setVisible(false);
+        // Set up the mouse pressed and dragged events for the root pane
+        rootPane.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+
+        rootPane.setOnMouseDragged(event -> {
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
+    }
+
     // @FXML
     // private ImageView bookImage;
 
@@ -52,9 +92,7 @@ public class BookDetailsController implements Initializable {
         // Image image = new Image(getClass().getResourceAsStream(book.getImageSrc()));
         // bookImage.setImage(image);
         curBook = book;
-        bookDetails.setText("Title: " + book.getName() + "\nAuthor: " + book.getAuthor());
         GoogleBooksAPI.searchBookByTitle(book.getName(), this::updateBookDetailsFromAPI);
-
     }
 
     public String updateBookDetailsFromAPI(String jsonResponse) {
@@ -72,8 +110,9 @@ public class BookDetailsController implements Initializable {
             imageUrl = "No image available.";
         }
 
-        // Cập nhật TextArea với thông tin từ API
-        bookDetails.setText("Title: " + title + "\nAuthor: " + authors + "\n\nDescription:\n" + description);
+        nameText.setText(title);
+        authorText.setText(authors);
+        bookDetails.setText(description);
         loadBookImage(imageUrl);
         return imageUrl;
     }
@@ -82,25 +121,25 @@ public class BookDetailsController implements Initializable {
         Task<Image> task = new Task<Image>() {
             @Override
             protected Image call() throws Exception {
-                return new Image(imageUrl);
+                return new Image(imageUrl, image.getFitWidth(), image.getFitHeight(), true, true);
             }
-
+    
             @Override
             protected void succeeded() {
                 // Cập nhật ImageView với hình ảnh đã tải
                 image.setImage(getValue());
             }
-
+    
             @Override
             protected void failed() {
                 // Xử lý lỗi nếu tải hình ảnh không thành công
                 image.setImage(null); // hoặc một hình ảnh mặc định
             }
         };
-
+    
         // Khởi động Task trong Thread mới
         new Thread(task).start();
-    }
+    }    
 
     protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();
     // protected static ObservableList<BorrowedBooks> borrowList =
@@ -165,7 +204,7 @@ public class BookDetailsController implements Initializable {
                     }
                 });
                 return;
-        }
+            }
             showBorrwedStatus(borrowed);
     }
 
@@ -192,9 +231,9 @@ public class BookDetailsController implements Initializable {
         fadeIn.play();
     }
 
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        successfull.setVisible(false); // default
-        borrowed.setVisible(false);
+    @FXML
+    public void cancel(MouseEvent event) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 }

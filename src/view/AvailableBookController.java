@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import library.Book;
 import library.BorrowedBooks;
 import library.User;
@@ -146,14 +147,15 @@ public class AvailableBookController {
             bookDetailsController.setBookDetails(book);
 
             Stage stage = new Stage();
+            stage.initStyle(StageStyle.UNDECORATED); // Tắt thanh tiêu đề
             stage.setScene(new Scene(bookDetailsRoot));
 
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
-
+            stage.initModality(Modality.APPLICATION_MODAL); // Đặt cửa sổ modal
             stage.setOnCloseRequest(event -> {
                 setBookData(Book.getAvailableBooks());
             });
+
+            stage.show(); // Hiển thị cửa sổ
         } catch (IOException e) {
             e.printStackTrace();
         }

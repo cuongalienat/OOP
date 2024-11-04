@@ -1,0 +1,87 @@
+/* Hiệu ứng đổ bóng giúp Pane trông nổi lên */
+/* Hiệu ứng 3D nổi lên cho Pane */
+.pane-3d {
+    /* Nền trắng và gradient ánh sáng phía trên */
+    -fx-background-color: rgb(255,255,255);
+    -fx-background-radius: 12px; /* Bo góc nhẹ cho góc tròn mượt */
+
+    /* Bóng đổ lớn giúp tạo hiệu ứng 3D nổi */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 20, 0.5, 0, 10);
+    
+    /* Viền nhẹ để nổi bật */
+    -fx-border-color: rgba(200, 200, 200, 0.5);
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+
+    /* Padding bên trong */
+    -fx-padding: 10px;
+}
+
+.anchor-pane-background {
+    -fx-background-color: rgb(254, 233, 217); /* Màu kem trứng nhạt */
+    -fx-border-color: #4a4a6a; /* Màu viền */
+    -fx-border-width: 5px; /* Độ dày của viền */
+    -fx-border-radius: 0px; /* Bo góc cho viền */
+    -fx-background-radius: 0px; /* Bo góc nền để khớp với viền */
+    -fx-padding: 10px; /* Tạo khoảng cách giữa viền và nội dung bên trong */
+}
+
+
+.transparent-text-area {
+    -fx-background-color: rgb(255,255,255); /* Transparent background */
+    -fx-background-insets: 0; /* Remove background insets */
+    -fx-padding: 0; /* Remove padding */
+    -fx-border-color: transparent; /* Transparent border */
+    -fx-focus-color: transparent; /* Remove focus color */
+    -fx-faint-focus-color: transparent; /* Remove faint focus color */
+    -fx-control-inner-background: transparent; /* Transparent inner background */
+    -fx-text-fill: #000000; /* Optional: Text color (adjust to preference) */
+}
+
+
+.text-fielddd {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-background-insets: 0; /* Remove background insets */
+    -fx-padding: 0; /* Remove padding */
+    -fx-border-color: transparent; /* Remove border */
+    -fx-focus-color: transparent; /* Remove focus border */
+    -fx-faint-focus-color: transparent; /* Remove faint focus border */
+    -fx-control-inner-background: transparent; /* Remove inner background */
+    -fx-text-fill: #000000; /* Optional: Set text color to black (or any color you prefer) */
+}
+
+.button {
+    -fx-background-color: #4a4a6a; /* Màu nền chính của nút */
+    -fx-text-fill: white; /* Màu chữ */
+    -fx-background-radius: 20; /* Bo góc cho nút */
+    -fx-border-color: #4a4a6a; /* Màu viền nếu muốn */
+    -fx-border-width: 1; /* Độ dày của viền */
+    -fx-border-radius: 20; /* Bo góc cho viền để khớp với nền */
+}
+
+.button:hover {
+    -fx-background-color: #79798b; /* Màu khi rê chuột lên */
+}
+
+.no-scroll .scroll-bar {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+.image-view-overlay {
+    -fx-effect: innershadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0.5, 0, 0);
+}
+
+.hover-effect {
+    -fx-cursor: hand; /* Change cursor to hand on hover */
+    -fx-opacity: 1.0; /* Set default opacity */
+    -fx-effect: null; /* No effect by default */
+}
+
+.hover-effect:hover {
+    -fx-opacity: 0.8; /* Reduce opacity on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0.5, 0, 0); /* Add shadow effect */
+    -fx-scale-x: 1.1; /* Scale image on x-axis */
+    -fx-scale-y: 1.1; /* Scale image on y-axis */
+}
