@@ -15,7 +15,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import library.Book;
 import library.BorrowedBooks;
 import library.DbConfig;
 
@@ -73,7 +72,7 @@ public class BorrowedBooksController {
         borrowedDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
         dueDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
         statusColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        
+
         borrowedBooksTable.setItems(borrowedList); // Hiển thị danh sách sách đã mượn
     }
 
@@ -107,7 +106,7 @@ public class BorrowedBooksController {
                     borrowedBooksTable.getItems().remove(selectedBook);
                     borrowedBooksTable.getSelectionModel().clearSelection();
                 }
-            });     
+            });
         } else {
             // Nếu chưa chọn quyển nào
             Alert alert = new Alert(AlertType.WARNING);
@@ -115,7 +114,7 @@ public class BorrowedBooksController {
             alert.setHeaderText("Không có sách nào được chọn.");
             alert.setContentText("Vui lòng chọn một sách để xóa.");
             alert.showAndWait();
-        }   
+        }
     }
 
     private void updateAvailableCount(int bookId) throws Exception {

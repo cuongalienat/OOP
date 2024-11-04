@@ -110,7 +110,6 @@ public class UserManagementController {
         Um_BorrowedBook.setMaxWidth(1f * Integer.MAX_VALUE * 20);
         Um_OverdueDate.setMaxWidth(1f * Integer.MAX_VALUE * 20);
 
-
         Table_Um.setItems(users);
         allUsers = userData;
     }
@@ -130,13 +129,30 @@ public class UserManagementController {
         BookLogs_BDate.setMaxWidth(1f * Integer.MAX_VALUE * 20);
         BookLogs_DDate.setMaxWidth(1f * Integer.MAX_VALUE * 20);
         Booklogs_Status.setMaxWidth(1f * Integer.MAX_VALUE * 20);
-        
+
         ObservableList<String> statusOptions = FXCollections.observableArrayList("Pending", "Active", "Overdue",
                 "Returned", "Lost");
         Booklogs_Status.setCellFactory(ComboBoxTableCell.forTableColumn(statusOptions));
         Booklogs_Status.setOnEditCommit(cellEditEvent -> {
             BorrowedBooks log = cellEditEvent.getRowValue();
             String newStatus = cellEditEvent.getNewValue();
+            if ("Overdue".equals(newStatus)) {
+                LocalDate dueDate = log.getDueDate(); // Lấy ngày quá hạn từ đối tượng log
+                LocalDate currentDate = LocalDate.now(); // Lấy ngày hiện tại
+
+                // Kiểm tra nếu ngày quá hạn chưa đến
+                if (!dueDate.isBefore(currentDate)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Invalid Status Change");
+                    alert.setHeaderText(null);
+                    alert.setContentText(
+                            "This book cannot be marked as overdue because the due date has not yet passed.");
+                    alert.showAndWait();
+                    Table_BookLogs.refresh();
+                    return;
+                }
+            }
+
             log.setStatus(newStatus);
             selectedLogs.add(log);
         });

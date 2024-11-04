@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -78,84 +77,86 @@ public class BorrowedBooks extends Book {
     }
 
     public void addBorrowedBookToDB() {
-    Task<Void> task = new Task<Void>() {
-        @Override
-        protected Void call() {  // xử lí đa luồng
-            try {
-                User nUser = loginController.getUser_now();
-                String checkAvailableQuery = "SELECT Available FROM book WHERE ID = ?";
-                String insertQuery = "INSERT INTO booklogs (book_id, phone_user, borrowedDate, dueDate, status) VALUES (?, ?, ?, ?, ?)";
-                String updateAvailableQuery = "UPDATE book SET Available = Available - 1 WHERE ID = ?";
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() { // xử lí đa luồng
+                try {
+                    User nUser = loginController.getUser_now();
+                    String checkAvailableQuery = "SELECT Available FROM book WHERE ID = ?";
+                    String insertQuery = "INSERT INTO booklogs (book_id, phone_user, borrowedDate, dueDate, status) VALUES (?, ?, ?, ?, ?)";
+                    String updateAvailableQuery = "UPDATE book SET Available = Available - 1 WHERE ID = ?";
 
-                try (Connection conn = DbConfig.connect()) {
-                    String userPhone = nUser.getPhone();
-                    int available = 0;
+                    try (Connection conn = DbConfig.connect()) {
+                        String userPhone = nUser.getPhone();
+                        int available = 0;
 
-                    // Kiểm tra giá trị available
-                    try (PreparedStatement checkStmt = conn.prepareStatement(checkAvailableQuery)) {
-                        checkStmt.setInt(1, getId());
-                        try (ResultSet rs = checkStmt.executeQuery()) {
-                            if (rs.next()) {
-                                available = rs.getInt("Available");
+                        // Kiểm tra giá trị available
+                        try (PreparedStatement checkStmt = conn.prepareStatement(checkAvailableQuery)) {
+                            checkStmt.setInt(1, getId());
+                            try (ResultSet rs = checkStmt.executeQuery()) {
+                                if (rs.next()) {
+                                    available = rs.getInt("Available");
+                                }
                             }
                         }
-                    }
 
-                    if (available <= 0) {
-                        // Không còn sách để mượn
+                        if (available <= 0) {
+                            // Không còn sách để mượn
+                            Platform.runLater(() -> {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setContentText("Sách đã hết, không thể mượn.");
+                                alert.showAndWait();
+                            });
+                        } else {
+                            // Thêm vào booklogs
+                            try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+                                insertStmt.setInt(1, getId());
+                                insertStmt.setString(2, userPhone);
+                                insertStmt.setDate(3, Date.valueOf(borrowDate));
+                                insertStmt.setDate(4, Date.valueOf(dueDate));
+                                insertStmt.setString(5, status);
+                                insertStmt.executeUpdate();
+                            }
+
+                            // Cập nhật số lượng sách
+                            try (PreparedStatement updateStmt = conn.prepareStatement(updateAvailableQuery)) {
+                                updateStmt.setInt(1, getId());
+                                updateStmt.executeUpdate();
+                            }
+
+                            // Cập nhật giao diện người dùng
+                            Platform.runLater(() -> {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setContentText("Mượn sách thành công.");
+                                alert.showAndWait();
+                            });
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                         Platform.runLater(() -> {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setContentText("Sách đã hết, không thể mượn.");
-                            alert.showAndWait();
-                        });
-                    } else {
-                        // Thêm vào booklogs
-                        try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
-                            insertStmt.setInt(1, getId());
-                            insertStmt.setString(2, userPhone);
-                            insertStmt.setDate(3, Date.valueOf(borrowDate));
-                            insertStmt.setDate(4, Date.valueOf(dueDate));
-                            insertStmt.setString(5, status);
-                            insertStmt.executeUpdate();
-                        }
-
-                        // Cập nhật số lượng sách
-                        try (PreparedStatement updateStmt = conn.prepareStatement(updateAvailableQuery)) {
-                            updateStmt.setInt(1, getId());
-                            updateStmt.executeUpdate();
-                        }
-
-                        // Cập nhật giao diện người dùng
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setContentText("Mượn sách thành công.");
+                            alert.setContentText("Đã xảy ra lỗi trong quá trình mượn sách.");
                             alert.showAndWait();
                         });
                     }
-                } catch (SQLException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    Platform.runLater(() -> {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setContentText("Đã xảy ra lỗi trong quá trình mượn sách.");
-                        alert.showAndWait();
-                    });
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                return null;
             }
-            return null;
-        }
-    };
-    new Thread(task).start();  // xử lí đa luồng
-}
+        };
+        new Thread(task).start(); // xử lí đa luồng
+    }
 
     public void returnBook(String phone_user, int book_id) throws Exception {
-        String query = "DELETE FROM booklogs WHERE phone_user = ? and book_id = ?";
+        String query = "DELETE FROM booklogs WHERE phone_user = ? AND (book_id = ? OR (? IS NULL AND book_id IS NULL))";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, phone_user);
-            stmt.setInt(2, book_id);
+            stmt.setObject(2, book_id == 0 ? null : book_id, java.sql.Types.INTEGER);
+            stmt.setObject(3, book_id == 0 ? null : book_id, java.sql.Types.INTEGER);
+
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -173,6 +174,32 @@ public class BorrowedBooks extends Book {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean CheckBookBeforeDelete(int book_id) throws Exception {
+        String query = "Select * from booklogs WHERE book_id = ? and status in ('Active','Overdue')";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, book_id);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public static boolean CheckBookBeforeBorrow(String phone) throws Exception {
+        String query = "Select * from booklogs WHERE phone_user = ? and status = 'Overdue' ";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, phone);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public static ObservableList<BorrowedBooks> getAllBorrowedBooks() throws Exception {

@@ -64,7 +64,15 @@ public class AvailableBookController {
     private ObservableList<Book> books = FXCollections.observableArrayList();
 
     @FXML
-    void borrowBook(MouseEvent event) {
+    void borrowBook(MouseEvent event) throws Exception {
+        User user_now = loginController.getUser_now();
+        if (BorrowedBooks.CheckBookBeforeBorrow(user_now.getPhone())) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setContentText("You need to return all overdue book to borrow new !");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+            return;
+        }
         Book selectedBook = availableBook_tableview.getSelectionModel().getSelectedItem();
         if (selectedBook != null) {
             // Hiển thị hộp thoại xác nhận
@@ -79,7 +87,7 @@ public class AvailableBookController {
             // Add the DatePicker to the Alert's content
             VBox vbox = new VBox();
             vbox.setSpacing(10);
-            vbox.getChildren().addAll( new javafx.scene.control.Label("Xác nhận ngày trả sách"),datePicker);
+            vbox.getChildren().addAll(new javafx.scene.control.Label("Xác nhận ngày trả sách"), datePicker);
             alert.getDialogPane().setContent(vbox);
 
             alert.showAndWait().ifPresent(response -> {
@@ -87,14 +95,13 @@ public class AvailableBookController {
                     // Xóa ở database
                     try {
                         LocalDate selectedDate = datePicker.getValue();
-                        if(selectedDate.isBefore(LocalDate.now())) {
+                        if (selectedDate.isBefore(LocalDate.now())) {
                             Alert dateAlert = new Alert(AlertType.WARNING);
                             dateAlert.setHeaderText("Ngày trả sách không hợp lệ.");
                             dateAlert.setContentText("Vui lòng chọn ngày trả sách hợp lệ.");
                             dateAlert.showAndWait();
                             return;
-                        }
-                        else if(selectedDate.isAfter(LocalDate.now().plusDays(31)))  {
+                        } else if (selectedDate.isAfter(LocalDate.now().plusDays(31))) {
                             Alert dateAlert = new Alert(AlertType.WARNING);
                             dateAlert.setHeaderText("Ngày mượn không hợp lệ.");
                             dateAlert.setContentText("Sách chỉ được mượn tối đa 31 ngày.");
@@ -111,13 +118,13 @@ public class AvailableBookController {
                         e.printStackTrace();
                     }
                     // Xóa khỏi TableView
-                    //availableBook_tableview.getItems().remove(selectedBook);
-                   // availableBook_tableview.getSelectionModel().clearSelection();
+                    // availableBook_tableview.getItems().remove(selectedBook);
+                    // availableBook_tableview.getSelectionModel().clearSelection();
                 }
             });
         } else {
             Alert alert = new Alert(AlertType.WARNING);
-            //alert.setTitle("");
+            // alert.setTitle("");
             alert.setHeaderText("Không có sách nào được chọn.");
             alert.setContentText("Vui lòng chọn một sách để mượn.");
             alert.showAndWait();
@@ -125,7 +132,8 @@ public class AvailableBookController {
     }
 
     public void setBookData(List<Book> bookData) {
-        ObservableList<String> searchOptions = FXCollections.observableArrayList("Title", "Collection", "Contributor");
+        ObservableList<String> searchOptions = FXCollections.observableArrayList("Id", "Title", "Collection",
+                "Contributors");
         SearchOptions.setItems(searchOptions);
         books = FXCollections.observableArrayList(bookData);
 
@@ -135,16 +143,16 @@ public class AvailableBookController {
         available_col.setCellValueFactory(new PropertyValueFactory<>("available"));
         offerCollection_col.setCellValueFactory(new PropertyValueFactory<>("collection"));
 
-         // Set the column resize policy to constrained resize policy
-         availableBook_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // Set the column resize policy to constrained resize policy
+        availableBook_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-         // Set the preferred width for each column (proportional to the total width)
-         id_col.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-         offerCollection_col.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
-         bookTitle_col.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 30% width
-         contributors_col.setMaxWidth(1f * Integer.MAX_VALUE * 25); // 25% width
-         available_col.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
-    
+        // Set the preferred width for each column (proportional to the total width)
+        id_col.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        offerCollection_col.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
+        bookTitle_col.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 30% width
+        contributors_col.setMaxWidth(1f * Integer.MAX_VALUE * 25); // 25% width
+        available_col.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
+
         availableBook_tableview.setItems(books);
     }
 
@@ -201,8 +209,18 @@ public class AvailableBookController {
             result = Book.searchBookByTitle(Search.getText().trim());
         } else if ("Collection".equals(SearchOptions.getValue())) {
             result = Book.searchBookByCollections(Search.getText().trim());
-        } else if ("Contributor".equals(SearchOptions.getValue())) {
+        } else if ("Contributors".equals(SearchOptions.getValue())) {
             result = Book.searchBookByAuthor(Search.getText().trim());
+        } else if ("Id".equals(SearchOptions.getValue())) {
+            try {
+                int id = Integer.parseInt(Search.getText().trim());
+                result = Book.searchBookByID(id);
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setHeaderText("Invalid Input, Id should be a valid integer.");
+                alert.showAndWait();
+                return;
+            }
         }
 
         ObservableList<Book> books = FXCollections.observableArrayList(result);

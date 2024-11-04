@@ -334,4 +334,62 @@ public class Book {
         }
         return bookList;
     }
+
+    public static List<Book> searchBookByID(int ID) {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM book WHERE Id =  ?";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, ID);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+                Integer available = rs.getInt("Available");
+
+                Book book = new Book(collection, name, author, id, available);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi khác
+        }
+        return bookList;
+    }
+
+    public void updateBookInDatabase() throws Exception {
+        String query = "UPDATE book SET `Book Title` = ?, Contributors = ?, `Offer Collection` = ?, Available = ? WHERE ID = ?";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, name);
+            stmt.setString(2, author);
+            stmt.setString(3, collection);
+            stmt.setInt(4, available);
+            stmt.setInt(5, id);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Error updating book with ID: " + id);
+        }
+    }
+
+    public void deleteBookFromDatabase(int bookId) throws Exception {
+        String query = "DELETE FROM book WHERE ID = ?";
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, bookId);
+            stmt.executeUpdate();
+            System.out.println("deleted in database");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

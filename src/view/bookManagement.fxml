@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BookManagementController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BookManagementController">
     <children>
         <Label layoutX="20.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Book Management" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="14.0" />
         
@@ -19,8 +23,15 @@
                 <TableColumn fx:id="availableColManage" text="Available" />
             </columns>
         </TableView>
-        <Button fx:id="removeBook" layoutX="20.0" layoutY="413.0" onMouseClicked="#remove" prefWidth="120" text="Remove" AnchorPane.bottomAnchor="20.599999999999966" AnchorPane.leftAnchor="20.0" />
-      <Button fx:id="updateBook" layoutX="152.0" layoutY="414.0" onMouseClicked="#updateAllBooks" prefWidth="120" text="Update book" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="152.0" />
-      <Button fx:id="addNewBook" layoutX="283.0" layoutY="414.0" onMouseClicked="#addNewBook" prefWidth="120" text="Add Book" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="283.0" />
+        <Button fx:id="removeBook" layoutX="20.0" layoutY="419.0" onMouseClicked="#remove" prefWidth="120" text="Remove" AnchorPane.bottomAnchor="16.399999999999977" AnchorPane.leftAnchor="20.0" />
+      <Button fx:id="addNewBook" layoutX="163.0" layoutY="419.0" onMouseClicked="#addNewBook" prefWidth="120" text="Add Book" AnchorPane.bottomAnchor="16.399999999999977" AnchorPane.leftAnchor="163.0" />
+      <ComboBox fx:id="searchOptions" layoutX="268.0" layoutY="20.0" prefHeight="26.0" prefWidth="108.0" />
+      <TextField fx:id="Search" layoutX="403.0" layoutY="21.0" prefHeight="26.0" prefWidth="206.0" promptText="Search" />
+      <ImageView fitHeight="26.0" fitWidth="24.0" layoutX="585.0" layoutY="21.0" onMouseClicked="#Search" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../design/Images/magnifying-glass.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="cancelSearch" layoutX="647.0" layoutY="19.0" mnemonicParsing="false" onAction="#cancel" prefHeight="26.0" prefWidth="63.0" text="Cancel" />
     </children>
 </AnchorPane>
