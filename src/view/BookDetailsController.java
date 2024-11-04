@@ -75,6 +75,7 @@ public class BookDetailsController implements Initializable {
             imageUrl = imageLinks.has("thumbnail") ? imageLinks.getString("thumbnail") : "No image available.";
         } else {
             imageUrl = "No image available.";
+            
         }
 
         // Cập nhật TextArea với thông tin từ API
