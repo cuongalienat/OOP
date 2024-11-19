@@ -12,7 +12,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import view.loginController;
+import Controller.loginController;
 
 public class BorrowedBooks extends Book {
     private String phone_user;

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="634.0" styleClass="anchor-pane-background" stylesheets="@../design/Css/bookDetailDesign.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.BookDetailsController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="634.0" styleClass="anchor-pane-background" stylesheets="@../design/Css/bookDetailDesign.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.BookDetailsController">
    <children>
       <ImageView fitHeight="165.0" fitWidth="204.0" layoutX="7.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="-10.5" AnchorPane.topAnchor="-10.5">
          <image>
