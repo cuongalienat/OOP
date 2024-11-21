@@ -3,6 +3,9 @@ package Controller;
 import java.io.IOException;
 import java.util.*;
 
+import javafx.animation.ScaleTransition;
+import javafx.scene.layout.Region;
+import javafx.util.Duration;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import library.Admin;
 import library.Book;
@@ -54,6 +58,13 @@ public class HelloController implements Initializable {
     @FXML
     private HBox availableBooks;
 
+    // @FXML
+    // private Pane move;
+
+    // private double xOffset = 0;
+
+    // private double yOffset = 0;
+    
     void setName(String user_Name) {
         app_Name.setText(user_Name);
     }
@@ -128,6 +139,19 @@ public class HelloController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception here (e.g., logging or showing an error message)
         }
+
+        // move.setOnMousePressed(event -> {
+        //     xOffset = event.getSceneX();
+        //     yOffset = event.getSceneY();
+        // });
+
+        // move.setOnMouseDragged(event -> {
+        //     Stage stage = (Stage) move.getScene().getWindow();
+        //     if (!stage.isMaximized()) { // Chỉ cho phép kéo khi không phóng to
+        //         stage.setX(event.getScreenX() - xOffset);
+        //         stage.setY(event.getScreenY() - yOffset);
+        //     }
+        // });
     }
 
     @FXML
@@ -239,4 +263,35 @@ public class HelloController implements Initializable {
         alert.setHeaderText(null);
         alert.showAndWait();
     }
+
+    // @FXML
+    // private Label minimizeButton;
+
+    // @FXML
+    // private Label maximizeButton;
+
+    // @FXML
+    // private Label closeButton;
+
+    // @FXML
+    // private void handleMinimizeButtonAction(MouseEvent event) {
+    //     Stage stage = (Stage) minimizeButton.getScene().getWindow();
+    //     stage.setIconified(true); // Ẩn cửa sổ
+    // }
+
+    // @FXML
+    // private void handleMaximizeButtonAction(MouseEvent event) {
+    //     Stage stage = (Stage) maximizeButton.getScene().getWindow();
+    //     boolean isMaximized = !stage.isMaximized();
+    //     stage.setMaximized(isMaximized);
+
+    //     // Thay đổi biểu tượng nút phóng to
+    //     maximizeButton.setText(isMaximized ? "❐" : "⛶");
+    // }
+
+    // @FXML
+    // private void handleCloseButtonAction(MouseEvent event) {
+    //     Stage stage = (Stage) closeButton.getScene().getWindow();
+    //     stage.close(); // Đóng cửa sổ
+    // }
 }

@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomeController">
+<AnchorPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomeController">
     <children>
-        <VBox prefHeight="459.2" prefWidth="856.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <VBox prefHeight="442.0" prefWidth="856.0" styleClass="anchorPane-style" stylesheets="@../design/Css/style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <Label prefHeight="45.0" prefWidth="261.0" text="Top books">
                     <font>
                         <Font name=".VnBlack" size="18.0" />
                     </font>
                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                 </Label>
                 <ScrollPane prefHeight="154.0" prefWidth="856.0" stylesheets="@../design/Css/style.css" vbarPolicy="NEVER">
@@ -41,15 +41,15 @@
                         <Font name=".VnBlack" size="18.0" />
                     </font>
                 </Label>
-                <ScrollPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../design/Css/style.css" VBox.vgrow="ALWAYS">
+                <ScrollPane prefHeight="108.0" prefWidth="851.0" stylesheets="@../design/Css/style.css" VBox.vgrow="ALWAYS">
                     <content>
-                        <GridPane fx:id="bookContainer" />
+                        <GridPane fx:id="bookContainer" prefWidth="98.0" stylesheets="@../design/Css/style.css" />
                     </content>
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
                     <VBox.margin>
-                        <Insets bottom="10.0" />
+                        <Insets />
                     </VBox.margin>
                 </ScrollPane>
             </children>

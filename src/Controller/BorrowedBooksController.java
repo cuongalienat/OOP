@@ -15,10 +15,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import library.BorrowedBooks;
 import library.DbConfig;
 
 public class BorrowedBooksController {
+    @FXML
+    private AnchorPane anchorPane;
+
     @FXML
     private TableColumn<BorrowedBooks, String> authorColumn;
 
@@ -141,5 +145,22 @@ public class BorrowedBooksController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    public void initialize() {
+        try {
+            // Hiển thị danh sách sách đã mượn
+            showBorrowedBooks();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Xóa chọn khi click ra ngoài bảng
+        anchorPane.setOnMouseClicked(event -> {
+            // Kiểm tra nếu click không nằm trên bảng
+            if (!borrowedBooksTable.isHover()) {
+                borrowedBooksTable.getSelectionModel().clearSelection();
+            }
+        });
     }
 }

@@ -108,6 +108,10 @@ public class BorrowedBooks extends Book {
                                 alert.showAndWait();
                             });
                         } else {
+                            // Tắt kiểm tra khóa ngoại
+                            try (PreparedStatement stmtSafeOff = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 0")) {
+                                stmtSafeOff.executeUpdate();
+                            }
                             // Thêm vào booklogs
                             try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
                                 insertStmt.setInt(1, getId());
@@ -123,7 +127,10 @@ public class BorrowedBooks extends Book {
                                 updateStmt.setInt(1, getId());
                                 updateStmt.executeUpdate();
                             }
-
+                            // Bật lại kiểm tra khóa ngoại
+                            try (PreparedStatement stmtSafeOn = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")) {
+                                stmtSafeOn.executeUpdate();
+                            }
                             // Cập nhật giao diện người dùng
                             Platform.runLater(() -> {
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

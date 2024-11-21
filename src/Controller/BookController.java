@@ -12,6 +12,7 @@ import library.Book;
 import library.GoogleBooksAPI;
 
 public class BookController {
+
     @FXML
     private Label authorName;
 
@@ -21,11 +22,8 @@ public class BookController {
     @FXML
     private Label bookName;
 
-    BookDetailsController bookDetailsController = new BookDetailsController();
-
     public void setData(Book book) {
-        // Image image = new Image(getClass().getResourceAsStream(book.getImageSrc()));
-        // bookImage.setImage(image);
+        // Lấy dữ liệu từ API và cập nhật thông tin sách
         GoogleBooksAPI.searchBookByTitle(book.getName(), this::updateBookDetailsFromAPI);
     }
 
@@ -33,16 +31,19 @@ public class BookController {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         JSONObject volumeInfo = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
 
+        // Lấy dữ liệu từ API
         String title = volumeInfo.getString("title");
         String authors = volumeInfo.getJSONArray("authors").getString(0);
-        String imageUrl = "";
+        String imageUrl;
+
         if (volumeInfo.has("imageLinks")) {
             JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-            imageUrl = imageLinks.has("thumbnail") ? imageLinks.getString("thumbnail") : "No image available.";
+            imageUrl = imageLinks.optString("thumbnail", "/design/Images/default_book.png");
         } else {
             imageUrl = "/design/Images/default_book.png";
         }
 
+        // Cập nhật giao diện với dữ liệu nhận được
         bookName.setText(title);
         authorName.setText(authors.isEmpty() ? "Unknown Author" : authors);
         loadBookImage(imageUrl);
@@ -53,36 +54,38 @@ public class BookController {
         Task<Image> task = new Task<Image>() {
             @Override
             protected Image call() throws Exception {
+                // Tải ảnh với kích thước của ImageView từ API
                 return new Image(imageUrl, bookImage.getFitWidth(), bookImage.getFitHeight(), true, true);
             }
 
             @Override
             protected void succeeded() {
-                // Cập nhật ImageView với hình ảnh đã tải
+                // Cập nhật ảnh cho ImageView khi tải thành công
                 bookImage.setImage(getValue());
             }
 
             @Override
             protected void failed() {
-                // Xử lý lỗi nếu tải hình ảnh không thành công
-                bookImage.setImage(null); // hoặc một hình ảnh mặc định
+                // Nếu tải ảnh thất bại, dùng ảnh mặc định
+                bookImage.setImage(new Image("/design/Images/default_book.png"));
             }
         };
 
-        // Khởi động Task trong Thread mới
+        // Chạy task trên Thread mới
         new Thread(task).start();
     }
 
+    @FXML
     public void initialize() {
-        // Set fixed size
-        bookImage.setFitWidth(146.0);
-        bookImage.setFitHeight(227.0);
-        bookImage.setPreserveRatio(false);
+        // Thiết lập kích thước cố định cho `bookImage` từ FXML
+        bookImage.setFitWidth(121.0);
+        bookImage.setFitHeight(147.0);
+        bookImage.setPreserveRatio(true); // Giữ tỷ lệ hình ảnh
         bookImage.setSmooth(true);
 
-        // Add clipping to maintain exact dimensions
-        Rectangle clip = new Rectangle(146, 227);
-        clip.setArcWidth(10);
+        // Thêm clipping để cắt gọn hình ảnh
+        Rectangle clip = new Rectangle(121.0, 147.0);
+        clip.setArcWidth(10);  // Bo góc trên và dưới
         clip.setArcHeight(10);
         bookImage.setClip(clip);
     }

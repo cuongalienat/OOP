@@ -14,7 +14,9 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import library.Admin;
 import library.User;
 
@@ -81,6 +83,7 @@ public class loginController {
     private Button signup_toLogin;
 
     private Alert alert;
+    
     protected static User user_now;
 
     public static User getUser_now() {
@@ -217,9 +220,9 @@ public class loginController {
     }
 
     public void logIn(ActionEvent event) throws Exception {
-
         String phone = login_phone.getText();
         String password = login_password.getText();
+    
         if (event.getSource() == login_login) {
             if (User.getUser(phone) == null && Admin.getUser(phone) == null) {
                 alert = new Alert(AlertType.ERROR);
@@ -230,12 +233,13 @@ public class loginController {
                 login_password.clear();
                 return;
             }
+    
             if (User.getUser(phone) == null) {
                 user_now = Admin.getUser(phone);
             } else {
                 user_now = User.getUser(phone);
             }
-            System.out.println(user_now.getPassword());
+    
             if (!password.equals(user_now.getPassword())) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Mật khẩu sai");
@@ -244,24 +248,30 @@ public class loginController {
                 login_password.clear();
                 return;
             }
+    
+            // Đóng cửa sổ đăng nhập
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-
+    
+            // Mở cửa sổ mới cho sample.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sample.fxml"));
             Parent newRoot = loader.load();
-
+    
             HelloController helloController = loader.getController();
             helloController.setName(user_now.getName());
-
+    
             Stage newStage = new Stage();
             Scene scene = new Scene(newRoot);
-
+    
+            // Không tắt thanh tiêu đề
             newStage.setScene(scene);
             newStage.setTitle("LIBRARY");
+            newStage.setMinWidth(1040);
+            newStage.setMinHeight(585);
             newStage.show();
         }
     }
-
+ 
     public void forgetPassword(ActionEvent event) throws Exception {
         if (event.getSource() == login_forgot) {
             TranslateTransition slider = new TranslateTransition();

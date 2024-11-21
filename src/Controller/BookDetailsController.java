@@ -129,25 +129,29 @@ public class BookDetailsController implements Initializable {
         Task<Image> task = new Task<Image>() {
             @Override
             protected Image call() throws Exception {
-                return new Image(imageUrl, image.getFitWidth(), image.getFitHeight(), true, true);
+                // Sử dụng kích thước của ImageView để resize hình ảnh
+                double fitWidth = image.getFitWidth();
+                double fitHeight = image.getFitHeight();
+                return new Image(imageUrl, fitWidth, fitHeight, true, true); // True giữ tỷ lệ ảnh
             }
-
+    
             @Override
             protected void succeeded() {
-                // Cập nhật ImageView với hình ảnh đã tải
+                // Cập nhật hình ảnh vào ImageView khi tải thành công
                 image.setImage(getValue());
             }
-
+    
             @Override
             protected void failed() {
-                // Xử lý lỗi nếu tải hình ảnh không thành công
-                image.setImage(null); // hoặc một hình ảnh mặc định
+                // Xử lý nếu không tải được ảnh, dùng ảnh mặc định
+                image.setImage(new Image("/design/Images/default_book.png"));
             }
         };
-
-        // Khởi động Task trong Thread mới
+    
+        // Chạy task trong Thread mới để không làm UI bị treo
         new Thread(task).start();
     }
+    
 
     protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();
     // protected static ObservableList<BorrowedBooks> borrowList =

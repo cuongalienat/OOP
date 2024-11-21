@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -15,13 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="525.0" prefWidth="1040.0" stylesheets="@../design/Css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HelloController">
+<BorderPane prefHeight="525.0" prefWidth="1040.0" stylesheets="@../design/Css/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HelloController">
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="15.0" spacing="10.0" styleClass="white-background" stylesheets="@../design/Css/style.css" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="15.0" spacing="10.0" stylesheets="@../../src/design/Css/style.css" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" prefHeight="33.0" prefWidth="161.0" text="MY LIBRARY">
                <font>
-                  <Font name="Berlin Sans FB" size="19.0" />
+                  <Font name="Berlin Sans FB Bold" size="25.0" />
                </font>
             </Label>
             <Separator maxHeight="-Infinity" orientation="VERTICAL" prefHeight="20.0" prefWidth="0.0" />
@@ -55,14 +55,18 @@
          <padding>
             <Insets left="10.0" right="10.0" />
          </padding>
+         <styleClass>
+            <String fx:value="white-background" />
+            <String fx:value="hbox-style" />
+         </styleClass>
       </HBox>
    </top>
    <left>
-      <VBox prefHeight="481.0" prefWidth="184.0" spacing="10.0" styleClass="white-background" stylesheets="@../design/Css/style.css" BorderPane.alignment="CENTER">
+      <VBox prefHeight="481.0" prefWidth="184.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="369.0" prefWidth="184.0" spacing="20.0">
                <children>
-                  <HBox fx:id="home" alignment="CENTER_LEFT" onMouseClicked="#returnHome" prefHeight="30.0" prefWidth="212.0" stylesheets="@../design/Css/style.css">
+                  <HBox fx:id="home" alignment="CENTER_LEFT" onMouseClicked="#returnHome" prefHeight="30.0" prefWidth="212.0">
                      <children>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
@@ -84,33 +88,14 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
+                     <stylesheets>
+                        <URL value="@../design/Css/style.css" />
+                        <URL value="@../../src/design/Css/style.css" />
+                     </stylesheets>
                      <styleClass>
-                        <String fx:value="mouse-moved" />
+                        <String fx:value="button-hover" />
                         <String fx:value="selected" />
-                        <String fx:value="button-hover" />
-                     </styleClass>
-                  </HBox>
-                  <HBox fx:id="category" alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="184.0" stylesheets="@../design/Css/style.css">
-                     <children>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <HBox.margin>
-                              <Insets left="20.0" right="5.0" />
-                           </HBox.margin>
-                           <image>
-                              <Image url="@../design/Images/category.png" />
-                           </image></ImageView>
-                        <Label prefHeight="15.0" prefWidth="68.0" text="Category">
-                           <font>
-                              <Font name=".VnArial" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <styleClass>
-                        <String fx:value="mouse-moved" />
-                        <String fx:value="button-hover" />
+                        <String fx:value="hbox-style" />
                      </styleClass>
                   </HBox>
                   <HBox fx:id="borrowedBooks" alignment="CENTER_LEFT" onMouseClicked="#showBorrowedBooks" prefHeight="29.0" prefWidth="184.0" stylesheets="@../design/Css/style.css">
@@ -133,7 +118,7 @@
                         </Label>
                      </children>
                      <VBox.margin>
-                        <Insets />
+                        <Insets top="10.0" />
                      </VBox.margin>
                      <styleClass>
                         <String fx:value="mouse-moved" />
@@ -159,7 +144,7 @@
                         </Label>
                      </children>
                      <VBox.margin>
-                        <Insets />
+                        <Insets top="10.0" />
                      </VBox.margin>
                      <styleClass>
                         <String fx:value="mouse-moved" />
@@ -189,6 +174,9 @@
                         <String fx:value="mouse-moved" />
                         <String fx:value="button-hover" />
                      </styleClass>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </HBox>
                   <HBox fx:id="userManagement" alignment="CENTER_LEFT" onMouseClicked="#userManagement" prefHeight="29.0" prefWidth="184.0" stylesheets="@../design/Css/style.css">
                      <children>
@@ -210,7 +198,7 @@
                         </Label>
                      </children>
                      <VBox.margin>
-                        <Insets />
+                        <Insets top="10.0" />
                      </VBox.margin>
                      <styleClass>
                         <String fx:value="mouse-moved" />
@@ -237,7 +225,7 @@
                         </Label>
                      </children>
                      <VBox.margin>
-                        <Insets />
+                        <Insets top="10.0" />
                      </VBox.margin>
                      <styleClass>
                         <String fx:value="mouse-moved" />
@@ -264,7 +252,7 @@
                         </Label>
                      </children>
                      <VBox.margin>
-                        <Insets />
+                        <Insets top="10.0" />
                      </VBox.margin>
                      <styleClass>
                         <String fx:value="mouse-moved" />
@@ -294,18 +282,26 @@
                         <String fx:value="mouse-moved" />
                         <String fx:value="button-hover" />
                      </styleClass>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
                   </HBox>
                </children></VBox>
          </children>
+         <stylesheets>
+            <URL value="@../design/Css/style.css" />
+            <URL value="@../../src/design/Css/style.css" />
+         </stylesheets>
+         <styleClass>
+            <String fx:value="white-background" />
+            <String fx:value="hbox-style" />
+         </styleClass>
       </VBox>
    </left>
    <center>
       
    </center>
    <center>
-      <AnchorPane fx:id="choosedScene" prefHeight="424.0" prefWidth="812.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button layoutX="659.0" layoutY="14.0" mnemonicParsing="false" text="Cancel" />
-         </children></AnchorPane>
+      <AnchorPane fx:id="choosedScene" prefHeight="424.0" prefWidth="812.0" styleClass="anchorPane-style" stylesheets="@../../src/design/Css/style.css" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

@@ -13,7 +13,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 public class GoogleBooksAPI {
-    private static final String API_KEY = "AIzaSyCxHf6C3lZOodNCyOl9XGEGICYOh8nZnN4";
+    private static final String API_KEY = "AIzaSyC-bqA6TTM4H5z_Hd-RcBT8lkL_ojwUtf0";
     private static final int MAX_RETRIES = 5;
     private static final long INITIAL_WAIT_TIME = 1000; // 1 giây
     private static final long MAX_WAIT_TIME = 16000; // 16 giây
