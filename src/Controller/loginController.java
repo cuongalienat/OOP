@@ -18,6 +18,12 @@ import javafx.stage.Stage;
 import library.Admin;
 import library.User;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+/**
+ * Controller for handling user login operations.
+ */
 public class loginController {
 
     @FXML
@@ -87,6 +93,11 @@ public class loginController {
         return user_now;
     }
 
+    /**
+     * Switches between login and signup forms.
+     *
+     * @param event The action event triggered by the user.
+     */
     public void switchForm(ActionEvent event) {
 
         TranslateTransition slider = new TranslateTransition();
@@ -115,6 +126,12 @@ public class loginController {
         }
     }
 
+    /**
+     * Checks if the phone number is valid.
+     *
+     * @param phone The phone number to check.
+     * @return True if the phone number is valid, false otherwise.
+     */
     public boolean checkPhone(String phone) {
         if (phone.length() != 10)
             return false;
@@ -128,16 +145,34 @@ public class loginController {
         return true;
     }
 
+    /**
+     * Checks if the password is valid.
+     *
+     * @param password The password to check.
+     * @return True if the password is valid, false otherwise.
+     */
     public boolean checkPassword(String password) {
         if (password.length() < 6)
             return false;
         return true;
     }
 
+    /**
+     * Checks if the email is valid.
+     *
+     * @param email The email to check.
+     * @return True if the email is valid, false otherwise.
+     */
     public boolean checkEmail(String email) {
         return email.endsWith("@gmail.com");
     }
 
+    /**
+     * Handles the user signup process.
+     *
+     * @param event The action event triggered by the user.
+     * @throws Exception If an error occurs during the signup process.
+     */
     public void signUp(ActionEvent event) throws Exception {
         User user = new User();
         user.setPhone(signup_phone.getText());
@@ -216,6 +251,12 @@ public class loginController {
         }
     }
 
+    /**
+     * Handles the user login process.
+     *
+     * @param event The action event triggered by the user.
+     * @throws Exception If an error occurs during the login process.
+     */
     public void logIn(ActionEvent event) throws Exception {
 
         String phone = login_phone.getText();
@@ -262,6 +303,12 @@ public class loginController {
         }
     }
 
+    /**
+     * Handles the forget password process.
+     *
+     * @param event The action event triggered by the user.
+     * @throws Exception If an error occurs during the forget password process.
+     */
     public void forgetPassword(ActionEvent event) throws Exception {
         if (event.getSource() == login_forgot) {
             TranslateTransition slider = new TranslateTransition();

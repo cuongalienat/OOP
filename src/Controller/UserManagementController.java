@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller for managing user-related operations within the application.
+ */
 public class UserManagementController {
     @FXML
     private TableColumn<BorrowedBooks, LocalDate> BookLogs_BDate;

@@ -36,6 +36,10 @@ import library.User;
 
 import java.util.ArrayList;
 
+/**
+ * Controller for managing book-related operations, including adding, updating,
+ * and removing books.
+ */
 public class BookManagementController {
     @FXML
     private TableView<Book> bookManagementTableView;
@@ -78,6 +82,11 @@ public class BookManagementController {
 
     // private Set<Book> editedBooks = new HashSet<>();
 
+    /**
+     * Sets the data for the book management table.
+     *
+     * @param bookData The list of books to display.
+     */
     public void setBookData(List<Book> bookData) {
         // Chuyển danh sách sách thành ObservableList để hiển thị trong TableView
         ObservableList<Book> books = FXCollections.observableArrayList(bookData);
@@ -122,6 +131,12 @@ public class BookManagementController {
     // System.out.println("da them sach duoc sua: " + book.getName());
     // }
 
+    /**
+     * Handles the addition of a new book.
+     *
+     * @param event The mouse event triggering the addition.
+     * @throws Exception If an error occurs during the addition.
+     */
     @FXML
     private void addNewBook(MouseEvent event) throws Exception {
         id_newbook = generateNewId();
@@ -133,6 +148,12 @@ public class BookManagementController {
         });
     }
 
+    /**
+     * Handles editing commits in the table view.
+     *
+     * @param event The cell edit event.
+     * @param <T>   The type of the edited value.
+     */
     private <T> void handleEditCommit(TableColumn.CellEditEvent<Book, T> event) {
         Book book = event.getRowValue();
         T newValue = event.getNewValue();
@@ -173,6 +194,12 @@ public class BookManagementController {
                 book.getAvailable() != 0;
     }
 
+    /**
+     * Removes a selected book from the management table and database.
+     *
+     * @param event The mouse event triggering the removal.
+     * @throws Exception If an error occurs during the removal.
+     */
     public void remove(MouseEvent event) throws Exception {
         Book selectedBook = bookManagementTableView.getSelectionModel().getSelectedItem();
         if (selectedBook == null) {
@@ -203,6 +230,13 @@ public class BookManagementController {
         }
     }
 
+    /**
+     * Displays an alert dialog.
+     *
+     * @param alertType The type of the alert.
+     * @param title     The title of the alert.
+     * @param content   The content message of the alert.
+     */
     private void showAlert(AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -210,6 +244,12 @@ public class BookManagementController {
         alert.showAndWait();
     }
 
+    /**
+     * Generates a new unique ID for a book.
+     *
+     * @return The new unique ID.
+     * @throws Exception If an error occurs during ID generation.
+     */
     private int generateNewId() throws Exception {
 
         String query = "SELECT MAX(ID) FROM book";
@@ -224,6 +264,11 @@ public class BookManagementController {
         }
     }
 
+    /**
+     * Handles the search functionality based on user input.
+     *
+     * @param event The mouse event triggering the search.
+     */
     @FXML
     void Search(MouseEvent event) {
         if (Search.getText().trim().isEmpty()) {
@@ -258,6 +303,11 @@ public class BookManagementController {
         Search.clear();
     }
 
+    /**
+     * Cancels the current search and resets the table view.
+     *
+     * @param e The action event triggering the cancellation.
+     */
     @FXML
     void cancel(ActionEvent e) {
         if (e.getSource() == cancelSearch) {

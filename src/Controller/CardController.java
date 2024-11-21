@@ -7,6 +7,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import library.Book;
 
+/**
+ * Controller for managing individual book cards in the UI.
+ */
 public class CardController {
 
     @FXML
@@ -26,6 +29,11 @@ public class CardController {
 
     private String[] colors = { "B9E5FF", "BDB2FE", "FB9AA8", "FF5056" };
 
+    /**
+     * Sets the data for a book card.
+     *
+     * @param book The book to display on the card.
+     */
     public void setData(Book book) {
         bookName.setText(book.getName());
         authorName.setText(book.getAuthor());

@@ -23,6 +23,10 @@ import library.User;
 
 import java.net.URL;
 
+/**
+ * Controller for the main Hello view, managing navigation and user
+ * interactions.
+ */
 public class HelloController implements Initializable {
     @FXML
     private HBox home;
@@ -54,10 +58,18 @@ public class HelloController implements Initializable {
     @FXML
     private HBox availableBooks;
 
+    /**
+     * Sets the displayed user name.
+     *
+     * @param user_Name The name of the user to display.
+     */
     void setName(String user_Name) {
         app_Name.setText(user_Name);
     }
 
+    /**
+     * Resets the menu selection styles.
+     */
     private void resetMenuSelection() {
         home.getStyleClass().remove("selected");
         borrowedBooks.getStyleClass().remove("selected");
@@ -69,6 +81,11 @@ public class HelloController implements Initializable {
         bookManagementBox.getStyleClass().remove("selected");
     }
 
+    /**
+     * Handles the action of returning to the home view.
+     *
+     * @param event The mouse event triggering the action.
+     */
     @FXML
     private void returnHome(MouseEvent event) {
         resetMenuSelection();
@@ -89,6 +106,11 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Displays the list of borrowed books.
+     *
+     * @throws Exception If an error occurs while loading the borrowed books view.
+     */
     @FXML
     private void showBorrowedBooks() throws Exception {
         resetMenuSelection();
@@ -113,6 +135,14 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Initializes the HelloController.
+     *
+     * @param url            The location used to resolve relative paths for the
+     *                       root object.
+     * @param resourceBundle The resources used to localize the root object.
+     */
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Home.fxml"));
@@ -130,6 +160,12 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Logs out the current user.
+     *
+     * @param event The mouse event triggering the logout.
+     * @throws IOException If an error occurs during the logout process.
+     */
     @FXML
     public void Log_Out(MouseEvent event) throws IOException {
         resetMenuSelection();
@@ -151,9 +187,16 @@ public class HelloController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("LIBRARY");
             stage.show();
+            // Consume the event
+            event.consume();
         }
     }
 
+    /**
+     * Handles book management actions.
+     *
+     * @param event The mouse event triggering the action.
+     */
     @FXML
     public void bookManagement(MouseEvent event) {
         resetMenuSelection();
@@ -185,6 +228,11 @@ public class HelloController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Displays available books.
+     *
+     * @param event The mouse event triggering the display.
+     */
     @FXML
     public void showAvailableBook(MouseEvent event) {
         resetMenuSelection();
@@ -207,6 +255,12 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Manages user-related actions.
+     *
+     * @param event The mouse event triggering the action.
+     * @throws Exception If an error occurs during user management.
+     */
     @FXML
     public void userManagement(MouseEvent event) throws Exception {
         resetMenuSelection();

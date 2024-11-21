@@ -7,11 +7,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an admin user in the library system.
+ */
 public class Admin extends User {
+
+    /**
+     * Constructs an Admin with specified details.
+     *
+     * @param name     the admin's name
+     * @param email    the admin's email
+     * @param phone    the admin's phone number
+     * @param password the admin's password
+     */
     public Admin(String name, String email, String phone, String password) {
         super(name, email, phone, password);
     }
 
+    /**
+     * Retrieves an admin by phone number.
+     *
+     * @param phoneIn the phone number to search for
+     * @return the Admin object if found, otherwise null
+     * @throws Exception if an error occurs during the operation
+     */
     public static Admin getUser(String phoneIn) throws Exception {
         String query = "SELECT * FROM admin WHERE phone = ? ";
         try (Connection conn = DbConfig.connect();
@@ -34,6 +53,12 @@ public class Admin extends User {
         return null;
     }
 
+    /**
+     * Shows user data including both users and admins.
+     *
+     * @return a list of all users and admins
+     * @throws Exception if an error occurs during the operation
+     */
     public List<User> showUserData() throws Exception {
         List<User> List_user = new ArrayList<>();
         String query1 = "SELECT * FROM user";
