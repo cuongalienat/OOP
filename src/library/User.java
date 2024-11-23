@@ -1,8 +1,5 @@
 package library;
 
-import java.util.Properties;
-//import java.util.Map;
-//import java.util.HashMap;
 import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class User {
     Scanner sc = new Scanner(System.in);
@@ -20,7 +18,6 @@ public class User {
     private String email;
     private int quantityBorrowedBook;
     private int quantityOverduedateBook;
-    // private Map <String, Book> myMap_Book = new HashMap<>();
 
     public User() {
     }
@@ -120,12 +117,14 @@ public class User {
     }
 
     public void addData() throws Exception {
-        String query = "INSERT INTO user.user (name, phone, password, email) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO user (name, phone, password, email) VALUES (?, ?, ?, ?)";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             stmt.setString(1, name);
             stmt.setString(2, phone);
-            stmt.setString(3, password);
+            stmt.setString(3, hashedPassword);
             stmt.setString(4, email);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -162,8 +161,8 @@ public class User {
 
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, password);
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+            stmt.setString(1, hashedPassword);
             stmt.setString(2, phone);
 
             stmt.executeUpdate();
@@ -196,13 +195,5 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public void showData() {
-        System.out.println(name + " " + phone + " " + email + " " + password);
-    }
-
-    public void Search_phone() {
-
     }
 }

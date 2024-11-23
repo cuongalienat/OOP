@@ -19,7 +19,6 @@ public class Book {
     Scanner sc = new Scanner(System.in);
 
     private String name;
-    // private String imageSrc;
     private String author;
     private String collection;
     private int id;
@@ -54,14 +53,6 @@ public class Book {
     public void setName(String name) {
         this.name = name;
     }
-
-    // public String getImageSrc() {
-    // return imageSrc;
-    // }
-
-    // public void setImageSrc(String imageSrc) {
-    // this.imageSrc = imageSrc;
-    // }
 
     public String getAuthor() {
         return author;

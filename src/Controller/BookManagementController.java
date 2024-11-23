@@ -1,16 +1,10 @@
 package Controller;
 
-import java.sql.Statement;
-import java.io.IOException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -32,7 +26,6 @@ import javafx.util.converter.IntegerStringConverter;
 import library.Book;
 import library.BorrowedBooks;
 import library.DbConfig;
-import library.User;
 
 import java.util.ArrayList;
 
