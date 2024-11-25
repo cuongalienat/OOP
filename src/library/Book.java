@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.time.LocalDate;
 
+/**
+ * Represents a book in the library system.
+ */
 public class Book {
     Scanner sc = new Scanner(System.in);
 
@@ -24,13 +27,30 @@ public class Book {
     private int id;
     private int available;
 
+    /**
+     * Default constructor.
+     */
     public Book() {
     }
 
+    /**
+     * Constructs a Book with a specific ID.
+     *
+     * @param id the book ID
+     */
     public Book(int id) {
         this.id = id;
     }
 
+    /**
+     * Constructs a Book with detailed information.
+     *
+     * @param collection the collection the book belongs to
+     * @param name       the title of the book
+     * @param author     the author of the book
+     * @param id         the book ID
+     * @param available  the number of available copies
+     */
     public Book(String collection, String name, String author, Integer id, Integer available) {
         this.collection = collection;
         this.name = name;
@@ -39,6 +59,14 @@ public class Book {
         this.available = available;
     }
 
+    /**
+     * Constructs a Book with detailed information.
+     *
+     * @param collection the collection the book belongs to
+     * @param name       the title of the book
+     * @param author     the author of the book
+     * @param id         the book ID
+     */
     public Book(String collection, String name, String author, Integer id) {
         this.collection = collection;
         this.name = name;
@@ -46,46 +74,101 @@ public class Book {
         this.id = id;
     }
 
+    /**
+     * Gets the book's name.
+     *
+     * @return the name of the book
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the book's name.
+     *
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets the book's author.
+     *
+     * @return the author of the book
+     */
     public String getAuthor() {
         return author;
     }
 
+    /**
+     * Sets the book's author.
+     *
+     * @param author the author to set
+     */
     public void setAuthor(String author) {
         this.author = author;
     }
 
+    /**
+     * Gets the book's ID.
+     *
+     * @return the ID of the book
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Sets the book's ID.
+     *
+     * @param id the ID to set
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Gets the book's collection.
+     *
+     * @return the collection of the book
+     */
     public String getCollection() {
         return collection;
     }
 
+    /**
+     * Sets the book's collection.
+     *
+     * @param collection the collection to set
+     */
     public void setCollection(String collection) {
         this.collection = collection;
     }
 
+    /**
+     * Sets the availability of the book.
+     *
+     * @param available the availability to set
+     */
     public void setAvailable(int available) {
         this.available = available;
     }
 
+    /**
+     * Gets the availability of the book.
+     *
+     * @return the availability of the book
+     */
     public int getAvailable() {
         return this.available;
     }
 
+    /**
+     * Adds the book data to the database.
+     *
+     * @throws Exception if an error occurs during the operation
+     */
     public void addData() throws Exception {
         // using " ` " to border collumns contain space
         String query = "INSERT INTO book (`Offer Collection`, `Book Title`, `Contributors`, `ID`, `available`) VALUES (?, ?, ?, ?, ?)";
@@ -103,6 +186,13 @@ public class Book {
         }
     }
 
+    /**
+     * Retrieves a book by its ID.
+     *
+     * @param inputID the ID of the book to retrieve
+     * @return the Book object if found, otherwise null
+     * @throws Exception if an error occurs during the operation
+     */
     public static Book getBook(String inputID) throws Exception {
         String query = "SELECT * FROM book WHERE ID = ?";
         try (Connection conn = DbConfig.connect();
@@ -126,6 +216,11 @@ public class Book {
         return null;
     }
 
+    /**
+     * Retrieves the list of all books in the library.
+     *
+     * @return the list of all books
+     */
     public static List<Book> getLibrary() {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT * FROM book"; // Truy vấn lấy tất cả sách
@@ -153,6 +248,11 @@ public class Book {
         return bookList;
     }
 
+    /**
+     * Retrieves the list of available books in the library.
+     *
+     * @return the list of available books
+     */
     public static List<Book> getAvailableBooks() {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT * FROM book WHERE Available > 0";
@@ -180,6 +280,12 @@ public class Book {
         return bookList;
     }
 
+    /**
+     * Adds a borrowed book to the database.
+     *
+     * @param selectedDate the due date for the borrowed book
+     * @throws Exception if an error occurs during the operation
+     */
     public void addBorrowedBookToDB(LocalDate selectedDate) throws Exception {
         LocalDate borrowedDate = LocalDate.now();
         LocalDate dueDate = selectedDate;
@@ -242,6 +348,12 @@ public class Book {
         }
     }
 
+    /**
+     * Searches for books by title.
+     *
+     * @param Title the title to search for
+     * @return the list of books matching the title
+     */
     public static List<Book> searchBookByTitle(String Title) {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT * FROM book WHERE `Book Title` LIKE ? ";
@@ -270,6 +382,12 @@ public class Book {
         return bookList;
     }
 
+    /**
+     * Searches for books by collection.
+     *
+     * @param Collection the collection to search for
+     * @return the list of books matching the collection
+     */
     public static List<Book> searchBookByCollections(String Collection) {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT * FROM book WHERE `Offer Collection` LIKE ? ";
@@ -298,6 +416,12 @@ public class Book {
         return bookList;
     }
 
+    /**
+     * Searches for books by author.
+     *
+     * @param Contributor the author to search for
+     * @return the list of books matching the author
+     */
     public static List<Book> searchBookByAuthor(String Contributor) {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT * FROM book WHERE `Contributors` LIKE ? ";
@@ -314,7 +438,7 @@ public class Book {
                 Integer available = rs.getInt("Available");
 
                 Book book = new Book(collection, name, author, id, available);
-                bookList.add(book); // Thêm vào danh sách
+                bookList.add(book); // Thêm vào danh s��ch
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
@@ -326,6 +450,12 @@ public class Book {
         return bookList;
     }
 
+    /**
+     * Searches for books by ID.
+     *
+     * @param ID the ID to search for
+     * @return the list of books matching the ID
+     */
     public static List<Book> searchBookByID(int ID) {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT * FROM book WHERE Id =  ?";
@@ -354,6 +484,11 @@ public class Book {
         return bookList;
     }
 
+    /**
+     * Updates the book information in the database.
+     *
+     * @throws Exception if an error occurs during the operation
+     */
     public void updateBookInDatabase() throws Exception {
         String query = "UPDATE book SET `Book Title` = ?, Contributors = ?, `Offer Collection` = ?, Available = ? WHERE ID = ?";
         try (Connection conn = DbConfig.connect();
@@ -372,6 +507,12 @@ public class Book {
         }
     }
 
+    /**
+     * Deletes the book from the database.
+     *
+     * @param bookId the ID of the book to delete
+     * @throws Exception if an error occurs during the operation
+     */
     public void deleteBookFromDatabase(int bookId) throws Exception {
         String query = "DELETE FROM book WHERE ID = ?";
         try (Connection conn = DbConfig.connect();

@@ -24,6 +24,9 @@ import library.DbConfig;
 
 import java.net.URL;
 
+/**
+ * Controller for managing the Home view and related operations.
+ */
 public class HomeController implements Initializable {
 
     @FXML
@@ -32,6 +35,13 @@ public class HomeController implements Initializable {
     @FXML
     private GridPane bookContainer;
 
+    /**
+     * Initializes the HomeController.
+     *
+     * @param url            The location used to resolve relative paths for the
+     *                       root object.
+     * @param resourceBundle The resources used to localize the root object.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -74,7 +84,66 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * Retrieves all books from the database.
+     *
+     * @return A list of all books.
+     */
+    private List<Book> getAllBooks() {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM librarymanagement.book"; // Truy vấn lấy tất cả sách
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
 
+            while (rs.next()) {
+                String collection = rs.getString("Offer Collection");
+                String name = rs.getString("Book Title");
+                String author = rs.getString("Contributors");
+                Integer id = rs.getInt("ID");
+                Integer available = rs.getInt("Available");
+
+                Book book = new Book(collection, name, author, id, available);
+                bookList.add(book); // Thêm vào danh sách
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi kết nối database
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace(); // Xử lý lỗi khác
+        }
+        return bookList;
+    }
+
+    /**
+     * Retrieves a random subset of books.
+     *
+     * @param books The list of all books.
+     * @param cnt   The number of random books to retrieve.
+     * @return A list of random books.
+     */
+    private List<Book> getRandomBooks(List<Book> books, int cnt) {
+        List<Book> randomBooks = new ArrayList<>();
+        if (books.size() <= cnt) {
+            return books;
+        }
+        List<Integer> usedIdx = new ArrayList<>();
+        while (randomBooks.size() < cnt) {
+            int randomIdx = (int) (Math.random() * books.size());
+            if (!usedIdx.contains(randomIdx)) {
+                randomBooks.add(books.get(randomIdx));
+                usedIdx.add(randomIdx);
+            }
+        }
+        return randomBooks;
+    }
+
+    /**
+     * Displays the details of a selected book.
+     *
+     * @param book The book to display details for.
+     */
     private void showBookDetails(Book book) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();

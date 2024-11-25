@@ -14,44 +14,96 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import Controller.loginController;
 
+/**
+ * Represents a borrowed book in the library system.
+ */
 public class BorrowedBooks extends Book {
     private String phone_user;
     private LocalDate borrowDate;
     private LocalDate dueDate;
     private String status;
 
+    /**
+     * Gets the user's phone number.
+     *
+     * @return the phone number
+     */
     public String getPhone_user() {
         return phone_user;
     }
 
+    /**
+     * Sets the user's phone number.
+     *
+     * @param phone_user the phone number to set
+     */
     public void setPhone_user(String phone_user) {
         this.phone_user = phone_user;
     }
 
+    /**
+     * Gets the status of the borrowed book.
+     *
+     * @return the status
+     */
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Sets the status of the borrowed book.
+     *
+     * @param status the status to set
+     */
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Sets the borrow date of the book.
+     *
+     * @param borrowDate the borrow date to set
+     */
     public void setBorrowDate(LocalDate borrowDate) {
         this.borrowDate = borrowDate;
     }
 
+    /**
+     * Sets the due date of the book.
+     *
+     * @param dueDate the due date to set
+     */
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
+    /**
+     * Gets the borrow date of the book.
+     *
+     * @return the borrow date
+     */
     public LocalDate getBorrowDate() {
         return borrowDate;
     }
 
+    /**
+     * Gets the due date of the book.
+     *
+     * @return the due date
+     */
     public LocalDate getDueDate() {
         return dueDate;
     }
 
+    /**
+     * Constructs a BorrowedBooks object with the specified details.
+     *
+     * @param id         the ID of the book
+     * @param phone_user the user's phone number
+     * @param borrowDate the borrow date
+     * @param dueDate    the due date
+     * @param status     the status of the borrowed book
+     */
     public BorrowedBooks(int id, String phone_user, LocalDate borrowDate, LocalDate dueDate, String status) {
         super(id);
         this.phone_user = phone_user;
@@ -60,6 +112,18 @@ public class BorrowedBooks extends Book {
         this.status = status;
     }
 
+    /**
+     * Constructs a BorrowedBooks object with the specified details.
+     *
+     * @param collection the collection of the book
+     * @param name       the name of the book
+     * @param author     the author of the book
+     * @param id         the ID of the book
+     * @param available  the availability status of the book
+     * @param borrowDate the borrow date
+     * @param dueDate    the due date
+     * @param status     the status of the borrowed book
+     */
     public BorrowedBooks(String collection, String name, String author, int id, int available, LocalDate borrowDate,
             LocalDate dueDate, String status) {
         super(collection, name, author, id, available);
@@ -68,6 +132,17 @@ public class BorrowedBooks extends Book {
         this.status = status;
     }
 
+    /**
+     * Constructs a BorrowedBooks object with the specified details.
+     *
+     * @param collection the collection of the book
+     * @param name       the name of the book
+     * @param author     the author of the book
+     * @param id         the ID of the book
+     * @param borrowDate the borrow date
+     * @param dueDate    the due date
+     * @param status     the status of the borrowed book
+     */
     public BorrowedBooks(String collection, String name, String author, int id, LocalDate borrowDate, LocalDate dueDate,
             String status) {
         super(collection, name, author, id);
@@ -76,6 +151,9 @@ public class BorrowedBooks extends Book {
         this.status = status;
     }
 
+    /**
+     * Adds the borrowed book to the database.
+     */
     public void addBorrowedBookToDB() {
         Task<Void> task = new Task<Void>() {
             @Override
@@ -112,6 +190,7 @@ public class BorrowedBooks extends Book {
                             try (PreparedStatement stmtSafeOff = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 0")) {
                                 stmtSafeOff.executeUpdate();
                             }
+
                             // Thêm vào booklogs
                             try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
                                 insertStmt.setInt(1, getId());
@@ -127,10 +206,12 @@ public class BorrowedBooks extends Book {
                                 updateStmt.setInt(1, getId());
                                 updateStmt.executeUpdate();
                             }
+
                             // Bật lại kiểm tra khóa ngoại
                             try (PreparedStatement stmtSafeOn = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")) {
                                 stmtSafeOn.executeUpdate();
                             }
+
                             // Cập nhật giao diện người dùng
                             Platform.runLater(() -> {
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -155,6 +236,13 @@ public class BorrowedBooks extends Book {
         new Thread(task).start(); // xử lí đa luồng
     }
 
+    /**
+     * Returns a book.
+     *
+     * @param phone_user the user's phone number
+     * @param book_id    the ID of the book to return
+     * @throws Exception if an error occurs during the operation
+     */
     public void returnBook(String phone_user, int book_id) throws Exception {
         String query = "DELETE FROM booklogs WHERE phone_user = ? AND (book_id = ? OR (? IS NULL AND book_id IS NULL))";
         try (Connection conn = DbConfig.connect();
@@ -170,6 +258,14 @@ public class BorrowedBooks extends Book {
         }
     }
 
+    /**
+     * Updates the status of a borrowed book.
+     *
+     * @param id     the ID of the book
+     * @param phone  the user's phone number
+     * @param status the new status to set
+     * @throws Exception if an error occurs during the operation
+     */
     public void updateStatus(int id, String phone, String status) throws Exception {
         String query = "UPDATE booklogs SET status = ? WHERE phone_user = ? and book_id = ?";
         try (Connection conn = DbConfig.connect();
@@ -183,6 +279,13 @@ public class BorrowedBooks extends Book {
         }
     }
 
+    /**
+     * Checks if a book can be deleted.
+     *
+     * @param book_id the ID of the book
+     * @return true if the book can be deleted, false otherwise
+     * @throws Exception if an error occurs during the operation
+     */
     public static boolean CheckBookBeforeDelete(int book_id) throws Exception {
         String query = "Select * from booklogs WHERE book_id = ? and status in ('Active','Overdue')";
         try (Connection conn = DbConfig.connect();
@@ -196,6 +299,13 @@ public class BorrowedBooks extends Book {
         return true;
     }
 
+    /**
+     * Checks if a book can be borrowed.
+     *
+     * @param phone the user's phone number
+     * @return true if the book can be borrowed, false otherwise
+     * @throws Exception if an error occurs during the operation
+     */
     public static boolean CheckBookBeforeBorrow(String phone) throws Exception {
         String query = "Select * from booklogs WHERE phone_user = ? and status = 'Overdue' ";
         try (Connection conn = DbConfig.connect();
@@ -209,6 +319,12 @@ public class BorrowedBooks extends Book {
         return true;
     }
 
+    /**
+     * Gets all borrowed books for the current user.
+     *
+     * @return an observable list of borrowed books
+     * @throws Exception if an error occurs during the operation
+     */
     public static ObservableList<BorrowedBooks> getAllBorrowedBooks() throws Exception {
         User user = loginController.getUser_now();
         String userPhone = user.getPhone();
@@ -245,6 +361,12 @@ public class BorrowedBooks extends Book {
         return borrowedBooksList;
     }
 
+    /**
+     * Gets all book logs.
+     *
+     * @return an observable list of book logs
+     * @throws Exception if an error occurs during the operation
+     */
     public static ObservableList<BorrowedBooks> getBookLogs() throws Exception {
         ObservableList<BorrowedBooks> bookLogsList = FXCollections.observableArrayList();
         String query = "SELECT * FROM booklogs";
@@ -269,6 +391,13 @@ public class BorrowedBooks extends Book {
         return bookLogsList;
     }
 
+    /**
+     * Searches for book logs by book ID.
+     *
+     * @param Id the ID of the book
+     * @return an observable list of book logs
+     * @throws Exception if an error occurs during the operation
+     */
     public static ObservableList<BorrowedBooks> searchIdBookLogs(int Id) throws Exception {
         ObservableList<BorrowedBooks> bookLogsList = FXCollections.observableArrayList();
         String query = "SELECT * FROM booklogs where book_id = ?";
@@ -293,6 +422,13 @@ public class BorrowedBooks extends Book {
         return bookLogsList;
     }
 
+    /**
+     * Searches for book logs by phone number.
+     *
+     * @param phone the user's phone number
+     * @return an observable list of book logs
+     * @throws Exception if an error occurs during the operation
+     */
     public static ObservableList<BorrowedBooks> searchPhoneBookLogs(String phone) throws Exception {
         ObservableList<BorrowedBooks> bookLogsList = FXCollections.observableArrayList();
         String query = "SELECT * FROM booklogs where Phone_user = ?";
@@ -317,6 +453,13 @@ public class BorrowedBooks extends Book {
         return bookLogsList;
     }
 
+    /**
+     * Searches for book logs by status.
+     *
+     * @param Status the status of the book
+     * @return an observable list of book logs
+     * @throws Exception if an error occurs during the operation
+     */
     public static ObservableList<BorrowedBooks> searchStatusBookLogs(String Status) throws Exception {
         ObservableList<BorrowedBooks> bookLogsList = FXCollections.observableArrayList();
         String query = "SELECT * FROM booklogs where Status = ?";

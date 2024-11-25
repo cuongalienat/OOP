@@ -19,6 +19,10 @@ import javafx.scene.layout.AnchorPane;
 import library.BorrowedBooks;
 import library.DbConfig;
 
+/**
+ * Controller for managing borrowed books, including displaying and returning
+ * books.
+ */
 public class BorrowedBooksController {
     @FXML
     private AnchorPane anchorPane;
@@ -50,10 +54,21 @@ public class BorrowedBooksController {
     @FXML
     private TableColumn<BorrowedBooks, String> statusColumn;
 
+    /**
+     * Adds a borrowed book to the database.
+     *
+     * @param book The borrowed book to add.
+     * @throws Exception If an error occurs during the database operation.
+     */
     public void addBorrowedBook(BorrowedBooks book) throws Exception {
         book.addBorrowedBookToDB();
     }
 
+    /**
+     * Displays all borrowed books in the table view.
+     *
+     * @throws Exception If an error occurs while retrieving borrowed books.
+     */
     public void showBorrowedBooks() throws Exception {
         ObservableList<BorrowedBooks> borrowedList = BorrowedBooks.getAllBorrowedBooks();
 
@@ -80,6 +95,11 @@ public class BorrowedBooksController {
         borrowedBooksTable.setItems(borrowedList); // Hiển thị danh sách sách đã mượn
     }
 
+    /**
+     * Handles the return of a selected book.
+     *
+     * @param event The mouse event triggering the return.
+     */
     @FXML
     public void returnBook(MouseEvent event) {
         BorrowedBooks selectedBook = borrowedBooksTable.getSelectionModel().getSelectedItem();
@@ -121,6 +141,12 @@ public class BorrowedBooksController {
         }
     }
 
+    /**
+     * Updates the available count of a book in the database.
+     *
+     * @param bookId The ID of the book to update.
+     * @throws Exception If an error occurs during the update.
+     */
     private void updateAvailableCount(int bookId) throws Exception {
         String updateAvailableQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
 
@@ -135,6 +161,12 @@ public class BorrowedBooksController {
         }
     }
 
+    /**
+     * Deletes a book from the database.
+     *
+     * @param bookId The ID of the book to delete.
+     * @throws Exception If an error occurs during the deletion.
+     */
     public void deleteBookFromDatabase(int bookId) throws Exception {
         String query = "DELETE FROM booklogs WHERE book_id = ?";
         try (Connection conn = DbConfig.connect();

@@ -11,7 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" styleClass="borrowBG-style" stylesheets="@../design/Css/borrowedBookDesign.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AvailableBookController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="461.0" prefWidth="850.0" styleClass="borrowBG-style" stylesheets="@../design/Css/borrowedBookDesign.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AvailableBookController">
     <children>
         <Label layoutX="20.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Available books" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="14.0" />
         

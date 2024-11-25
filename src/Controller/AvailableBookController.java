@@ -31,6 +31,9 @@ import library.Book;
 import library.BorrowedBooks;
 import library.User;
 
+/**
+ * Controller for managing and displaying available books to users.
+ */
 public class AvailableBookController {
     @FXML
     private TextField Search;
@@ -61,6 +64,12 @@ public class AvailableBookController {
 
     private ObservableList<Book> books = FXCollections.observableArrayList();
 
+    /**
+     * Handles the action of borrowing a selected book.
+     *
+     * @param event The mouse event triggering the borrow action.
+     * @throws Exception If an error occurs during the borrowing process.
+     */
     @FXML
     void borrowBook(MouseEvent event) throws Exception {
         User user_now = loginController.getUser_now();
@@ -129,6 +138,11 @@ public class AvailableBookController {
         }
     }
 
+    /**
+     * Sets the data for the available books table.
+     *
+     * @param bookData The list of available books to display.
+     */
     public void setBookData(List<Book> bookData) {
         ObservableList<String> searchOptions = FXCollections.observableArrayList("Id", "Title", "Collection",
                 "Contributors");
@@ -154,6 +168,11 @@ public class AvailableBookController {
         availableBook_tableview.setItems(books);
     }
 
+    /**
+     * Displays detailed information about a selected book.
+     *
+     * @param book The book to display details for.
+     */
     private void showBookDetails(Book book) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -179,6 +198,9 @@ public class AvailableBookController {
         }
     }
 
+    /**
+     * Initializes the AvailableBookController.
+     */
     public void initialize() {
         availableBook_tableview.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Kiểm tra nếu nhấp đúp
@@ -190,6 +212,11 @@ public class AvailableBookController {
         });
     }
 
+    /**
+     * Handles the search functionality based on user input.
+     *
+     * @param event The mouse event triggering the search.
+     */
     @FXML
     void Search(MouseEvent event) {
 
@@ -226,6 +253,11 @@ public class AvailableBookController {
         Search.clear();
     }
 
+    /**
+     * Cancels the current search and resets the table view.
+     *
+     * @param event The action event triggering the cancellation.
+     */
     @FXML
     void Cancel(ActionEvent event) {
         if (event.getSource() == Cancel) {
