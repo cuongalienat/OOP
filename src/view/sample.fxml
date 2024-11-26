@@ -208,7 +208,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox fx:id="reports" alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="184.0" stylesheets="@../design/Css/style.css">
+                  <HBox fx:id="reports" onMouseClicked="#showReports" alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="184.0" stylesheets="@../design/Css/style.css">
                      <children>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>

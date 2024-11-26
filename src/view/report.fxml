@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ReportController">
+    <children>
+        <VBox spacing="10.0" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" 
+              AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+            <!-- Line Chart Section -->
+            <LineChart fx:id="borrowingTrendsLineChart" title="Borrowing Trends (Last 6 Months)">
+                <xAxis>
+                    <CategoryAxis fx:id="xAxisBorrowingTrends" label="Month" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis fx:id="yAxisBorrowingTrends" label="Number of Borrows" />
+                </yAxis>
+            </LineChart>
+
+            <!-- Pie Charts Section -->
+            <HBox spacing="50.0">
+                <!-- First Pie Chart -->
+                <PieChart fx:id="currentMonthPerformancePieChart" title="Library Performance (Current Month)" 
+                          HBox.hgrow="ALWAYS" />
+                <!-- Second Pie Chart -->
+                <PieChart fx:id="offerCollectionPieChart" title="Distribution of Borrowed Books by Offer Collection (Current Month)" 
+                          HBox.hgrow="ALWAYS" />
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>

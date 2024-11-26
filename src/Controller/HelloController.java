@@ -298,5 +298,30 @@ public class HelloController implements Initializable {
         alert.showAndWait();
     }
 
-    
+    @FXML
+    public void showReports(MouseEvent event) {
+        resetMenuSelection(); // Reset lựa chọn menu
+        reports.getStyleClass().add("selected"); // Đánh dấu menu báo cáo được chọn
+
+        try {
+            // Load the `reports.fxml` file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/report.fxml"));
+            Parent reportsRoot = fxmlLoader.load();
+
+            // Clear current scene content and add the new report view
+            choosedScene.getChildren().clear();
+            choosedScene.getChildren().add(reportsRoot);
+
+            // Set anchoring for the loaded FXML to match the parent container
+            AnchorPane.setTopAnchor(reportsRoot, 0.0);
+            AnchorPane.setBottomAnchor(reportsRoot, 0.0);
+            AnchorPane.setLeftAnchor(reportsRoot, 0.0);
+            AnchorPane.setRightAnchor(reportsRoot, 0.0);
+
+            // Since initialize() handles populating data, no manual calls to populate methods are needed
+        } catch (IOException e) {
+            // Print stack trace in case of an error
+            e.printStackTrace();
+        }
+    }
 }
