@@ -33,6 +33,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -95,63 +96,63 @@ public class BookDetailsController implements Initializable {
     // khi click vào bookBox, sẽ lấy thông tin từ book để setBookDetails
     // test
     public void setBookDetails(Book book) {
-        // Image image = new Image(getClass().getResourceAsStream(book.getImageSrc()));
-        // bookImage.setImage(image);
+        // Lưu trữ thông tin sách hiện tại
         curBook = book;
-        GoogleBooksAPI.searchBookByTitle(book.getName(), this::updateBookDetailsFromAPI);
-    }
-
-    public String updateBookDetailsFromAPI(String jsonResponse) {
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-        JSONObject volumeInfo = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
-
-        String title = volumeInfo.getString("title");
-        String authors = volumeInfo.getJSONArray("authors").getString(0);
-        String description = volumeInfo.has("description") ? volumeInfo.getString("description")
-                : "No description available.";
-        String imageUrl = "";
-        if (volumeInfo.has("imageLinks")) {
-            JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-            imageUrl = imageLinks.has("thumbnail") ? imageLinks.getString("thumbnail") : "No image available.";
-        } else {
-            imageUrl = "/design/Images/default_book.png";
-
-        }
-
-        nameText.setText(title);
-        authorText.setText(authors);
-        bookDetails.setText(description);
+    
+        // Cập nhật các thành phần giao diện
+        nameText.setText(book.getName());
+        authorText.setText(book.getAuthor());
+        bookDetails.setText(book.getDescription()); // Nếu không có thông tin mô tả trong DB
+        
+        
+        // Kiểm tra và hiển thị ảnh
+        String imageUrl = book.getImageSrc() != null ? book.getImageSrc() : "/design/Images/default_book.png";
         loadBookImage(imageUrl);
-        return imageUrl;
     }
-
+    
     private void loadBookImage(String imageUrl) {
-        Task<Image> task = new Task<Image>() {
+        // Đặt kích thước cố định cho ImageView
+        double fixedWidth = 202;
+        double fixedHeight = 324;
+    
+        // Cập nhật kích thước ImageView
+        image.setFitWidth(fixedWidth);
+        image.setFitHeight(fixedHeight);
+    
+        // Tạo Task để tải ảnh
+        Task<Image> task = new Task<>() {
             @Override
             protected Image call() throws Exception {
-                // Sử dụng kích thước của ImageView để resize hình ảnh
-                double fitWidth = image.getFitWidth();
-                double fitHeight = image.getFitHeight();
-                return new Image(imageUrl, fitWidth, fitHeight, true, true); // True giữ tỷ lệ ảnh
+                // Tải ảnh với kích thước cố định
+                return new Image(imageUrl, fixedWidth, fixedHeight, true, true);
             }
     
             @Override
             protected void succeeded() {
-                // Cập nhật hình ảnh vào ImageView khi tải thành công
+                // Cập nhật ảnh cho ImageView
                 image.setImage(getValue());
             }
     
             @Override
             protected void failed() {
-                // Xử lý nếu không tải được ảnh, dùng ảnh mặc định
-                image.setImage(new Image("/design/Images/default_book.png"));
+                // Hiển thị ảnh mặc định nếu không tải được
+                image.setImage(new Image("/design/Images/default_book.png", fixedWidth, fixedHeight, true, true));
             }
         };
     
-        // Chạy task trong Thread mới để không làm UI bị treo
-        new Thread(task).start();
-    }
+        // Đảm bảo tỉ lệ và bo góc của ảnh
+        image.setPreserveRatio(false); // Không giữ tỉ lệ gốc, để khớp với kích thước cố định
+        image.setSmooth(true);
     
+        // Bo góc cho ImageView
+        Rectangle clip = new Rectangle(fixedWidth, fixedHeight);
+        clip.setArcWidth(10);  // Bo góc
+        clip.setArcHeight(10);
+        image.setClip(clip);
+    
+        // Chạy Task trong Thread mới
+        new Thread(task).start();
+    }    
 
     protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();
     // protected static ObservableList<BorrowedBooks> borrowList =

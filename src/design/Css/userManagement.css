@@ -1,0 +1,66 @@
+.round-layouttt {
+    -fx-border-radius: 50; /* Bo góc cho viền */
+    -fx-border-color: #605252; /* Màu viền */
+    -fx-background-color: #F2F1EB; /* Màu nền */
+    -fx-background-radius: 50; /* Bo góc cho nền */
+    -fx-padding: 0 0 0 10; /* Thêm khoảng cách bên trong */
+}
+/* ComboBox */
+.combo-box {
+    -fx-background-color: #F2F1EB; /* Nền tổng thể */
+    -fx-border-color: #b89e80;     /* Viền pastel */
+    -fx-border-radius: 13;         /* Bo góc */
+    -fx-background-radius: 13;     /* Bo góc nền */
+    -fx-padding: 0 0 0 8;          /* Điều chỉnh khoảng cách */
+    -fx-font-size: 12px;           /* Kích thước chữ */
+    -fx-font-family: "Arial";      /* Font chữ */
+    -fx-text-fill: #605252;        /* Màu chữ */
+    -fx-pref-width: 108px;         /* Chiều rộng */
+    -fx-pref-height: 26px;         /* Chiều cao */
+}
+
+/* Chỉnh sửa hiển thị của văn bản khi giá trị được chọn */
+.combo-box .list-cell:selected {
+    -fx-background-color: transparent; /* Loại bỏ nền */
+    -fx-text-fill: #605252;            /* Màu chữ */
+}
+
+/* Khi hover */
+.combo-box:hover {
+    -fx-border-color: #887D7D; /* Đổi màu viền khi hover */
+}
+
+/* Khi được chọn (focused) */
+.combo-box:focused {
+    -fx-border-color: #886b4b;     /* Đổi màu viền */
+    -fx-background-color: #F2F1EB; /* Loại bỏ bất kỳ thay đổi nền */
+}
+
+/* Popup (Danh sách hiển thị) */
+.combo-box-popup {
+    -fx-background-color: #F2F1EB; /* Nền của danh sách */
+    -fx-border-color: #b89e80;     /* Viền danh sách */
+    -fx-border-radius: 10;         /* Bo góc */
+    -fx-background-radius: 10;
+}
+
+/* Items trong danh sách (Popup) */
+.list-cell {
+    -fx-padding: 5px;              /* Khoảng cách trong mỗi item */
+    -fx-font-size: 12px;           /* Font chữ nhỏ */
+    -fx-font-family: "Arial";      /* Font chữ */
+    -fx-text-fill: #605252;        /* Màu chữ */
+    -fx-background-color: transparent; /* Loại bỏ nền mặc định */
+}
+
+/* Khi hover trên item */
+.list-cell:hover {
+    -fx-background-color: #EAE7E2; /* Nền khi hover */
+    -fx-text-fill: #605252;        /* Màu chữ khi hover */
+}
+
+/* Khi chọn item */
+.list-cell:filled:selected {
+    -fx-background-color: transparent; /* Loại bỏ nền khi chọn */
+    -fx-text-fill: #605252;            /* Giữ màu chữ */
+}

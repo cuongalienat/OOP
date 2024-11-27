@@ -172,7 +172,7 @@ public class AvailableBookController {
 
             stage.initModality(Modality.APPLICATION_MODAL); // Đặt cửa sổ modal
             stage.setOnCloseRequest(event -> {
-                setBookData(Book.getAvailableBooks());
+                setBookData(Book.getAvailableBooks());  // đặt lại data cho tableview
             });
 
             stage.show(); // Hiển thị cửa sổ

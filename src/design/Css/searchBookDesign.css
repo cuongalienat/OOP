@@ -1,0 +1,110 @@
+/* Tổng thể giao diện */
+.root {
+    -fx-background-color: #F2F1EB; /* Nền pastel sáng */
+    -fx-padding: 20px;             /* Khoảng cách bên trong */
+}
+
+/* Header Label */
+.label {
+    -fx-text-fill: #6b4226;       /* Màu chữ nâu vintage */
+    -fx-font-size: 18px;         /* Kích thước chữ */
+    -fx-font-weight: bold;       /* Chữ đậm */
+    -fx-padding: 10px 0;         /* Khoảng cách trên dưới */
+    -fx-effect: dropshadow(gaussian, rgba(107, 66, 38, 0.5), 2, 0.2, 0, 1);
+}
+
+/* TextField (Ô nhập tìm kiếm) */
+.text-field {
+    -fx-background-color: #FFF7E6; /* Nền kem pastel */
+    -fx-border-color: #D3BCA2;     /* Viền nâu nhạt */
+    -fx-border-width: 2px;         /* Độ dày viền */
+    -fx-border-radius: 5px;        /* Bo góc viền */
+    -fx-background-radius: 5px;    /* Bo góc nền */
+    -fx-prompt-text-fill: #9e9e9e; /* Màu chữ gợi ý */
+    -fx-padding: 5px;              /* Khoảng cách bên trong */
+}
+
+/* TextField khi hover */
+.text-field:hover {
+    -fx-border-color: #B89E80; /* Màu viền khi hover */
+}
+
+/* Button (Nút tìm kiếm) */
+.button {
+    -fx-background-color: #B89E80; /* Màu nền nút */
+    -fx-border-radius: 5px;        /* Bo góc */
+    -fx-text-fill: white;          /* Màu chữ */
+    -fx-font-size: 14px;           /* Kích thước chữ */
+    -fx-font-weight: bold;         /* Chữ in đậm */
+    -fx-padding: 5px 15px;         /* Khoảng cách trong nút */
+    -fx-cursor: hand;              /* Con trỏ chuột */
+    -fx-effect: dropshadow(gaussian, rgba(184, 158, 128, 0.5), 2, 0.3, 0, 1);
+}
+
+/* Button khi hover */
+.button:hover {
+    -fx-background-color: #886b4b; /* Màu nền khi hover */
+}
+
+/* ScrollPane (Khu vực hiển thị danh sách sách) */
+.scroll-pane {
+    -fx-background: #FFF7E6;         /* Nền kem pastel */
+    -fx-border-color: #D3BCA2;      /* Viền pastel nâu nhạt */
+    -fx-border-radius: 10px;        /* Bo góc viền */
+    -fx-background-radius: 10px;    /* Bo góc nền */
+    -fx-padding: 10px;              /* Khoảng cách bên trong */
+}
+
+/* VBox trong ScrollPane */
+.vbox {
+    -fx-background-color: #FDF6E4;  /* Nền pastel sáng */
+    -fx-border-color: #D3BCA2;      /* Viền pastel nhạt */
+    -fx-border-radius: 10px;        /* Bo góc viền */
+    -fx-background-radius: 10px;    /* Bo góc nền */
+    -fx-padding: 10px;              /* Khoảng cách bên trong */
+}
+
+/* Card hiển thị sách */
+.book-card {
+    -fx-background-color: #F2EDE6; /* Nền pastel sáng */
+    -fx-border-color: #CCC;       /* Viền nhạt */
+    -fx-border-width: 1px;        /* Độ dày viền */
+    -fx-border-radius: 5px;       /* Bo góc viền */
+    -fx-background-radius: 5px;   /* Bo góc nền */
+    -fx-padding: 10px;            /* Khoảng cách bên trong */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0.2, 0, 1);
+}
+
+/* Card khi hover */
+.book-card:hover {
+    -fx-background-color: #DAC2A6; /* Nền khi hover */
+    -fx-border-color: #B89E80;    /* Viền khi hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0.3, 0, 2);
+}
+
+/* Label trong Card */
+.book-card .label {
+    -fx-text-fill: #4A4A4A;       /* Màu chữ vintage */
+    -fx-font-size: 14px;          /* Kích thước chữ */
+    -fx-font-weight: bold;        /* Chữ in đậm */
+}
+
+/* Label của tiêu đề sách */
+.book-card .title-label {
+    -fx-text-fill: #6B4226;       /* Màu chữ nâu đậm */
+    -fx-font-size: 16px;          /* Kích thước chữ lớn hơn */
+    -fx-font-weight: bold;        /* Chữ in đậm */
+}
+
+/* ScrollPane thanh cuộn */
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent; /* Nền thanh cuộn trong suốt */
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #D3BCA2;    /* Màu thanh cuộn dọc */
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #D3BCA2;    /* Màu thanh cuộn ngang */
+}

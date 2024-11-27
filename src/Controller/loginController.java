@@ -248,7 +248,7 @@ public class loginController {
                 login_password.clear();
                 return;
             }
-    
+
             // Đóng cửa sổ đăng nhập
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
@@ -263,7 +263,6 @@ public class loginController {
             Stage newStage = new Stage();
             Scene scene = new Scene(newRoot);
     
-            // Không tắt thanh tiêu đề
             newStage.setScene(scene);
             newStage.setTitle("LIBRARY");
             newStage.setMinWidth(1040);
@@ -271,6 +270,7 @@ public class loginController {
             newStage.show();
         }
     }
+    
  
     public void forgetPassword(ActionEvent event) throws Exception {
         if (event.getSource() == login_forgot) {

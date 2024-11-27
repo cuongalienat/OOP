@@ -13,14 +13,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="634.0" styleClass="anchor-pane-background" stylesheets="@../design/Css/bookDetailDesign.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.BookDetailsController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="787.0" styleClass="anchor-pane-background" stylesheets="@../design/Css/bookDetailDesign.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.BookDetailsController">
    <children>
       <ImageView fitHeight="165.0" fitWidth="204.0" layoutX="7.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="-10.5" AnchorPane.topAnchor="-10.5">
          <image>
             <Image url="@../design/Images/snapedit_1730655158696.png" />
          </image>
       </ImageView>
-      <TextField fx:id="borrowed" alignment="CENTER" editable="false" layoutX="190.0" layoutY="17.0" prefWidth="232.0" styleClass="text-fielddd" stylesheets="@../design/Css/style.css" text="You borrowed this book!" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="190.80000000000007">
+      <TextField fx:id="borrowed" alignment="CENTER" editable="false" layoutX="206.0" layoutY="17.0" prefWidth="232.0" styleClass="text-fielddd" stylesheets="@../design/Css/style.css" text="You borrowed this book!" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="206.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -41,14 +41,14 @@
             <Image url="@../design/Images/snapedit_1730655262570.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="cancelButton" fitHeight="25.0" fitWidth="28.0" layoutX="516.0" layoutY="14.0" onMouseClicked="#cancel" pickOnBounds="true" preserveRatio="true" styleClass="hover-effect" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="-4.0">
+      <ImageView fx:id="cancelButton" fitHeight="30.0" fitWidth="30.0" layoutX="516.0" layoutY="14.0" onMouseClicked="#cancel" pickOnBounds="true" preserveRatio="true" styleClass="hover-effect" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="-4.0">
          <image>
             <Image url="@../design/Images/cancel.png" />
          </image>
       </ImageView>
-      <Pane layoutX="78.0" layoutY="53.0" prefHeight="270.0" prefWidth="205.0" styleClass="pane-3d" stylesheets="@../design/Css/bookDetailDesign.css">
+      <Pane layoutX="50.0" layoutY="41.0" prefHeight="391.0" prefWidth="242.0" styleClass="pane-3d" stylesheets="@../design/Css/bookDetailDesign.css">
          <children>
-            <Button layoutX="73.0" layoutY="222.0" mnemonicParsing="false" onMouseClicked="#borrow" styleClass="button-hover" text="Borrow" textFill="WHITE">
+            <Button layoutX="91.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#borrow" styleClass="button-hover" text="Borrow" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -57,12 +57,12 @@
                   <URL value="@../design/Css/bookDetailDesign.css" />
                </stylesheets>
             </Button>
-            <ImageView fx:id="image" fitHeight="201.0" fitWidth="184.0" layoutX="13.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="image" fitHeight="324.0" fitWidth="202.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
-      <Pane layoutX="305.0" layoutY="53.0" prefHeight="269.0" prefWidth="263.0" styleClass="pane-3d" stylesheets="@../design/Css/bookDetailDesign.css">
+      <Pane layoutX="305.0" layoutY="41.0" prefHeight="391.0" prefWidth="438.0" styleClass="pane-3d" stylesheets="@../design/Css/bookDetailDesign.css">
          <children>
-            <TextArea fx:id="bookDetails" editable="false" layoutX="11.0" layoutY="135.0" prefHeight="121.0" prefWidth="242.0" wrapText="true">
+            <TextArea fx:id="bookDetails" editable="false" layoutX="11.0" layoutY="165.0" prefHeight="210.0" prefWidth="416.0" wrapText="true">
                <stylesheets>
                   <URL value="@../design/Css/bookDetailDesign.css" />
                   <URL value="@../design/Css/style.css" />
@@ -74,7 +74,7 @@
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></TextArea>
-            <TextArea fx:id="nameText" editable="false" layoutX="11.0" layoutY="10.0" prefHeight="52.0" prefWidth="242.0" wrapText="true">
+            <TextArea fx:id="nameText" editable="false" layoutX="11.0" layoutY="14.0" prefHeight="50.0" prefWidth="416.0" wrapText="true">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
@@ -87,10 +87,10 @@
                   <String fx:value="transparent-text-area" />
                </styleClass>
             </TextArea>
-            <TextArea fx:id="authorText" layoutX="11.0" layoutY="62.0" prefHeight="39.0" prefWidth="242.0" styleClass="transparent-text-area" stylesheets="@../design/Css/bookDetailDesign.css" />
-            <Label layoutX="11.0" layoutY="118.0" text="Description:">
+            <TextArea fx:id="authorText" layoutX="11.0" layoutY="62.0" prefHeight="39.0" prefWidth="416.0" styleClass="transparent-text-area" stylesheets="@../design/Css/bookDetailDesign.css" />
+            <Label layoutX="11.0" layoutY="140.0" prefWidth="136.0" text="Description:">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
          </children>

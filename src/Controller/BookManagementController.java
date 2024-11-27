@@ -17,6 +17,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -28,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import library.Book;
 import library.BorrowedBooks;
@@ -74,7 +78,7 @@ public class BookManagementController {
     private TextField Search;
 
     private ObservableList<Book> allBooks = FXCollections.observableArrayList();
-    private int id_newbook;
+    // private int id_newbook;
 
     // private Set<Book> editedBooks = new HashSet<>();
 
@@ -122,16 +126,16 @@ public class BookManagementController {
     // System.out.println("da them sach duoc sua: " + book.getName());
     // }
 
-    @FXML
-    private void addNewBook(MouseEvent event) throws Exception {
-        id_newbook = generateNewId();
-        Book newBook = new Book("", "", "", id_newbook, 0);
-        Platform.runLater(() -> {
-            bookManagementTableView.getItems().add(newBook);
-            bookManagementTableView.scrollTo(newBook);
-            System.out.println("Thêm dòng thành công");
-        });
-    }
+    // @FXML
+    // private void addNewBook(MouseEvent event) throws Exception {
+    //     id_newbook = generateNewId();
+    //     Book newBook = new Book("", "", "", id_newbook, 0);
+    //     Platform.runLater(() -> {
+    //         bookManagementTableView.getItems().add(newBook);
+    //         bookManagementTableView.scrollTo(newBook);
+    //         System.out.println("Thêm dòng thành công");
+    //     });
+    // }
 
     private <T> void handleEditCommit(TableColumn.CellEditEvent<Book, T> event) {
         Book book = event.getRowValue();
@@ -147,31 +151,31 @@ public class BookManagementController {
             book.setAvailable((Integer) newValue);
         }
 
-        if (book.getId() == id_newbook) {
-            if (isBookDataComplete(book)) {
-                try {
-                    book.addData();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    showAlert(AlertType.ERROR, "Lỗi", "Không thể thêm sách vào cơ sở dữ liệu.");
-                }
-            }
-        } else {
-            try {
-                book.updateBookInDatabase(); // Cập nhật sách đã có ID vào cơ sở dữ liệu
-            } catch (Exception e) {
-                e.printStackTrace();
-                showAlert(AlertType.ERROR, "Lỗi", "Không thể cập nhật sách trong cơ sở dữ liệu.");
-            }
-        }
+        // if (book.getId() == id_newbook) {
+        //     if (isBookDataComplete(book)) {
+        //         try {
+        //             book.addData();
+        //         } catch (Exception e) {
+        //             e.printStackTrace();
+        //             showAlert(AlertType.ERROR, "Lỗi", "Không thể thêm sách vào cơ sở dữ liệu.");
+        //         }
+        //     }
+        // } else {
+        //     try {
+        //         book.updateBookInDatabase(); // Cập nhật sách đã có ID vào cơ sở dữ liệu
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //         showAlert(AlertType.ERROR, "Lỗi", "Không thể cập nhật sách trong cơ sở dữ liệu.");
+        //     }
+        // }
     }
 
-    private boolean isBookDataComplete(Book book) {
-        return book.getName() != null && !book.getName().isEmpty() &&
-                book.getAuthor() != null && !book.getAuthor().isEmpty() &&
-                book.getCollection() != null && !book.getCollection().isEmpty() &&
-                book.getAvailable() != 0;
-    }
+    // private boolean isBookDataComplete(Book book) {
+    //     return book.getName() != null && !book.getName().isEmpty() &&
+    //             book.getAuthor() != null && !book.getAuthor().isEmpty() &&
+    //             book.getCollection() != null && !book.getCollection().isEmpty() &&
+    //             book.getAvailable() != 0;
+    // }
 
     public void remove(MouseEvent event) throws Exception {
         Book selectedBook = bookManagementTableView.getSelectionModel().getSelectedItem();
@@ -210,22 +214,22 @@ public class BookManagementController {
         alert.showAndWait();
     }
 
-    private int generateNewId() throws Exception {
+    // private int generateNewId() throws Exception {
 
-        String query = "SELECT MAX(ID) FROM book";
-        try (Connection conn = DbConfig.connect();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) + 1; // Tăng ID lớn nhất thêm 1
-            } else {
-                return 1; // Nếu bảng trống, bắt đầu từ ID 1
-            }
-        }
-    }
+    //     String query = "SELECT MAX(ID) FROM book";
+    //     try (Connection conn = DbConfig.connect();
+    //             PreparedStatement stmt = conn.prepareStatement(query)) {
+    //         ResultSet rs = stmt.executeQuery();
+    //         if (rs.next()) {
+    //             return rs.getInt(1) + 1; // Tăng ID lớn nhất thêm 1
+    //         } else {
+    //             return 1; // Nếu bảng trống, bắt đầu từ ID 1
+    //         }
+    //     }
+    // }
 
     @FXML
-    void Search(MouseEvent event) {
+    void Search(MouseEvent event) throws Exception {
         if (Search.getText().trim().isEmpty()) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setHeaderText("Vui lòng nhập từ khóa tìm kiếm.");
@@ -262,6 +266,21 @@ public class BookManagementController {
     void cancel(ActionEvent e) {
         if (e.getSource() == cancelSearch) {
             setBookData(allBooks);
+        }
+    }
+
+    @FXML
+    private void openSearchApiWindow(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/searchBook.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Search Books via API");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load API search window.");
         }
     }
 }

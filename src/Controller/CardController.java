@@ -1,16 +1,19 @@
 package Controller;
 
-import org.json.JSONObject;
+import java.io.IOException;
 
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import library.Book;
-import library.GoogleBooksAPI;
 
 public class CardController {
 
@@ -26,79 +29,52 @@ public class CardController {
     @FXML
     private ImageView bookImage;
 
-    @FXML
-    private ImageView rateImage;
-
-    private String[] colors = { "B9E5FF", "BDB2FE", "FB9AA8", "FF5056" };
+    private String[] colors = { "D8C3A5", "EAE7DC", "A9C0A6", "FF5056" };
 
     public void setData(Book book) {
         bookName.setText(book.getName());
         authorName.setText(book.getAuthor());
+
+        // Thay đổi màu nền của card
         box.setStyle("-fx-background-color: #" + colors[(int) (Math.random() * colors.length)] + ";" +
-                "-fx-background-radius: 15;" +
-                "-fx-effect: dropShadown(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 10)");
-        GoogleBooksAPI.searchBookByTitle(book.getName(), this::updateBookDetailsFromAPI);
-    }
+                    "-fx-background-radius: 15;" +
+                    "-fx-effect: dropShadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 10)");
 
-    public String updateBookDetailsFromAPI(String jsonResponse) {
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-        JSONObject volumeInfo = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("volumeInfo");
-
-        // Lấy dữ liệu từ API
-        String title = volumeInfo.getString("title");
-        String authors = volumeInfo.getJSONArray("authors").getString(0);
-        String imageUrl;
-
-        if (volumeInfo.has("imageLinks")) {
-            JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-            imageUrl = imageLinks.optString("thumbnail", "/design/Images/default_book.png");
-        } else {
-            imageUrl = "/design/Images/default_book.png";
-        }
-
-        // Cập nhật giao diện với dữ liệu nhận được
-        bookName.setText(title);
-        authorName.setText(authors.isEmpty() ? "Unknown Author" : authors);
+        // Kiểm tra và hiển thị ảnh từ dữ liệu sách
+        String imageUrl = book.getImageSrc() != null ? book.getImageSrc() : "/design/Images/default_book.png";
         loadBookImage(imageUrl);
-        return imageUrl;
+
+        // // Gắn sự kiện click để mở BookDetails
+        // box.setOnMouseClicked(event -> {
+        //     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/bookDetails.fxml"));
+        //     try {
+        //         Parent bookDetailsRoot = fxmlLoader.load();
+        //         BookDetailsController controller = fxmlLoader.getController();
+        //         controller.setBookDetails(book); // Truyền đầy đủ dữ liệu sách, bao gồm description
+
+        //         Stage stage = new Stage();
+        //         stage.initStyle(StageStyle.UNDECORATED);
+        //         stage.setScene(new Scene(bookDetailsRoot));
+        //         stage.show();
+        //     } catch (IOException e) {
+        //         e.printStackTrace();
+        //     }
+        // });
     }
 
     private void loadBookImage(String imageUrl) {
-        Task<Image> task = new Task<Image>() {
-            @Override
-            protected Image call() throws Exception {
-                // Tải ảnh với kích thước của ImageView từ API
-                return new Image(imageUrl, bookImage.getFitWidth(), bookImage.getFitHeight(), true, true);
-            }
-
-            @Override
-            protected void succeeded() {
-                // Cập nhật ảnh cho ImageView khi tải thành công
-                bookImage.setImage(getValue());
-            }
-
-            @Override
-            protected void failed() {
-                // Nếu tải ảnh thất bại, dùng ảnh mặc định
-                bookImage.setImage(new Image("/design/Images/default_book.png"));
-            }
-        };
-
-        // Chạy task trên Thread mới
-        new Thread(task).start();
+        bookImage.setImage(new Image(imageUrl, bookImage.getFitWidth(), bookImage.getFitHeight(), true, true));
     }
 
     @FXML
     public void initialize() {
-        // Thiết lập kích thước cố định cho `bookImage` từ FXML
-        bookImage.setFitWidth(119.0);
+        bookImage.setFitWidth(93.0);
         bookImage.setFitHeight(103.0);
-        bookImage.setPreserveRatio(true); // Giữ tỷ lệ hình ảnh
+        bookImage.setPreserveRatio(false);
         bookImage.setSmooth(true);
 
-        // Thêm clipping để cắt gọn hình ảnh
-        Rectangle clip = new Rectangle(121.0, 147.0);
-        clip.setArcWidth(10);  // Bo góc trên và dưới
+        Rectangle clip = new Rectangle(93.0, 103.0);
+        clip.setArcWidth(10);
         clip.setArcHeight(10);
         bookImage.setClip(clip);
     }

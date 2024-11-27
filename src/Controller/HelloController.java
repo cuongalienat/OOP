@@ -179,7 +179,7 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    public void bookManagement(MouseEvent event) {
+    public void bookManagement(MouseEvent event) throws Exception {
         resetMenuSelection();
         bookManagementBox.getStyleClass().add("selected");
         if (loginController.getUser_now() instanceof Admin) {
@@ -210,7 +210,7 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    public void showAvailableBook(MouseEvent event) {
+    public void showAvailableBook(MouseEvent event) throws Exception {
         resetMenuSelection();
         availableBooks.getStyleClass().add("selected");
         try {
