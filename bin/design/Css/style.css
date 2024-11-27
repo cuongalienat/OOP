@@ -8,15 +8,18 @@
 
 .round-layout{
     -fx-border-radius: 50;
-    -fx-border-color: #D7D7D7
+    -fx-border-color: #605252
 }
 
 .selected {
-    -fx-background-color: #F3F3F3
+    -fx-background-color: #EEE7DA;
+    /* -fx-border-color: #ccab85;    Màu viền */
+    /* -fx-border-width: 2px;       Độ dày của viền */
+
 }
 
  .mouse-moved:hover {
-    -fx-background-color: #f1f1f1; 
+    -fx-background-color: #EEE7DA; 
     /* -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 10, 0.5, 0, 0);  */
     -fx-scale-x: 1.05;              /* Phóng to khi di chuột */
     -fx-scale-y: 1.05;              /* Phóng to khi di chuột */
@@ -50,3 +53,23 @@
 .button-hover {
     -fx-cursor: hand !important;
 }
+
+.hbox-style {
+    -fx-background-color: #F2F1EB;
+}
+
+.hbox1-style {
+    -fx-background-color: #F2F1EB;
+    -fx-border-color: #ccab85;    /* Màu viền */
+    -fx-border-width: 2px;       /* Độ dày của viền */
+}
+
+
+.anchorPane-style {
+    -fx-background-color: #EEE7DA; /* Màu nền */
+    -fx-border-color: #ccab85;    /* Màu viền */
+    -fx-border-width: 2px;       /* Độ dày của viền */
+    /* -fx-border-radius: 10px;     Bo góc viền */
+    /* -fx-background-radius: 10px; Bo góc nền */
+}
+

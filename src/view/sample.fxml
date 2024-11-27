@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" prefHeight="525.0" prefWidth="1040.0" stylesheets="@../design/Css/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HelloController">
+<BorderPane fx:id="rootPane" prefHeight="525.0" prefWidth="1040.0" stylesheets="@../design/Css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HelloController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="15.0" spacing="10.0" styleClass="hbox-style" stylesheets="@../design/Css/sample.css" BorderPane.alignment="CENTER">
          <children>
@@ -208,7 +208,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </padding>
                   </HBox>
-                  <HBox fx:id="reports" alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="184.0" stylesheets="@../design/Css/style.css">
+                  <HBox fx:id="reports" onMouseClicked="#showReports" alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="184.0" stylesheets="@../design/Css/style.css">
                      <children>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>

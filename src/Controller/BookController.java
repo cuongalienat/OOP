@@ -11,6 +11,9 @@ import javafx.scene.image.Image;
 import library.Book;
 import library.GoogleBooksAPI;
 
+/**
+ * Controller for displaying individual book information in the UI.
+ */
 public class BookController {
 
     @FXML
@@ -22,6 +25,11 @@ public class BookController {
     @FXML
     private Label bookName;
 
+    /**
+     * Sets the data for the book view.
+     *
+     * @param book The book whose data is to be displayed.
+     */
     public void setData(Book book) {
         // Cập nhật giao diện từ thông tin sách
         bookName.setText(book.getName());
@@ -32,6 +40,11 @@ public class BookController {
         loadBookImage(imageUrl);
     }
 
+    /**
+     * Loads the book image asynchronously.
+     *
+     * @param imageUrl The URL of the image to load.
+     */
     private void loadBookImage(String imageUrl) {
         Task<Image> task = new Task<Image>() {
             @Override
@@ -57,7 +70,9 @@ public class BookController {
         new Thread(task).start();
     }
 
-    @FXML
+    /**
+     * Initializes the BookController.
+     */
     public void initialize() {
         bookImage.setFitWidth(121.0);
         bookImage.setFitHeight(147.0);

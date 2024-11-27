@@ -1,0 +1,64 @@
+/* Tổng thể TableView */
+.table-view {
+    -fx-border-color: #D3BCA2;       /* Viền ngoài của bảng */
+    -fx-border-width: 2px;          /* Độ dày viền */
+    -fx-border-radius: 10px;        /* Bo góc viền */
+    -fx-background-color: #F2F1EB;  /* Màu nền bảng */
+    -fx-background-radius: 10px;    /* Bo góc nền */
+    -fx-padding: 10px;              /* Khoảng cách bên trong */
+}
+
+/* Hàng trong TableView */
+.table-row-cell {
+    -fx-background-color: transparent; /* Nền mặc định */
+    -fx-border-width: 0 0 1px 0;      /* Viền dưới */
+    -fx-border-color: #CCC;           /* Màu viền dưới */
+}
+
+/* Hàng khi hover */
+.table-row-cell:hover {
+    -fx-background-color: #dac2a6;    /* Nền khi hover */
+}
+
+/* Hàng được chọn */
+.table-row-cell:selected {
+    -fx-background-color: #886b4b;    /* Nền hàng được chọn */
+    -fx-text-fill: rgb(0, 0, 0);             /* Màu chữ hàng được chọn */
+}
+
+/* Căn giữa các cột */
+.table-cell {
+    -fx-alignment: CENTER;            /* Căn giữa nội dung */
+    -fx-padding: 5px;                 /* Khoảng cách bên trong ô */
+    -fx-font-size: 14px;              /* Kích thước chữ */
+}
+
+/* Căn trái nếu cần */
+.table-cell.text-left {
+    -fx-alignment: CENTER-LEFT;
+}
+
+/* Nút trả sách */
+.button {
+    -fx-background-color: #B89E80;    /* Màu nền nút */
+    -fx-border-radius: 5px;           /* Bo góc */
+    -fx-text-fill: white;             /* Màu chữ */
+    -fx-font-size: 14px;              /* Kích thước chữ */
+    -fx-font-weight: bold;            /* Chữ in đậm */
+    -fx-padding: 5px 15px;            /* Khoảng cách trong nút */
+    -fx-cursor: hand;                 /* Thay đổi con trỏ */
+}
+
+.button:hover {
+    -fx-background-color: #886b4b;    /* Nền khi hover */
+}
+
+.button:pressed {
+    -fx-background-color: #B89E80;    /* Nền khi nhấn */
+}
+
+.borrowBG-style {
+    -fx-background-color: #EEE7DA;
+    -fx-border-color: #ccab85;    /* Màu viền */
+    -fx-border-width: 2px;       /* Độ dày của viền */
+}

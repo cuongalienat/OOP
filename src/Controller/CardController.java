@@ -15,6 +15,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import library.Book;
 
+/**
+ * Controller for managing individual book cards in the UI.
+ */
 public class CardController {
 
     @FXML
@@ -31,6 +34,11 @@ public class CardController {
 
     private String[] colors = { "D8C3A5", "EAE7DC", "A9C0A6", "FF5056" };
 
+    /**
+     * Sets the data for a book card.
+     *
+     * @param book The book to display on the card.
+     */
     public void setData(Book book) {
         bookName.setText(book.getName());
         authorName.setText(book.getAuthor());

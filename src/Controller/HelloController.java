@@ -27,6 +27,10 @@ import library.User;
 
 import java.net.URL;
 
+/**
+ * Controller for the main Hello view, managing navigation and user
+ * interactions.
+ */
 public class HelloController implements Initializable {
     @FXML
     private HBox home;
@@ -58,17 +62,18 @@ public class HelloController implements Initializable {
     @FXML
     private HBox availableBooks;
 
-    // @FXML
-    // private Pane move;
-
-    // private double xOffset = 0;
-
-    // private double yOffset = 0;
-    
+    /**
+     * Sets the displayed user name.
+     *
+     * @param user_Name The name of the user to display.
+     */
     void setName(String user_Name) {
         app_Name.setText(user_Name);
     }
 
+    /**
+     * Resets the menu selection styles.
+     */
     private void resetMenuSelection() {
         home.getStyleClass().remove("selected");
         borrowedBooks.getStyleClass().remove("selected");
@@ -80,6 +85,11 @@ public class HelloController implements Initializable {
         bookManagementBox.getStyleClass().remove("selected");
     }
 
+    /**
+     * Handles the action of returning to the home view.
+     *
+     * @param event The mouse event triggering the action.
+     */
     @FXML
     private void returnHome(MouseEvent event) {
         resetMenuSelection();
@@ -100,6 +110,11 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Displays the list of borrowed books.
+     *
+     * @throws Exception If an error occurs while loading the borrowed books view.
+     */
     @FXML
     private void showBorrowedBooks() throws Exception {
         resetMenuSelection();
@@ -124,6 +139,14 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Initializes the HelloController.
+     *
+     * @param url            The location used to resolve relative paths for the
+     *                       root object.
+     * @param resourceBundle The resources used to localize the root object.
+     */
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Home.fxml"));
@@ -139,21 +162,14 @@ public class HelloController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception here (e.g., logging or showing an error message)
         }
-
-        // move.setOnMousePressed(event -> {
-        //     xOffset = event.getSceneX();
-        //     yOffset = event.getSceneY();
-        // });
-
-        // move.setOnMouseDragged(event -> {
-        //     Stage stage = (Stage) move.getScene().getWindow();
-        //     if (!stage.isMaximized()) { // Chỉ cho phép kéo khi không phóng to
-        //         stage.setX(event.getScreenX() - xOffset);
-        //         stage.setY(event.getScreenY() - yOffset);
-        //     }
-        // });
     }
 
+    /**
+     * Logs out the current user.
+     *
+     * @param event The mouse event triggering the logout.
+     * @throws IOException If an error occurs during the logout process.
+     */
     @FXML
     public void Log_Out(MouseEvent event) throws IOException {
         resetMenuSelection();
@@ -175,9 +191,16 @@ public class HelloController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("LIBRARY");
             stage.show();
+            // Consume the event
+            event.consume();
         }
     }
 
+    /**
+     * Handles book management actions.
+     *
+     * @param event The mouse event triggering the action.
+     */
     @FXML
     public void bookManagement(MouseEvent event) throws Exception {
         resetMenuSelection();
@@ -209,6 +232,11 @@ public class HelloController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Displays available books.
+     *
+     * @param event The mouse event triggering the display.
+     */
     @FXML
     public void showAvailableBook(MouseEvent event) throws Exception {
         resetMenuSelection();
@@ -231,6 +259,12 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Manages user-related actions.
+     *
+     * @param event The mouse event triggering the action.
+     * @throws Exception If an error occurs during user management.
+     */
     @FXML
     public void userManagement(MouseEvent event) throws Exception {
         resetMenuSelection();
@@ -264,34 +298,30 @@ public class HelloController implements Initializable {
         alert.showAndWait();
     }
 
-    // @FXML
-    // private Label minimizeButton;
+    @FXML
+    public void showReports(MouseEvent event) {
+        resetMenuSelection(); // Reset lựa chọn menu
+        reports.getStyleClass().add("selected"); // Đánh dấu menu báo cáo được chọn
 
-    // @FXML
-    // private Label maximizeButton;
+        try {
+            // Load the `reports.fxml` file
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/report.fxml"));
+            Parent reportsRoot = fxmlLoader.load();
 
-    // @FXML
-    // private Label closeButton;
+            // Clear current scene content and add the new report view
+            choosedScene.getChildren().clear();
+            choosedScene.getChildren().add(reportsRoot);
 
-    // @FXML
-    // private void handleMinimizeButtonAction(MouseEvent event) {
-    //     Stage stage = (Stage) minimizeButton.getScene().getWindow();
-    //     stage.setIconified(true); // Ẩn cửa sổ
-    // }
+            // Set anchoring for the loaded FXML to match the parent container
+            AnchorPane.setTopAnchor(reportsRoot, 0.0);
+            AnchorPane.setBottomAnchor(reportsRoot, 0.0);
+            AnchorPane.setLeftAnchor(reportsRoot, 0.0);
+            AnchorPane.setRightAnchor(reportsRoot, 0.0);
 
-    // @FXML
-    // private void handleMaximizeButtonAction(MouseEvent event) {
-    //     Stage stage = (Stage) maximizeButton.getScene().getWindow();
-    //     boolean isMaximized = !stage.isMaximized();
-    //     stage.setMaximized(isMaximized);
-
-    //     // Thay đổi biểu tượng nút phóng to
-    //     maximizeButton.setText(isMaximized ? "❐" : "⛶");
-    // }
-
-    // @FXML
-    // private void handleCloseButtonAction(MouseEvent event) {
-    //     Stage stage = (Stage) closeButton.getScene().getWindow();
-    //     stage.close(); // Đóng cửa sổ
-    // }
+            // Since initialize() handles populating data, no manual calls to populate methods are needed
+        } catch (IOException e) {
+            // Print stack trace in case of an error
+            e.printStackTrace();
+        }
+    }
 }

@@ -12,26 +12,35 @@ import java.util.function.Consumer;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
+/**
+ * Handles interactions with the Google Books API.
+ */
 public class GoogleBooksAPI {
     private static final String API_KEY = "AIzaSyC-bqA6TTM4H5z_Hd-RcBT8lkL_ojwUtf0";
     private static final int MAX_RETRIES = 5;
-    private static final long INITIAL_WAIT_TIME = 1000; // 1 giây
-    private static final long MAX_WAIT_TIME = 16000; // 16 giây
+    private static final long INITIAL_WAIT_TIME = 1000; // 1 second
+    private static final long MAX_WAIT_TIME = 16000; // 16 seconds
     private static final Random random = new Random();
 
-    // Sử dụng ExecutorService với daemon threads
+    // Uses ExecutorService with daemon threads
     private static final ExecutorService executor = Executors.newFixedThreadPool(4, new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
             Thread t = new Thread(r);
-            t.setDaemon(true); // Thiết lập luồng là daemon
+            t.setDaemon(true); // Set thread as daemon
             return t;
         }
     });
 
-    // Tìm kiếm sách theo tên và trả về kết quả dưới dạng JSON String qua callback
+    /**
+     * Searches for books by title and returns the result as a JSON string via
+     * callback.
+     *
+     * @param title    the title of the book to search for
+     * @param callback the callback to handle the JSON response
+     */
     public static void searchBookByTitle(String title, Consumer<String> callback) {
-        Task<Void> task = new Task<Void>() {   
+        Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 int retryCount = 0;
@@ -54,7 +63,7 @@ public class GoogleBooksAPI {
                                 while ((inputLine = in.readLine()) != null) {
                                     response.append(inputLine);
                                 }
-                                // Cập nhật UI trên luồng JavaFX Application Thread
+                                // Update UI on JavaFX Application Thread
                                 Platform.runLater(() -> callback.accept(response.toString()));
                             }
                             break;
@@ -65,12 +74,13 @@ public class GoogleBooksAPI {
                                 waitTime = Long.parseLong(retryAfter) * 1000;
                             } else {
                                 waitTime = Math.min(waitTime * 2, MAX_WAIT_TIME);
-                                waitTime += random.nextInt(1000); // Thêm jitter
+                                waitTime += random.nextInt(1000); // Add jitter
                             }
-                            System.out.println("Received 429. Retrying in " + waitTime + " ms. Attempt " + retryCount + "/" + MAX_RETRIES);
+                            System.out.println("Received 429. Retrying in " + waitTime + " ms. Attempt " + retryCount
+                                    + "/" + MAX_RETRIES);
                             Thread.sleep(waitTime);
                         } else if (responseCode == 400) {
-                            System.out.println("Bad Request: Kiểm tra lại tham số yêu cầu.");
+                            System.out.println("Bad Request: Check request parameters.");
                             break;
                         } else {
                             System.out.println("Request failed with response code: " + responseCode);
@@ -79,13 +89,15 @@ public class GoogleBooksAPI {
                     } catch (Exception e) {
                         e.printStackTrace();
                         retryCount++;
-                        System.out.println("Exception occurred. Retrying in " + waitTime + " ms. Attempt " + retryCount + "/" + MAX_RETRIES);
+                        System.out.println("Exception occurred. Retrying in " + waitTime + " ms. Attempt " + retryCount
+                                + "/" + MAX_RETRIES);
                         Thread.sleep(waitTime);
                     }
                 }
 
                 if (retryCount == MAX_RETRIES) {
-                    Platform.runLater(() -> callback.accept("{\"error\":\"Đã đạt số lần thử lại tối đa. Vui lòng thử lại sau.\"}"));
+                    Platform.runLater(() -> callback
+                            .accept("{\"error\":\"Maximum retry attempts reached. Please try again later.\"}"));
                 }
 
                 return null;
@@ -95,16 +107,19 @@ public class GoogleBooksAPI {
         executor.submit(task);
     }
 
+    /**
+     * Shuts down the ExecutorService.
+     */
     public static void shutdownExecutor() {
         executor.shutdown();
         try {
             if (!executor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
                 executor.shutdownNow();
             }
-            System.out.println("ExecutorService đã được tắt.");
+            System.out.println("ExecutorService has been shut down.");
         } catch (InterruptedException e) {
             executor.shutdownNow();
-            System.out.println("ExecutorService bị gián đoạn trong quá trình tắt.");
+            System.out.println("ExecutorService was interrupted during shutdown.");
         }
     }
 }

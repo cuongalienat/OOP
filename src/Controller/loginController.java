@@ -1,5 +1,7 @@
 package Controller;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,12 +16,16 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import library.Admin;
 import library.User;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+/**
+ * Controller for handling user login operations.
+ */
 public class loginController {
 
     @FXML
@@ -83,13 +89,18 @@ public class loginController {
     private Button signup_toLogin;
 
     private Alert alert;
-    
+
     protected static User user_now;
 
     public static User getUser_now() {
         return user_now;
     }
 
+    /**
+     * Switches between login and signup forms.
+     *
+     * @param event The action event triggered by the user.
+     */
     public void switchForm(ActionEvent event) {
 
         TranslateTransition slider = new TranslateTransition();
@@ -118,6 +129,12 @@ public class loginController {
         }
     }
 
+    /**
+     * Checks if the phone number is valid.
+     *
+     * @param phone The phone number to check.
+     * @return True if the phone number is valid, false otherwise.
+     */
     public boolean checkPhone(String phone) {
         if (phone.length() != 10)
             return false;
@@ -131,16 +148,34 @@ public class loginController {
         return true;
     }
 
+    /**
+     * Checks if the password is valid.
+     *
+     * @param password The password to check.
+     * @return True if the password is valid, false otherwise.
+     */
     public boolean checkPassword(String password) {
         if (password.length() < 6)
             return false;
         return true;
     }
 
+    /**
+     * Checks if the email is valid.
+     *
+     * @param email The email to check.
+     * @return True if the email is valid, false otherwise.
+     */
     public boolean checkEmail(String email) {
         return email.endsWith("@gmail.com");
     }
 
+    /**
+     * Handles the user signup process.
+     *
+     * @param event The action event triggered by the user.
+     * @throws Exception If an error occurs during the signup process.
+     */
     public void signUp(ActionEvent event) throws Exception {
         User user = new User();
         user.setPhone(signup_phone.getText());
@@ -219,10 +254,16 @@ public class loginController {
         }
     }
 
+    /**
+     * Handles the user login process.
+     *
+     * @param event The action event triggered by the user.
+     * @throws Exception If an error occurs during the login process.
+     */
     public void logIn(ActionEvent event) throws Exception {
         String phone = login_phone.getText();
         String password = login_password.getText();
-    
+
         if (event.getSource() == login_login) {
             if (User.getUser(phone) == null && Admin.getUser(phone) == null) {
                 alert = new Alert(AlertType.ERROR);
@@ -233,14 +274,14 @@ public class loginController {
                 login_password.clear();
                 return;
             }
-    
+
             if (User.getUser(phone) == null) {
                 user_now = Admin.getUser(phone);
             } else {
                 user_now = User.getUser(phone);
             }
-    
-            if (!password.equals(user_now.getPassword())) {
+
+            if (!BCrypt.checkpw(password, user_now.getPassword())) {
                 alert = new Alert(AlertType.ERROR);
                 alert.setContentText("Mật khẩu sai");
                 alert.setHeaderText(null);
@@ -252,17 +293,18 @@ public class loginController {
             // Đóng cửa sổ đăng nhập
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-    
+
             // Mở cửa sổ mới cho sample.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sample.fxml"));
             Parent newRoot = loader.load();
-    
+
             HelloController helloController = loader.getController();
             helloController.setName(user_now.getName());
-    
+
             Stage newStage = new Stage();
             Scene scene = new Scene(newRoot);
     
+            // Không tắt thanh tiêu đề
             newStage.setScene(scene);
             newStage.setTitle("LIBRARY");
             newStage.setMinWidth(1040);
@@ -270,8 +312,13 @@ public class loginController {
             newStage.show();
         }
     }
-    
- 
+
+    /**
+     * Handles the forget password process.
+     *
+     * @param event The action event triggered by the user.
+     * @throws Exception If an error occurs during the forget password process.
+     */
     public void forgetPassword(ActionEvent event) throws Exception {
         if (event.getSource() == login_forgot) {
             TranslateTransition slider = new TranslateTransition();

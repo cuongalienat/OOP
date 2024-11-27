@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="bookContainer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="150.0" style="-fx-background-radius: 10;" stylesheets="@../design/Css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.BookController">
+<VBox fx:id="bookContainer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="137.0" style="-fx-background-radius: 10;" stylesheets="@../design/Css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.BookController">
    <children>
-      <ImageView fx:id="bookImage" fitHeight="220.0" fitWidth="146.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+      <ImageView fx:id="bookImage" fitHeight="147.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true" smooth="true">
          <image>
             <Image url="@../design/Images/default_book.png" />
-         </image></ImageView>
-      <Label fx:id="bookName" prefHeight="38.0" prefWidth="150.0" text="COMMING SOON">
+         </image>
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin></ImageView>
+      <Label fx:id="bookName" alignment="CENTER" prefHeight="38.0" prefWidth="150.0" text="COMMING SOON">
          <font>
-            <Font name=".VnAvant Bold" size="17.0" />
+            <Font name=".VnAvant Bold" size="14.0" />
          </font>
       </Label>
       <Label fx:id="authorName" text="">

@@ -41,6 +41,9 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import library.*;
 
+/**
+ * Controller for displaying detailed information about a specific book.
+ */
 public class BookDetailsController implements Initializable {
     @FXML
     private ImageView cancelButton;
@@ -73,6 +76,13 @@ public class BookDetailsController implements Initializable {
     @FXML
     private AnchorPane rootPane;
 
+    /**
+     * Initializes the BookDetailsController.
+     *
+     * @param location  The location used to resolve relative paths for the root
+     *                  object.
+     * @param resources The resources used to localize the root object.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         successfull.setVisible(false); // default
@@ -95,6 +105,12 @@ public class BookDetailsController implements Initializable {
 
     // khi click vào bookBox, sẽ lấy thông tin từ book để setBookDetails
     // test
+
+    /**
+     * Sets the details of the book to be displayed.
+     *
+     * @param book The book whose details are to be displayed.
+     */
     public void setBookDetails(Book book) {
         // Lưu trữ thông tin sách hiện tại
         curBook = book;
@@ -109,7 +125,12 @@ public class BookDetailsController implements Initializable {
         String imageUrl = book.getImageSrc() != null ? book.getImageSrc() : "/design/Images/default_book.png";
         loadBookImage(imageUrl);
     }
-    
+
+    /**
+     * Loads the book image asynchronously.
+     *
+     * @param imageUrl The URL of the image to load.
+     */
     private void loadBookImage(String imageUrl) {
         // Đặt kích thước cố định cho ImageView
         double fixedWidth = 202;
@@ -160,8 +181,13 @@ public class BookDetailsController implements Initializable {
 
     private boolean isFirstClick = true;
 
+    /**
+     * Handles the borrowing action for a book.
+     *
+     * @param event The mouse event triggering the borrow action.
+     * @throws Exception If an error occurs during the borrowing process.
+     */
     @FXML
-
     public void borrow(MouseEvent event) throws Exception {
         if (isFirstClick) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -223,6 +249,11 @@ public class BookDetailsController implements Initializable {
         showBorrwedStatus(borrowed);
     }
 
+    /**
+     * Displays the borrowed status with a fade transition.
+     *
+     * @param textField The text field to display the status in.
+     */
     @FXML
     public void showBorrwedStatus(TextField textField) {
         textField.setVisible(true);
@@ -246,6 +277,11 @@ public class BookDetailsController implements Initializable {
         fadeIn.play();
     }
 
+    /**
+     * Cancels the book details view.
+     *
+     * @param event The mouse event triggering the cancellation.
+     */
     @FXML
     public void cancel(MouseEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
