@@ -15,12 +15,14 @@ import org.mindrot.jbcrypt.BCrypt;
 public class User {
     Scanner sc = new Scanner(System.in);
 
-    private String name;
-    private String password;
-    private String phone;
-    private String email;
-    private int quantityBorrowedBook;
-    private int quantityOverduedateBook;
+    protected String role; // New attribute for role
+    protected String name;
+    protected String password;
+    protected String phone;
+    protected String email;
+    protected int quantityBorrowedBook;
+    protected int quantityOverduedateBook;
+    protected String profilePicture;  // Thêm trường để lưu link ảnh đại diện
 
     /**
      * Default constructor.
@@ -50,6 +52,14 @@ public class User {
      *
      * @return the password
      */
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -115,6 +125,15 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    // Getter và setter cho profilePicture
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     /**
@@ -225,19 +244,20 @@ public class User {
      */
     public static User getUser(String phoneIn) throws Exception {
         String query = "SELECT * FROM librarymanagement.user WHERE phone = ?";
-        // Cập nhật tên bảng với schema user
         try (Connection conn = DbConfig.connect();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, phoneIn);
             ResultSet rs = stmt.executeQuery();
-
+    
             if (rs.next()) {
                 String name = rs.getString("name");
                 String phone = rs.getString("phone");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
-
+                String profilePicture = rs.getString("profile_picture");  // Đảm bảo lấy đúng cột
+    
                 User user = new User(name, email, phone, password);
+                user.setProfilePicture(profilePicture);  // Cập nhật ảnh đại diện
                 return user;
             }
         } catch (SQLException e) {
@@ -245,28 +265,33 @@ public class User {
         }
         return null;
     }
-
+    
     /**
      * Updates the user's information in the database.
      *
      * @throws Exception if an error occurs during the operation
      */
     public void Update() throws Exception {
-        String query = "UPDATE librarymanagement.user SET password = ? WHERE phone = ?";
-        // Cập nhật tên bảng với schema user
-
+        String query = "UPDATE librarymanagement.user SET name = ?, password = ?, profile_picture = ? WHERE phone = ?";
+    
         try (Connection conn = DbConfig.connect();
-                PreparedStatement stmt = conn.prepareStatement(query)) {
-            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-            stmt.setString(1, hashedPassword);
-            stmt.setString(2, phone);
-
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+    
+            // Set giá trị cho các trường cần cập nhật
+            stmt.setString(1, this.getName());  // Cập nhật tên người dùng
+            stmt.setString(2, this.getPassword());  // Cập nhật mật khẩu đã mã hóa
+            stmt.setString(3, this.getProfilePicture());  // Cập nhật ảnh đại diện (nếu có thay đổi)
+            stmt.setString(4, this.getPhone());  // Dùng số điện thoại làm điều kiện cập nhật
+    
+            // Thực hiện cập nhật
             stmt.executeUpdate();
+    
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new Exception("Lỗi cập nhật thông tin người dùng.");
         }
     }
-
+    
     /**
      * Deletes a user from the database.
      *
@@ -297,5 +322,9 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean checkPassword(String enteredPassword, String storedHashedPassword) {
+        return BCrypt.checkpw(enteredPassword, storedHashedPassword);
     }
 }

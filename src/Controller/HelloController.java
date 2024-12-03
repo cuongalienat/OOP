@@ -14,6 +14,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
@@ -62,13 +64,34 @@ public class HelloController implements Initializable {
     @FXML
     private HBox availableBooks;
 
+    @FXML
+    private HBox helpSupport;
+
+    @FXML
+    private ImageView userImage;
     /**
      * Sets the displayed user name.
      *
      * @param user_Name The name of the user to display.
      */
-    void setName(String user_Name) {
+    public void setName(String user_Name) {
         app_Name.setText(user_Name);
+    }
+
+    public void setImage(String imagePath) {
+        if (imagePath != null && !imagePath.isEmpty()) {
+            try {
+                Image image = new Image("file:" + imagePath); // Assuming imagePath is a valid file path
+                userImage.setImage(image); // Set the image to the ImageView
+            } catch (Exception e) {
+                System.out.println("Error loading image: " + e.getMessage());
+                // Optionally, set a default image in case of error
+                userImage.setImage(new Image("file:default_avatar.png"));
+            }
+        } else {
+            // Set a default image or leave empty
+            userImage.setImage(new Image("file:default_avatar.png"));
+        }
     }
 
     /**
@@ -321,6 +344,46 @@ public class HelloController implements Initializable {
             // Since initialize() handles populating data, no manual calls to populate methods are needed
         } catch (IOException e) {
             // Print stack trace in case of an error
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void settings(MouseEvent event) {
+        resetMenuSelection();
+        home.getStyleClass().add("selected");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/settings.fxml"));
+            Parent homeRoot = fxmlLoader.load();
+
+            // Initially set the Home view
+            choosedScene.getChildren().clear();
+            choosedScene.getChildren().add(homeRoot);
+            AnchorPane.setTopAnchor(homeRoot, 0.0);
+            AnchorPane.setBottomAnchor(homeRoot, 0.0);
+            AnchorPane.setLeftAnchor(homeRoot, 0.0);
+            AnchorPane.setRightAnchor(homeRoot, 0.0);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception here (e.g., logging or showing an error message)
+        }
+    }
+
+    @FXML
+    private void openHelpSupport() throws Exception {
+        resetMenuSelection();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/helpAndSupport.fxml"));
+            Parent helpSupportRoot = fxmlLoader.load();
+
+            // updating Borrowed Books
+            choosedScene.getChildren().clear(); // clear Home
+            choosedScene.getChildren().add(helpSupportRoot);
+
+            AnchorPane.setTopAnchor(helpSupportRoot, 0.0);
+            AnchorPane.setBottomAnchor(helpSupportRoot, 0.0);
+            AnchorPane.setLeftAnchor(helpSupportRoot, 0.0);
+            AnchorPane.setRightAnchor(helpSupportRoot, 0.0);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

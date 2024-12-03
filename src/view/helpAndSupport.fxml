@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane stylesheets="@../design/Css/settingDesign.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HelpSupportController">
+    <children>
+        <Label layoutX="20.0" layoutY="20.0" style="-fx-font-size: 18;" text="Help &amp; Support" />
+
+        <!-- Buttons to toggle between FAQs -->
+        <Button fx:id="btnUserFAQ" layoutX="20.0" layoutY="60.0" onAction="#showUserFAQ" text="User FAQ" />
+        <Button fx:id="btnAdminFAQ" layoutX="120.0" layoutY="60.0" onAction="#showAdminFAQ" text="Admin FAQ" />
+
+        <!-- User FAQ Section -->
+        <AnchorPane fx:id="userFAQContent" layoutX="20.0" layoutY="120.0" prefHeight="300.0" prefWidth="500.0" visible="true">
+            <Label layoutX="10.0" layoutY="10.0" style="-fx-font-size: 14;" text="User FAQ" />
+            <Label layoutX="10.0" layoutY="50.0" text="Q1: How to change my password?" />
+            <Label layoutX="30.0" layoutY="70.0" text="A: Go to Settings &gt; Change Password." />
+            <Label layoutX="10.0" layoutY="100.0" text="Q2: How to contact support?" />
+            <Label layoutX="30.0" layoutY="120.0" text="A: Use the Contact Support button below." />
+        </AnchorPane>
+
+        <!-- Admin FAQ Section -->
+        <AnchorPane fx:id="adminFAQContent" layoutX="20.0" layoutY="120.0" prefHeight="300.0" prefWidth="500.0" visible="false">
+            <Label layoutX="10.0" layoutY="10.0" style="-fx-font-size: 14;" text="Admin FAQ" />
+            <Label layoutX="10.0" layoutY="50.0" text="Q1: How to add a new user?" />
+            <Label layoutX="30.0" layoutY="70.0" text="A: Go to Admin Panel &gt; Add User." />
+            <Label layoutX="10.0" layoutY="100.0" text="Q2: How to reset a user password?" />
+            <Label layoutX="30.0" layoutY="120.0" text="A: Go to Admin Panel &gt; Manage Users." />
+        </AnchorPane>
+    </children>
+</AnchorPane>

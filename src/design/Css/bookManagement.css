@@ -57,3 +57,11 @@
     -fx-background-color: transparent; /* Loại bỏ nền khi chọn */
     -fx-text-fill: #605252;            /* Giữ màu chữ */
 }
+
+.round-layouttt {
+    -fx-border-radius: 50; /* Bo góc cho viền */
+    -fx-border-color: #605252; /* Màu viền */
+    -fx-background-color: #F2F1EB; /* Màu nền */
+    -fx-background-radius: 50; /* Bo góc cho nền */
+    -fx-padding: 0 0 0 10; /* Thêm khoảng cách bên trong */
+}

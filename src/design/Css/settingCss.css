@@ -1,0 +1,102 @@
+/* Background */
+.root {
+    -fx-background-color: #F9E4D4; /* Màu nền vintage nhẹ */
+}
+
+/* Header */
+#contentArea {
+    -fx-background-color: #F8F4F1; /* Nền màu sáng cho khu vực nội dung */
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-width: 2;
+    -fx-border-color: #C7B8A9;
+}
+
+/* Button Style */
+.button {
+    -fx-background-color: #D9B6A1; /* Màu nền vintage cho button */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Comic Sans MS', sans-serif;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-border-color: #C7B8A9;
+    -fx-padding: 0.2px;
+}
+
+.button:hover {
+    -fx-background-color: #C1A18A; /* Màu sắc khi hover */
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: #F2EFE4; /* Nền màu sáng nhẹ cho textfield */
+    -fx-border-color: #C7B8A9;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 5;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Comic Sans MS', sans-serif;
+}
+
+.text-field:focused {
+    -fx-border-color: #D9B6A1; /* Màu border khi focus */
+}
+
+/* PasswordField */
+.password-field {
+    -fx-background-color: #F2EFE4; /* Tương tự như TextField */
+    -fx-border-color: #C7B8A9;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 5;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Comic Sans MS', sans-serif;
+}
+
+.password-field:focused {
+    -fx-border-color: #D9B6A1;
+}
+
+/* Label */
+.label {
+    -fx-font-size: 16px;
+    -fx-font-family: 'Comic Sans MS', sans-serif;
+    -fx-text-fill: #6F4F37; /* Màu nâu vintage cho văn bản */
+    -fx-padding: 10px;
+}
+
+/* ImageView */
+#imageView {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 2, 2);
+    -fx-background-radius: 10;
+}
+
+/* VBox */
+.vbox {
+    -fx-spacing: 15px; /* Khoảng cách giữa các phần tử */
+    -fx-alignment: center;
+}
+
+/* StackPane */
+.stack-pane {
+    -fx-spacing: 20px;
+}
+
+/* Button Selected Style */
+.selected {
+    -fx-background-color: #a38976; /* Màu nền khi button được chọn */
+}
+
+/* Label and Input Fields - Cute Vintage Font */
+.text-field, .password-field, .label, .button {
+    -fx-font-family: 'Comic Sans MS', sans-serif;
+}
+
+/* TextField and PasswordField background color update */
+.text-field, .password-field {
+    -fx-background-color: #F2F1EB; /* Nền sáng vintage nhẹ cho các field */
+}

@@ -300,6 +300,8 @@ public class loginController {
 
             HelloController helloController = loader.getController();
             helloController.setName(user_now.getName());
+            helloController.setImage(user_now.getProfilePicture());
+            // System.out.println(user_now.getProfilePicture());
 
             Stage newStage = new Stage();
             Scene scene = new Scene(newRoot);

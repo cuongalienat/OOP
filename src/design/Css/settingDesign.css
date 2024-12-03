@@ -1,0 +1,97 @@
+/* Background */
+.root {
+    -fx-background-color: #F2F1EB; /* Màu nền vintage nhẹ */
+}
+
+/* Header */
+#contentArea {
+    -fx-background-color: #E9E5D9; /* Nền màu sáng vintage nhẹ */
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-width: 2;
+    -fx-border-color: #B8B29A; /* Màu biên tối hơn */
+}
+
+/* Button Style */
+.button {
+    -fx-background-color: #D1C4A1; /* Màu nền vintage cho button */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Verdana", sans-serif;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-border-color: #B8B29A;
+    -fx-padding: 0.2px;
+}
+
+.button:hover {
+    -fx-background-color: #C2B085; /* Màu sắc khi hover */
+}
+
+.selected {
+    -fx-background-color: #A29A6D; /* Màu sắc khi button được chọn */
+    -fx-border-color: #9E9A6A; /* Màu biên khi button được chọn */
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: #E9E5D9; /* Nền màu sáng vintage nhẹ cho textfield */
+    -fx-border-color: #B8B29A;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 5;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-background-color: #fffefa; /* Màu border khi focus */
+    -fx-background-radius: 10;
+}
+
+/* PasswordField */
+.password-field {
+    -fx-background-color: #E9E5D9; /* Tương tự như TextField */
+    -fx-border-color: #B8B29A;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 5;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+.password-field:focused {
+    -fx-background-color: #fffefa;
+    -fx-background-radius: 10;
+}
+
+/* Label */
+.label {
+    -fx-font-size: 16px;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-text-fill: #7F6F44; /* Màu nâu vintage ấm cho văn bản */
+    -fx-padding: 10px;
+}
+
+/* ImageView */
+#imageView {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 2, 2);
+    -fx-background-radius: 10;
+}
+
+/* VBox */
+.vbox {
+    -fx-spacing: 15px; /* Khoảng cách giữa các phần tử */
+    -fx-alignment: center;
+}
+
+/* StackPane */
+.stack-pane {
+    -fx-spacing: 20px;
+}
+
+/* Áp dụng font chữ Verdana cho tất cả phần tử */
+* {
+    -fx-font-family: "Verdana", sans-serif;
+}
