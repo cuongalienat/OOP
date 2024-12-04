@@ -22,7 +22,7 @@ public class User {
     protected String email;
     protected int quantityBorrowedBook;
     protected int quantityOverduedateBook;
-    protected String profilePicture;  // Thêm trường để lưu link ảnh đại diện
+    protected String profilePicture; // Thêm trường để lưu link ảnh đại diện
 
     /**
      * Default constructor.
@@ -178,7 +178,7 @@ public class User {
      * @throws Exception if an error occurs during the operation
      */
     public void countQuantity() throws Exception {
-        String query = "Select Count(*) as quantityBorrowedBook From booklogs WHERE phone_user = ?";
+        String query = "SELECT COUNT(*) AS quantityBorrowedBook FROM booklogs WHERE phone_user = ? AND status in (\'active\', \'overdue\')";
 
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -197,7 +197,7 @@ public class User {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = currentDate.format(formatter);
 
-        String query2 = "Select Count(*) as quantityOverDueDateBook From booklogs WHERE phone_user = ? and dueDate < ?";
+        String query2 = "Select Count(*) as quantityOverDueDateBook From booklogs WHERE phone_user = ? and dueDate < ? and status in (\'active\', \'overdue\')";
 
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query2)) {
@@ -245,19 +245,19 @@ public class User {
     public static User getUser(String phoneIn) throws Exception {
         String query = "SELECT * FROM librarymanagement.user WHERE phone = ?";
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+                PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, phoneIn);
             ResultSet rs = stmt.executeQuery();
-    
+
             if (rs.next()) {
                 String name = rs.getString("name");
                 String phone = rs.getString("phone");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
-                String profilePicture = rs.getString("profile_picture");  // Đảm bảo lấy đúng cột
-    
+                String profilePicture = rs.getString("profile_picture"); // Đảm bảo lấy đúng cột
+
                 User user = new User(name, email, phone, password);
-                user.setProfilePicture(profilePicture);  // Cập nhật ảnh đại diện
+                user.setProfilePicture(profilePicture); // Cập nhật ảnh đại diện
                 return user;
             }
         } catch (SQLException e) {
@@ -265,7 +265,7 @@ public class User {
         }
         return null;
     }
-    
+
     /**
      * Updates the user's information in the database.
      *
@@ -273,25 +273,25 @@ public class User {
      */
     public void Update() throws Exception {
         String query = "UPDATE librarymanagement.user SET name = ?, password = ?, profile_picture = ? WHERE phone = ?";
-    
+
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-    
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
             // Set giá trị cho các trường cần cập nhật
-            stmt.setString(1, this.getName());  // Cập nhật tên người dùng
-            stmt.setString(2, this.getPassword());  // Cập nhật mật khẩu đã mã hóa
-            stmt.setString(3, this.getProfilePicture());  // Cập nhật ảnh đại diện (nếu có thay đổi)
-            stmt.setString(4, this.getPhone());  // Dùng số điện thoại làm điều kiện cập nhật
-    
+            stmt.setString(1, this.getName()); // Cập nhật tên người dùng
+            stmt.setString(2, this.getPassword()); // Cập nhật mật khẩu đã mã hóa
+            stmt.setString(3, this.getProfilePicture()); // Cập nhật ảnh đại diện (nếu có thay đổi)
+            stmt.setString(4, this.getPhone()); // Dùng số điện thoại làm điều kiện cập nhật
+
             // Thực hiện cập nhật
             stmt.executeUpdate();
-    
+
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Exception("Lỗi cập nhật thông tin người dùng.");
         }
     }
-    
+
     /**
      * Deletes a user from the database.
      *

@@ -85,7 +85,8 @@ public class Book {
         this.available = available;
     }
 
-    public Book(Integer id, String collection, String name, String author, Integer available, String imageUrl, String description){
+    public Book(Integer id, String collection, String name, String author, Integer available, String imageUrl,
+            String description) {
         this.collection = collection;
         this.name = name;
         this.author = author;
@@ -201,59 +202,59 @@ public class Book {
     }
 
     // public void addData() throws Exception {
-    //     // using " ` " to border collumns contain space
-    //     String query = "INSERT INTO book (`Offer Collection`, `Book Title`, `Contributors`, `ID`, `available`) VALUES (?, ?, ?, ?, ?)";
-    //     try (Connection conn = DbConfig.connect();
-    //             PreparedStatement stmt = conn.prepareStatement(query)) {
+    // // using " ` " to border collumns contain space
+    // String query = "INSERT INTO book (`Offer Collection`, `Book Title`,
+    // `Contributors`, `ID`, `available`) VALUES (?, ?, ?, ?, ?)";
+    // try (Connection conn = DbConfig.connect();
+    // PreparedStatement stmt = conn.prepareStatement(query)) {
 
-    //         stmt.setString(1, collection);
-    //         stmt.setString(2, name);
-    //         stmt.setString(3, author);
-    //         stmt.setInt(4, id);
-    //         stmt.setInt(5, available);
-    //         stmt.executeUpdate();
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
+    // stmt.setString(1, collection);
+    // stmt.setString(2, name);
+    // stmt.setString(3, author);
+    // stmt.setInt(4, id);
+    // stmt.setInt(5, available);
+    // stmt.executeUpdate();
+    // } catch (SQLException e) {
+    // e.printStackTrace();
+    // }
     // }
 
     public void addToDatabase() throws Exception {
-    String checkQuery = "SELECT Available FROM book WHERE ID = ?";
-    String updateQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
-    String insertQuery = "INSERT INTO book (ID, `Offer Collection`, `Book Title`, Contributors, Available, ImageLink, Description) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String checkQuery = "SELECT Available FROM book WHERE ID = ?";
+        String updateQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
+        String insertQuery = "INSERT INTO book (ID, `Offer Collection`, `Book Title`, Contributors, Available, ImageLink, Description) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    try (Connection conn = DbConfig.connect()) {
-        // Kiểm tra xem sách đã tồn tại chưa
-        try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
-            checkStmt.setInt(1, id);
-            ResultSet rs = checkStmt.executeQuery();
+        try (Connection conn = DbConfig.connect()) {
+            // Kiểm tra xem sách đã tồn tại chưa
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+                checkStmt.setInt(1, id);
+                ResultSet rs = checkStmt.executeQuery();
 
-            if (rs.next()) {
-                // Nếu sách đã tồn tại, cập nhật số lượng
-                try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
-                    updateStmt.setInt(1, id);
-                    updateStmt.executeUpdate();
-                }
-            } else {
-                // Nếu sách chưa tồn tại, thêm mới
-                try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
-                    insertStmt.setInt(1, id);
-                    insertStmt.setString(2, collection);
-                    insertStmt.setString(3, name);
-                    insertStmt.setString(4, author);
-                    insertStmt.setInt(5, available);
-                    insertStmt.setString(6, imageSrc);
-                    insertStmt.setString(7, description);
-                    insertStmt.executeUpdate();
+                if (rs.next()) {
+                    // Nếu sách đã tồn tại, cập nhật số lượng
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                        updateStmt.setInt(1, id);
+                        updateStmt.executeUpdate();
+                    }
+                } else {
+                    // Nếu sách chưa tồn tại, thêm mới
+                    try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+                        insertStmt.setInt(1, id);
+                        insertStmt.setString(2, collection);
+                        insertStmt.setString(3, name);
+                        insertStmt.setString(4, author);
+                        insertStmt.setInt(5, available);
+                        insertStmt.setString(6, imageSrc);
+                        insertStmt.setString(7, description);
+                        insertStmt.executeUpdate();
+                    }
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Error adding/updating book in database.");
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        throw new Exception("Error adding/updating book in database.");
     }
-}
-
 
     /**
      * Retrieves a book by its ID.
@@ -326,9 +327,9 @@ public class Book {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT ID, `Offer Collection`, `Book Title`, Contributors, Available, ImageLink, Description FROM book WHERE Available > 0";
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-    
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 // Lấy các trường từ cơ sở dữ liệu
                 Integer id = rs.getInt("ID");
@@ -338,7 +339,7 @@ public class Book {
                 Integer available = rs.getInt("Available");
                 String imageLink = rs.getString("ImageLink"); // Thêm đường dẫn hình ảnh
                 String description = rs.getString("Description"); // Thêm mô tả sách
-    
+
                 // Tạo đối tượng Book với đầy đủ thông tin
                 Book book = new Book(id, collection, name, author, available, imageLink, description);
                 bookList.add(book); // Thêm vào danh sách
@@ -352,7 +353,6 @@ public class Book {
         }
         return bookList;
     }
-    
 
     /**
      * Adds a borrowed book to the database.
@@ -532,11 +532,11 @@ public class Book {
      */
     public static List<Book> searchBookByID(int ID) {
         List<Book> bookList = new ArrayList<>();
-        String query = "SELECT * FROM book WHERE Id =  ?";
+        String query = "SELECT * FROM book WHERE `Id` LIKE ? ";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, ID);
+            stmt.setString(1, "%" + ID + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String collection = rs.getString("Offer Collection");
