@@ -1,7 +1,7 @@
 # BÀI TẬP LỚN MÔN OOP - QUẢN LÍ THƯ VIỆN
 
 ## SƠ ĐỒ LỚP
-![LibraryUML](https://github.com/user-attachments/assets/5a0e388e-05a8-4467-894f-9a2e9861cff0)
+![alt text](src/design/Images/LibraryUML.png)
 
 ## THÀNH VIÊN VÀ NHIỆM VỤ 
 
