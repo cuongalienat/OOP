@@ -6,28 +6,40 @@
 
 <AnchorPane stylesheets="@../design/Css/settingDesign.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HelpSupportController">
     <children>
-        <Label layoutX="20.0" layoutY="20.0" style="-fx-font-size: 18;" text="Help &amp; Support" />
+        <Label layoutX="10.0" layoutY="6.0" style="-fx-font-size: 18;" text="Help &amp; Support" />
 
         <!-- Buttons to toggle between FAQs -->
-        <Button fx:id="btnUserFAQ" layoutX="20.0" layoutY="60.0" onAction="#showUserFAQ" text="User FAQ" />
-        <Button fx:id="btnAdminFAQ" layoutX="120.0" layoutY="60.0" onAction="#showAdminFAQ" text="Admin FAQ" />
+        <Button fx:id="btnUserFAQ" layoutX="20.0" layoutY="50.0" onAction="#showUserFAQ" prefHeight="30.0" prefWidth="100.0" text="User FAQ" />
+        <Button fx:id="btnAdminFAQ" layoutX="140.0" layoutY="50.0" onAction="#showAdminFAQ" prefHeight="30.0" prefWidth="100.0" text="Admin FAQ" />
 
         <!-- User FAQ Section -->
-        <AnchorPane fx:id="userFAQContent" layoutX="20.0" layoutY="120.0" prefHeight="300.0" prefWidth="500.0" visible="true">
+        <AnchorPane fx:id="userFAQContent" layoutX="2.0" layoutY="81.0" prefHeight="353.0" prefWidth="654.0" visible="true">
             <Label layoutX="10.0" layoutY="10.0" style="-fx-font-size: 14;" text="User FAQ" />
-            <Label layoutX="10.0" layoutY="50.0" text="Q1: How to change my password?" />
-            <Label layoutX="30.0" layoutY="70.0" text="A: Go to Settings &gt; Change Password." />
-            <Label layoutX="10.0" layoutY="100.0" text="Q2: How to contact support?" />
-            <Label layoutX="30.0" layoutY="120.0" text="A: Use the Contact Support button below." />
+            <Label layoutX="10.0" layoutY="40.0" text="Q1: How do I change my information?" />
+            <Label layoutX="30.0" layoutY="60.0" text="A: Go to Settings &gt; Change user" />
+            <Label layoutX="10.0" layoutY="125.0" text="Q2: How do I search books in library?" />
+         <Label layoutX="29.0" layoutY="80.0" text="Note: You can't change your phone and gmail." />
+         <Label layoutX="30.0" layoutY="145.0" text="A: Go to Available &gt; Select the search criteria and write in the search box." />
+         <Label layoutX="10.0" layoutY="185.0" text="Q3: How do I borrow books in library?" />
+         <Label layoutX="30.0" layoutY="205.0" prefHeight="42.0" prefWidth="617.0" text="A: You can borrow recommended books at home, or go to available" />
+         <Label layoutX="28.0" layoutY="225.0" prefHeight="42.0" prefWidth="575.0" text="books and borrow" />
+         <Label layoutX="40.0" layoutY="245.0" prefHeight="42.0" prefWidth="575.0" text="Note: Double click on the items in the table to view book detail" />
         </AnchorPane>
 
         <!-- Admin FAQ Section -->
-        <AnchorPane fx:id="adminFAQContent" layoutX="20.0" layoutY="120.0" prefHeight="300.0" prefWidth="500.0" visible="false">
+        <AnchorPane fx:id="adminFAQContent" layoutX="2.0" layoutY="81.0" prefHeight="353.0" prefWidth="654.0" visible="false">
+         <children>
             <Label layoutX="10.0" layoutY="10.0" style="-fx-font-size: 14;" text="Admin FAQ" />
-            <Label layoutX="10.0" layoutY="50.0" text="Q1: How to add a new user?" />
-            <Label layoutX="30.0" layoutY="70.0" text="A: Go to Admin Panel &gt; Add User." />
-            <Label layoutX="10.0" layoutY="100.0" text="Q2: How to reset a user password?" />
-            <Label layoutX="30.0" layoutY="120.0" text="A: Go to Admin Panel &gt; Manage Users." />
+            <Label layoutX="10.0" layoutY="40.0" text="Q1: How do I add, update, remove books?" />
+            <Label layoutX="30.0" layoutY="60.0" text="A: Go to Book Management" />
+            <Label layoutX="30.0" layoutY="80.0" text="ADD: Click Search &gt; Search by Title on Google &gt; Add Book" />
+            <Label layoutX="30.0" layoutY="100.0" text="UPDATE: Click properties of book in the table and rewrite directly" />
+            <Label layoutX="30.0" layoutY="120.0" prefHeight="42.0" prefWidth="617.0" text="REMOVE: Click book in the table &gt; click button &quot;Remove&quot;" />
+            <Label layoutX="10.0" layoutY="165.0" prefHeight="42.0" prefWidth="575.0" text="Q2: How do I manage books and users?" />
+            <Label layoutX="30.0" layoutY="185.0" prefHeight="42.0" prefWidth="575.0" text="A: Go to User Management" />
+            <Label layoutX="40.0" layoutY="205.0" prefHeight="42.0" prefWidth="575.0" text="Note: Go to Book Logs to update status " />
+            <Label layoutX="40.0" layoutY="225.0" prefHeight="42.0" prefWidth="575.0" text="Note: Go to User Account to management user account" />
+         </children>
         </AnchorPane>
     </children>
 </AnchorPane>

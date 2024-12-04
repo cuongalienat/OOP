@@ -50,8 +50,7 @@
 
                 <!-- Nội dung của chức năng 'Đổi nền' -->
                 <AnchorPane fx:id="changeBackgroundContent" visible="false">
-                    <Label text="Change Background Functionality" AnchorPane.leftAnchor="20" AnchorPane.topAnchor="20" />
-                    <Button text="Change Background" AnchorPane.leftAnchor="20" AnchorPane.topAnchor="60" />
+                    <Label text="We will update more features in the future" AnchorPane.leftAnchor="20" AnchorPane.topAnchor="20" />
                 </AnchorPane>
 
                 <!-- Nội dung của chức năng 'Help & Support' -->
@@ -92,7 +91,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-               <Button fx:id="btnChangeBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleChangeBackground" prefHeight="35.0" prefWidth="187.0" text="Change background">
+               <Button fx:id="btnChangeBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handleChangeBackground" prefHeight="35.0" prefWidth="187.0" text="Comming soon...">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
