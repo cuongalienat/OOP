@@ -69,6 +69,7 @@ public class HelloController implements Initializable {
 
     @FXML
     private ImageView userImage;
+
     /**
      * Sets the displayed user name.
      *
@@ -90,7 +91,7 @@ public class HelloController implements Initializable {
             }
         } else {
             // Set a default image or leave empty
-            userImage.setImage(new Image("file:default_avatar.png"));
+            userImage.setImage(new Image("./design/images/default_avatar.png"));
         }
     }
 
@@ -341,7 +342,8 @@ public class HelloController implements Initializable {
             AnchorPane.setLeftAnchor(reportsRoot, 0.0);
             AnchorPane.setRightAnchor(reportsRoot, 0.0);
 
-            // Since initialize() handles populating data, no manual calls to populate methods are needed
+            // Since initialize() handles populating data, no manual calls to populate
+            // methods are needed
         } catch (IOException e) {
             // Print stack trace in case of an error
             e.printStackTrace();
