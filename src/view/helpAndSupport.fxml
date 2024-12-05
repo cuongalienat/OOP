@@ -41,5 +41,6 @@
             <Label layoutX="40.0" layoutY="225.0" prefHeight="42.0" prefWidth="575.0" text="Note: Go to User Account to management user account" />
          </children>
         </AnchorPane>
+      <Label layoutX="435.0" layoutY="400.0" prefHeight="41.0" prefWidth="229.0" text="Contact: 0877596919" />
     </children>
 </AnchorPane>

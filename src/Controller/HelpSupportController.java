@@ -19,21 +19,19 @@ public class HelpSupportController {
     private Button btnAdminFAQ;
 
     /**
-     * Hiển thị User FAQ.
+     * Show User FAQ.
      */
     @FXML
     private void showUserFAQ() {
-        // Chuyển đổi giữa các FAQ
         userFAQContent.setVisible(true);
         adminFAQContent.setVisible(false);
     }
 
     /**
-     * Hiển thị Admin FAQ.
+     * Show Admin FAQ.
      */
     @FXML
     private void showAdminFAQ() {
-        // Chuyển đổi giữa các FAQ
         userFAQContent.setVisible(false);
         adminFAQContent.setVisible(true);
     }

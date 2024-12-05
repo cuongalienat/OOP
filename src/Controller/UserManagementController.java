@@ -12,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -97,6 +96,9 @@ public class UserManagementController {
     private ObservableList<BorrowedBooks> allBookLogs = FXCollections.observableArrayList();
     private List<User> allUsers;
 
+    /**
+     * Sets the data for the user table.
+     */
     public void setUserData(List<User> userData) {
         ObservableList<User> users = FXCollections.observableArrayList(userData);
 
@@ -117,6 +119,9 @@ public class UserManagementController {
         allUsers = userData;
     }
 
+    /**
+     * Sets the data for the book logs table.
+     */
     public void setBookLogsData(ObservableList<BorrowedBooks> Booklogs) {
         Table_BookLogs.setEditable(true);
         Booklogs_Status.setEditable(true);
@@ -140,10 +145,9 @@ public class UserManagementController {
             BorrowedBooks log = cellEditEvent.getRowValue();
             String newStatus = cellEditEvent.getNewValue();
             if ("Overdue".equals(newStatus)) {
-                LocalDate dueDate = log.getDueDate(); // Lấy ngày quá hạn từ đối tượng log
-                LocalDate currentDate = LocalDate.now(); // Lấy ngày hiện tại
+                LocalDate dueDate = log.getDueDate(); 
+                LocalDate currentDate = LocalDate.now(); 
 
-                // Kiểm tra nếu ngày quá hạn chưa đến
                 if (!dueDate.isBefore(currentDate)) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Invalid Status Change");
@@ -164,6 +168,9 @@ public class UserManagementController {
         Table_BookLogs.setItems(Booklogs);
     }
 
+    /**
+     * Switches between user management and book logs view.
+     */
     public void switchForm(ActionEvent event) {
         TranslateTransition slider = new TranslateTransition();
 
@@ -207,6 +214,9 @@ public class UserManagementController {
         }
     }
 
+    /**
+     * Deletes a user after confirming the action.
+     */
     public void DeleteUser(ActionEvent event) throws Exception {
         User selectedUser = Table_Um.getSelectionModel().getSelectedItem();
         String phone_user = selectedUser.getPhone();
@@ -228,6 +238,9 @@ public class UserManagementController {
         }
     }
 
+    /**
+     * Marks a borrowed book as returned after confirmation.
+     */
     @FXML
     void ReturnBook(ActionEvent event) throws Exception {
         BorrowedBooks selectedBook = Table_BookLogs.getSelectionModel().getSelectedItem();
@@ -251,12 +264,19 @@ public class UserManagementController {
         }
     }
 
+    /**
+     * Cancels the search and restores the user and book logs data.
+     */
     @FXML
     void Cancel(MouseEvent event) {
         setUserData(allUsers);
         setBookLogsData(allBookLogs);
     }
 
+
+    /**
+     * Handles the search functionality for both users and book logs.
+     */
     @FXML
     void Search(MouseEvent event) throws Exception {
         if (Um_search.isVisible()) {
@@ -310,6 +330,12 @@ public class UserManagementController {
         }
     }
 
+    /**
+     * Updates the status of selected book logs.
+     * 
+     * @param event Action event triggered when update button is clicked.
+     * @throws SQLException if the status update fails.
+     */
     @FXML
     void UpdateBookLogs(ActionEvent event) throws Exception {
         if (event.getSource() == Update) {

@@ -20,8 +20,6 @@ import javafx.stage.Stage;
 import library.Admin;
 import library.User;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * Controller for handling user login operations.
@@ -188,7 +186,7 @@ public class loginController {
             if (signup_phone.getText().equals("") || signup_password.getText().equals("")
                     || signup_name.getText().equals("") || signup_email.getText().equals("")) {
                 alert = new Alert(AlertType.ERROR);
-                alert.setContentText("Vui lòng nhập hết thông tin ở cac ô");
+                alert.setContentText("Vui lòng nhập hết thông tin ở các ô");
                 alert.setHeaderText(null);
                 alert.showAndWait();
                 return;
@@ -290,23 +288,19 @@ public class loginController {
                 return;
             }
 
-            // Đóng cửa sổ đăng nhập
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
-            // Mở cửa sổ mới cho sample.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sample.fxml"));
             Parent newRoot = loader.load();
 
             HelloController helloController = loader.getController();
             helloController.setName(user_now.getName());
             helloController.setImage(user_now.getProfilePicture());
-            // System.out.println(user_now.getProfilePicture());
 
             Stage newStage = new Stage();
             Scene scene = new Scene(newRoot);
     
-            // Không tắt thanh tiêu đề
             newStage.setScene(scene);
             newStage.setTitle("LIBRARY");
             newStage.setMinWidth(1040);

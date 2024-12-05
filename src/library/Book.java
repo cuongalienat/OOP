@@ -33,6 +33,7 @@ public class Book {
      * Default constructor.
      */
     public Book() {
+
     }
 
     /**
@@ -200,42 +201,22 @@ public class Book {
         return this.available;
     }
 
-    // public void addData() throws Exception {
-    //     // using " ` " to border collumns contain space
-    //     String query = "INSERT INTO book (`Offer Collection`, `Book Title`, `Contributors`, `ID`, `available`) VALUES (?, ?, ?, ?, ?)";
-    //     try (Connection conn = DbConfig.connect();
-    //             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-    //         stmt.setString(1, collection);
-    //         stmt.setString(2, name);
-    //         stmt.setString(3, author);
-    //         stmt.setInt(4, id);
-    //         stmt.setInt(5, available);
-    //         stmt.executeUpdate();
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
     public void addToDatabase() throws Exception {
     String checkQuery = "SELECT Available FROM book WHERE ID = ?";
     String updateQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
     String insertQuery = "INSERT INTO book (ID, `Offer Collection`, `Book Title`, Contributors, Available, ImageLink, Description) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     try (Connection conn = DbConfig.connect()) {
-        // Kiểm tra xem sách đã tồn tại chưa
         try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
             checkStmt.setInt(1, id);
             ResultSet rs = checkStmt.executeQuery();
 
             if (rs.next()) {
-                // Nếu sách đã tồn tại, cập nhật số lượng
                 try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
                     updateStmt.setInt(1, id);
                     updateStmt.executeUpdate();
                 }
             } else {
-                // Nếu sách chưa tồn tại, thêm mới
                 try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
                     insertStmt.setInt(1, id);
                     insertStmt.setString(2, collection);
@@ -305,14 +286,14 @@ public class Book {
                 Integer available = rs.getInt("Available");
 
                 Book book = new Book(collection, name, author, id, available);
-                bookList.add(book); // Thêm vào danh sách
+                bookList.add(book); 
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace(); // Xử lý lỗi kết nối database
+            e.printStackTrace(); 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            e.printStackTrace(); // Xử lý lỗi khác
+            e.printStackTrace();
         }
         return bookList;
     }
@@ -330,25 +311,23 @@ public class Book {
              ResultSet rs = stmt.executeQuery()) {
     
             while (rs.next()) {
-                // Lấy các trường từ cơ sở dữ liệu
                 Integer id = rs.getInt("ID");
                 String collection = rs.getString("Offer Collection");
                 String name = rs.getString("Book Title");
                 String author = rs.getString("Contributors");
                 Integer available = rs.getInt("Available");
-                String imageLink = rs.getString("ImageLink"); // Thêm đường dẫn hình ảnh
-                String description = rs.getString("Description"); // Thêm mô tả sách
+                String imageLink = rs.getString("ImageLink"); 
+                String description = rs.getString("Description");
     
-                // Tạo đối tượng Book với đầy đủ thông tin
                 Book book = new Book(id, collection, name, author, available, imageLink, description);
-                bookList.add(book); // Thêm vào danh sách
+                bookList.add(book);
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace(); // Xử lý lỗi kết nối database
+            e.printStackTrace(); 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            e.printStackTrace(); // Xử lý lỗi khác
+            e.printStackTrace(); 
         }
         return bookList;
     }
@@ -368,7 +347,7 @@ public class Book {
         String insertQuery = "INSERT INTO booklogs (book_id, phone_user, borrowedDate, dueDate, status) VALUES (?, ?, ?, ?, ?)";
         String updateAvailableQuery = "UPDATE book SET Available = Available - 1 WHERE ID = ?";
 
-        try (Connection conn = DbConfig.connect()) { // Kết nối đến CSDL
+        try (Connection conn = DbConfig.connect()) { 
             String userPhone = nUser.getPhone();
             int available = 0;
 
@@ -400,16 +379,14 @@ public class Book {
                     System.out.println("Thêm vào cơ sở dữ liệu thành công!");
                 } catch (SQLException e) {
                     System.err.println("Lỗi khi thêm vào CSDL: " + e.getMessage());
-                    throw e; // Ném lại ngoại lệ
+                    throw e;
                 }
 
-                // Cập nhật giá trị available
                 try (PreparedStatement updateStmt = conn.prepareStatement(updateAvailableQuery)) {
                     updateStmt.setInt(1, this.getId());
                     updateStmt.executeUpdate();
                 }
 
-                // Bật lại kiểm tra khóa ngoại
                 try (PreparedStatement stmtSafeOn = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 1")) {
                     stmtSafeOn.executeUpdate();
                 }
@@ -444,17 +421,17 @@ public class Book {
                 Integer available = rs.getInt("Available");
 
                 String imageUrl = rs.getString("ImageLink");
-                String description = rs.getString("Description"); // Lấy mô tả
+                String description = rs.getString("Description");
     
                 Book book = new Book(id, collection, name, author, available, imageUrl, description);
-                bookList.add(book); // Thêm vào danh sách
+                bookList.add(book); 
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace(); // Xử lý lỗi kết nối database
+            e.printStackTrace(); 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            e.printStackTrace(); // Xử lý lỗi khác
+            e.printStackTrace();
         }
         return bookList;
     }
@@ -552,17 +529,17 @@ public class Book {
                 Integer id = rs.getInt("ID");
                 Integer available = rs.getInt("Available");
                 String imageUrl = rs.getString("ImageLink");
-                String description = rs.getString("Description"); // Lấy mô tả
+                String description = rs.getString("Description");
     
                 Book book = new Book(id, collection, name, author, available, imageUrl, description);
-                bookList.add(book); // Thêm vào danh sách
+                bookList.add(book); 
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace(); // Xử lý lỗi kết nối database
+            e.printStackTrace(); 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            e.printStackTrace(); // Xử lý lỗi khác
+            e.printStackTrace(); 
         }
         return bookList;
     }

@@ -18,12 +18,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -44,9 +41,6 @@ public class HomeController implements Initializable {
     @FXML
     private GridPane bookContainer;
 
-    // @FXML
-    // private ProgressIndicator loadingSpinner;
-
     @FXML
     private ImageView loadingGif; 
 
@@ -60,7 +54,6 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Hiển thị GIF khi bắt đầu tải
         showLoadingGif(true);
 
         // Tạo task để tải dữ liệu nền
@@ -71,15 +64,12 @@ public class HomeController implements Initializable {
                 List<Book> topBooks = getMostBorrowedBooks(5);
                 List<Book> recommendBooks = getRecommendBooks(3, 25);
 
-                // Chờ 2 giây để hiển thị GIF
                 Thread.sleep(2000);
 
-                // Cập nhật giao diện trên JavaFX Application Thread
                 javafx.application.Platform.runLater(() -> {
                     displayTopBooks(topBooks);
                     displayRecommendBooks(recommendBooks);
 
-                    // Ẩn GIF sau khi tải xong
                     showLoadingGif(false);
                 });
                 return null;
@@ -90,6 +80,11 @@ public class HomeController implements Initializable {
         new Thread(loadDataTask).start();
     }
 
+    /**
+     * Toggles the visibility of the loading gif with a fade transition.
+     *
+     * @param show Whether to show the loading gif or not.
+     */
     private void showLoadingGif(boolean show) {
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), loadingGif);
         if (show) {
@@ -103,45 +98,12 @@ public class HomeController implements Initializable {
         }
         fadeTransition.play();
     }
-    // @Override
-    // public void initialize(URL url, ResourceBundle resourceBundle) {
-    //     // Hiển thị ProgressIndicator
-    //     loadingSpinner.setVisible(true);
 
-    //     // Tạo task để tải dữ liệu
-    //     Task<Void> loadDataTask = new Task<>() {
-    //         @Override
-    //         protected Void call() throws Exception {
-    //             // Giả lập tiến trình
-    //             for (int i = 0; i <= 100; i++) {
-    //                 Thread.sleep(10); // Giả lập thời gian tải
-    //                 updateProgress(i, 100); // Cập nhật tiến độ
-    //             }
-
-    //             // Tải dữ liệu thực tế
-    //             List<Book> topBooks = getMostBorrowedBooks(5);
-    //             List<Book> recommendBooks = getRecommendBooks(3, 25);
-
-    //             // Cập nhật giao diện trên JavaFX Application Thread
-    //             javafx.application.Platform.runLater(() -> {
-    //                 displayTopBooks(topBooks);
-    //                 displayRecommendBooks(recommendBooks);
-    //             });
-
-    //             return null;
-    //         }
-    //     };
-
-    //     // Liên kết progress của ProgressIndicator với Task
-    //     loadingSpinner.progressProperty().bind(loadDataTask.progressProperty());
-
-    //     // Ẩn spinner sau khi task hoàn tất
-    //     loadDataTask.setOnSucceeded(event -> loadingSpinner.setVisible(false));
-
-    //     // Chạy task trên một thread mới
-    //     new Thread(loadDataTask).start();
-    // }
-
+    /**
+     * Displays a list of top books in the UI.
+     *
+     * @param topBooks A list of the most borrowed books to display.
+     */
     private void displayTopBooks(List<Book> topBooks) {
         SequentialTransition sequentialTransition = new SequentialTransition();
 
@@ -150,22 +112,17 @@ public class HomeController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/card.fxml"));
                 HBox cardBox = fxmlLoader.load();
 
-                // Truyền dữ liệu vào CardController
                 CardController cardController = fxmlLoader.getController();
                 cardController.setData(book);
 
-                // Gắn sự kiện click
                 cardBox.setOnMouseClicked(event -> showBookDetails(book));
 
-                // Thêm card vào cardLayout
                 cardLayout.getChildren().add(cardBox);
 
-                // Tạo hiệu ứng fade-in cho card
                 FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), cardBox);
                 fadeTransition.setFromValue(0);
                 fadeTransition.setToValue(1);
 
-                // Thêm vào SequentialTransition
                 sequentialTransition.getChildren().add(fadeTransition);
 
             } catch (IOException e) {
@@ -173,10 +130,14 @@ public class HomeController implements Initializable {
             }
         }
 
-        // Bắt đầu hiệu ứng hiển thị dần dần
         sequentialTransition.play();
     }
 
+    /**
+     * Displays a list of recommended books in the UI.
+     *
+     * @param recommendBooks A list of recommended books to display.
+     */
     private void displayRecommendBooks(List<Book> recommendBooks) {
         SequentialTransition sequentialTransition = new SequentialTransition();
         int column = 0;
@@ -187,14 +148,11 @@ public class HomeController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/book.fxml"));
                 VBox bookBox = fxmlLoader.load();
 
-                // Truyền dữ liệu vào BookController
                 BookController bookController = fxmlLoader.getController();
                 bookController.setData(book);
 
-                // Gắn sự kiện click
                 bookBox.setOnMouseClicked(event -> showBookDetails(book));
 
-                // Thêm book vào GridPane
                 if (column == 10) {
                     column = 0;
                     row++;
@@ -202,12 +160,10 @@ public class HomeController implements Initializable {
                 bookContainer.add(bookBox, column++, row);
                 GridPane.setMargin(bookBox, new Insets(10));
 
-                // Tạo hiệu ứng fade-in cho book
                 FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), bookBox);
                 fadeTransition.setFromValue(0);
                 fadeTransition.setToValue(1);
 
-                // Thêm vào SequentialTransition
                 sequentialTransition.getChildren().add(fadeTransition);
 
             } catch (IOException e) {
@@ -218,67 +174,11 @@ public class HomeController implements Initializable {
         // Bắt đầu hiệu ứng hiển thị dần dần
         sequentialTransition.play();
     }
-// =======
-//     /**
-//      * Retrieves all books from the database.
-//      *
-//      * @return A list of all books.
-//      */
-//     private List<Book> getAllBooks() {
-//         List<Book> bookList = new ArrayList<>();
-//         String query = "SELECT * FROM librarymanagement.book"; // Truy vấn lấy tất cả sách
-//         try (Connection conn = DbConfig.connect();
-//                 PreparedStatement stmt = conn.prepareStatement(query);
-//                 ResultSet rs = stmt.executeQuery()) {
-// >>>>>>> 56d9a345a0d2bbc5e5fae5f8206aae13790fcfe8
-
-//             while (rs.next()) {
-//                 String collection = rs.getString("Offer Collection");
-//                 String name = rs.getString("Book Title");
-//                 String author = rs.getString("Contributors");
-//                 Integer id = rs.getInt("ID");
-//                 Integer available = rs.getInt("Available");
-
-//                 Book book = new Book(collection, name, author, id, available);
-//                 bookList.add(book); // Thêm vào danh sách
-//             }
-//         } catch (SQLException e) {
-//             System.out.println("SQL Error: " + e.getMessage());
-//             e.printStackTrace(); // Xử lý lỗi kết nối database
-//         } catch (Exception e) {
-//             System.out.println("Error: " + e.getMessage());
-//             e.printStackTrace(); // Xử lý lỗi khác
-//         }
-//         return bookList;
-//     }
-
-//     /**
-//      * Retrieves a random subset of books.
-//      *
-//      * @param books The list of all books.
-//      * @param cnt   The number of random books to retrieve.
-//      * @return A list of random books.
-//      */
-//     private List<Book> getRandomBooks(List<Book> books, int cnt) {
-//         List<Book> randomBooks = new ArrayList<>();
-//         if (books.size() <= cnt) {
-//             return books;
-//         }
-//         List<Integer> usedIdx = new ArrayList<>();
-//         while (randomBooks.size() < cnt) {
-//             int randomIdx = (int) (Math.random() * books.size());
-//             if (!usedIdx.contains(randomIdx)) {
-//                 randomBooks.add(books.get(randomIdx));
-//                 usedIdx.add(randomIdx);
-//             }
-//         }
-//         return randomBooks;
-//     }
 
     /**
-     * Displays the details of a selected book.
+     * Opens a new window displaying the details of the selected book.
      *
-     * @param book The book to display details for.
+     * @param book The book whose details should be displayed.
      */
     private void showBookDetails(Book book) {
         try {
@@ -286,13 +186,10 @@ public class HomeController implements Initializable {
             fxmlLoader.setLocation(getClass().getResource("/view/bookDetails.fxml"));
             Parent bookDetailsRoot = fxmlLoader.load();
 
-            // Lấy controller của bookDetails.fxml
             BookDetailsController bookDetailsController = fxmlLoader.getController();
 
-            // Truyền thông tin sách từ card vào
             bookDetailsController.setBookDetails(book);
 
-            // Hiển thị cửa sổ chi tiết sách
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(new Scene(bookDetailsRoot));
@@ -302,6 +199,13 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * Retrieves the most borrowed books from the database.
+     *
+     * @param limit The maximum number of books to retrieve.
+     * @return A list of the most borrowed books.
+     * @throws Exception If any error occurs while fetching data.
+     */
     private List<Book> getMostBorrowedBooks(int limit) throws Exception {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT b.ID, b.`Offer Collection`, b.`Book Title`, b.Contributors, b.Available, b.ImageLink, b.Description, " +
@@ -336,11 +240,16 @@ public class HomeController implements Initializable {
         return bookList;
     }
     
-
+    /**
+     * Retrieves recommended books for the user based on their past activity.
+     *
+     * @param booksPerCollection The number of books to retrieve from each collection.
+     * @param totalBooksLimit The total number of books to retrieve.
+     * @return A list of recommended books.
+     */
     private List<Book> getRecommendBooks(int booksPerCollection, int totalBooksLimit) {
         List<Book> recommendedBooks = new ArrayList<>();
     
-        // Truy vấn danh sách Offer Collection mà người dùng đã mượn
         String collectionsQuery = "SELECT DISTINCT b.`Offer Collection` " +
                                   "FROM librarymanagement.book b " +
                                   "JOIN librarymanagement.booklogs bl ON b.ID = bl.book_id " +
@@ -355,19 +264,17 @@ public class HomeController implements Initializable {
                             "    FROM librarymanagement.booklogs bl " +
                             "    WHERE bl.phone_user = ? " +
                             ") " +
-                            "ORDER BY RAND() " + // Random hóa kết quả
+                            "ORDER BY RAND() " + 
                             "LIMIT ?";
     
         try (Connection conn = DbConfig.connect();
              PreparedStatement collectionsStmt = conn.prepareStatement(collectionsQuery)) {
     
-            // Lấy thông tin người dùng hiện tại
             String currentUserPhone = loginController.getUser_now().getPhone();
             collectionsStmt.setString(1, currentUserPhone);
     
             ResultSet collectionsRs = collectionsStmt.executeQuery();
     
-            // Lặp qua từng Offer Collection mà người dùng đã mượn
             while (collectionsRs.next() && recommendedBooks.size() < totalBooksLimit) {
                 String collection = collectionsRs.getString("Offer Collection");
     
@@ -386,9 +293,8 @@ public class HomeController implements Initializable {
                         Integer id = booksRs.getInt("ID");
                         Integer available = booksRs.getInt("Available");
                         String imageUrl = booksRs.getString("ImageLink");
-                        String description = booksRs.getString("Description"); // Lấy mô tả
+                        String description = booksRs.getString("Description");
     
-                        // Tạo đối tượng Book và thêm vào danh sách recommend
                         Book book = new Book(id, collectionName, name, author, available, imageUrl, description);
                         recommendedBooks.add(book);
                     }

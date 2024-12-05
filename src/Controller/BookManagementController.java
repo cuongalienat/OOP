@@ -1,13 +1,9 @@
 package Controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,7 +26,6 @@ import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import library.Book;
 import library.BorrowedBooks;
-import library.DbConfig;
 
 import java.util.ArrayList;
 
@@ -76,10 +71,6 @@ public class BookManagementController {
     private TextField Search;
 
     private ObservableList<Book> allBooks = FXCollections.observableArrayList();
-    // private int id_newbook;
-
-    // private Set<Book> editedBooks = new HashSet<>();
-
     /**
      * Sets the data for the book management table.
      *
@@ -125,13 +116,6 @@ public class BookManagementController {
     }
 
     /**
-     * Handles the addition of a new book.
-     *
-     * @param event The mouse event triggering the addition.
-     * @throws Exception If an error occurs during the addition.
-     */
-
-    /**
      * Handles editing commits in the table view.
      *
      * @param event The cell edit event.
@@ -150,21 +134,16 @@ public class BookManagementController {
         } else if (event.getTableColumn() == availableColManage) {
             book.setAvailable((Integer) newValue);
         }
-
-        try {
-            book.updateBookInDatabase(); // Cập nhật sách đã có ID vào cơ sở dữ liệu
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(AlertType.ERROR, "Lỗi", "Không thể cập nhật sách trong cơ sở dữ liệu.");
+        {
+            try {
+                book.updateBookInDatabase(); // Cập nhật sách đã có ID vào cơ sở dữ liệu
+                showAlert(AlertType.INFORMATION, "Thành công", "Cập nhật sách thành công.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert(AlertType.ERROR, "Lỗi", "Không thể cập nhật sách trong cơ sở dữ liệu.");
+            }
         }
     }
-
-    // private boolean isBookDataComplete(Book book) {
-    //     return book.getName() != null && !book.getName().isEmpty() &&
-    //             book.getAuthor() != null && !book.getAuthor().isEmpty() &&
-    //             book.getCollection() != null && !book.getCollection().isEmpty() &&
-    //             book.getAvailable() != 0;
-    // }
 
     /**
      * Removes a selected book from the management table and database.
@@ -215,6 +194,7 @@ public class BookManagementController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
     /**
      * Handles the search functionality based on user input.
      *
@@ -266,6 +246,13 @@ public class BookManagementController {
         }
     }
 
+    /**
+     * Opens a new window to search books via API.
+     * This method is triggered by an action event (e.g., button click).
+     * It loads the FXML for the search window and displays it in a new stage.
+     *
+     * @param event The ActionEvent that triggers the method.
+     */
     @FXML
     private void openSearchApiWindow(ActionEvent event) {
         try {

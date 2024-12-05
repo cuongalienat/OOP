@@ -1,7 +1,5 @@
 package Controller;
 
-import org.json.JSONObject;
-
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,8 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 import library.Book;
-import library.GoogleBooksAPI;
-
 /**
  * Controller for displaying individual book information in the UI.
  */
@@ -31,11 +27,9 @@ public class BookController {
      * @param book The book whose data is to be displayed.
      */
     public void setData(Book book) {
-        // Cập nhật giao diện từ thông tin sách
         bookName.setText(book.getName());
         authorName.setText(book.getAuthor() != null ? book.getAuthor() : "Unknown Author");
     
-        // Kiểm tra và hiển thị ảnh bìa
         String imageUrl = book.getImageSrc() != null ? book.getImageSrc() : "/design/Images/default_book.png";
         loadBookImage(imageUrl);
     }
@@ -49,19 +43,16 @@ public class BookController {
         Task<Image> task = new Task<Image>() {
             @Override
             protected Image call() throws Exception {
-                // Tải ảnh với kích thước của ImageView từ API
                 return new Image(imageUrl, bookImage.getFitWidth(), bookImage.getFitHeight(), true, true);
             }
 
             @Override
             protected void succeeded() {
-                // Cập nhật ảnh cho ImageView khi tải thành công
                 bookImage.setImage(getValue());
             }
 
             @Override
             protected void failed() {
-                // Nếu tải ảnh thất bại, dùng ảnh mặc định
                 bookImage.setImage(new Image("/design/Images/default_book.png"));
             }
         };
@@ -76,10 +67,9 @@ public class BookController {
     public void initialize() {
         bookImage.setFitWidth(121.0);
         bookImage.setFitHeight(147.0);
-        bookImage.setPreserveRatio(false); // Cho phép hình ảnh co giãn để lấp đầy ImageView
+        bookImage.setPreserveRatio(false);
         bookImage.setSmooth(true);
 
-        // Thêm clipping để bo góc hình ảnh
         Rectangle clip = new Rectangle(121.0, 147.0);
         clip.setArcWidth(10);
         clip.setArcHeight(10);

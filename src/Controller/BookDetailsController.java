@@ -1,7 +1,5 @@
 package Controller;
 
-import org.json.JSONObject;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -9,23 +7,12 @@ import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -34,10 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import library.*;
 
@@ -100,22 +84,14 @@ public class BookDetailsController implements Initializable {
         });
     }
 
-    // @FXML
-    // private ImageView bookImage;
-
-    // khi click vào bookBox, sẽ lấy thông tin từ book để setBookDetails
-    // test
-
     /**
      * Sets the details of the book to be displayed.
      *
      * @param book The book whose details are to be displayed.
      */
     public void setBookDetails(Book book) {
-        // Lưu trữ thông tin sách hiện tại
         curBook = book;
     
-        // Cập nhật các thành phần giao diện
         nameText.setText(book.getName());
         authorText.setText(book.getAuthor());
         bookDetails.setText(book.getDescription()); // Nếu không có thông tin mô tả trong DB
@@ -132,11 +108,9 @@ public class BookDetailsController implements Initializable {
      * @param imageUrl The URL of the image to load.
      */
     private void loadBookImage(String imageUrl) {
-        // Đặt kích thước cố định cho ImageView
         double fixedWidth = 202;
         double fixedHeight = 324;
     
-        // Cập nhật kích thước ImageView
         image.setFitWidth(fixedWidth);
         image.setFitHeight(fixedHeight);
     
@@ -144,28 +118,23 @@ public class BookDetailsController implements Initializable {
         Task<Image> task = new Task<>() {
             @Override
             protected Image call() throws Exception {
-                // Tải ảnh với kích thước cố định
                 return new Image(imageUrl, fixedWidth, fixedHeight, true, true);
             }
     
             @Override
             protected void succeeded() {
-                // Cập nhật ảnh cho ImageView
                 image.setImage(getValue());
             }
     
             @Override
             protected void failed() {
-                // Hiển thị ảnh mặc định nếu không tải được
                 image.setImage(new Image("/design/Images/default_book.png", fixedWidth, fixedHeight, true, true));
             }
         };
     
-        // Đảm bảo tỉ lệ và bo góc của ảnh
-        image.setPreserveRatio(false); // Không giữ tỉ lệ gốc, để khớp với kích thước cố định
+        image.setPreserveRatio(false); 
         image.setSmooth(true);
     
-        // Bo góc cho ImageView
         Rectangle clip = new Rectangle(fixedWidth, fixedHeight);
         clip.setArcWidth(10);  // Bo góc
         clip.setArcHeight(10);
@@ -176,9 +145,6 @@ public class BookDetailsController implements Initializable {
     }    
 
     protected BorrowedBooksController borrowedBooksController = new BorrowedBooksController();
-    // protected static ObservableList<BorrowedBooks> borrowList =
-    // FXCollections.observableArrayList();
-
     private boolean isFirstClick = true;
 
     /**
@@ -196,9 +162,8 @@ public class BookDetailsController implements Initializable {
             alert.setContentText(curBook.getName()); // Hiển thị tiêu đề sách
 
             DatePicker datePicker = new DatePicker();
-            datePicker.setValue(LocalDate.now()); // Set default value to current date
+            datePicker.setValue(LocalDate.now()); 
 
-            // Add the DatePicker to the Alert's content
             VBox vbox = new VBox();
             vbox.setSpacing(10);
             vbox.getChildren().addAll(new javafx.scene.control.Label("Xác nhận ngày trả sách"), datePicker);
@@ -206,7 +171,6 @@ public class BookDetailsController implements Initializable {
 
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    // Xóa ở database
                     try {
                         LocalDate selectedDate = datePicker.getValue();
                         if (selectedDate.isBefore(LocalDate.now())) {
@@ -224,19 +188,11 @@ public class BookDetailsController implements Initializable {
                         } else {
                             LocalDate bDate = LocalDate.now();
                             LocalDate dDate = datePicker.getValue();
-                            // showBorrwedStatus(successfull);
                             isFirstClick = false;
                             curBorrowedBook = new BorrowedBooks(curBook.getCollection(), curBook.getName(),
                                     curBook.getAuthor(),
                                     curBook.getId(), curBook.getAvailable(), bDate, dDate, "Pending");
                             borrowedBooksController.addBorrowedBook(curBorrowedBook);
-                            // if(curBook.getAvailable() > 0) {
-                            // Alert successAlert = new Alert(AlertType.INFORMATION);
-                            // successAlert.setHeaderText("Mượn sách thành công.");
-                            // successAlert.setContentText("Bạn đã mượn sách " + curBook.getName() + " thành
-                            // công.");
-                            // successAlert.showAndWait();
-                            // }
                             return;
                         }
                     } catch (Exception e) {
@@ -257,19 +213,15 @@ public class BookDetailsController implements Initializable {
     @FXML
     public void showBorrwedStatus(TextField textField) {
         textField.setVisible(true);
-        // Appear gradually in 0.25s
         FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.25), textField);
-        fadeIn.setFromValue(0); // fully transparent
-        fadeIn.setToValue(1);// opaque
-        // after finishing fadeIn
+        fadeIn.setFromValue(0); 
+        fadeIn.setToValue(1);
         fadeIn.setOnFinished(e -> {
-            // textField will display in 0.75s
             Timeline timeLine = new Timeline(new KeyFrame(Duration.seconds(0.75), ae -> {
-                // Disappear gradually in 0.25s
                 FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.25), textField);
                 fadeOut.setFromValue(1);
                 fadeOut.setToValue(0);
-                fadeOut.setOnFinished(a -> textField.setVisible(false)); // after disappearing, set -> false
+                fadeOut.setOnFinished(a -> textField.setVisible(false)); 
                 fadeOut.play();
             }));
             timeLine.play();

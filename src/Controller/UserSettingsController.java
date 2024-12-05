@@ -25,22 +25,22 @@ import org.mindrot.jbcrypt.BCrypt;
 public class UserSettingsController {
 
     @FXML
-    private TextField userNameField;  // Name field for user to update
+    private TextField userNameField;  
     
     @FXML
-    private TextField userPhoneField;  // Phone field (read-only)
+    private TextField userPhoneField;  
     
     @FXML
-    private TextField userEmailField;  // Email field (read-only)
+    private TextField userEmailField; 
     
     @FXML
-    private PasswordField userCurrentPasswordField;  // Mật khẩu cũ
+    private PasswordField userCurrentPasswordField; 
     
     @FXML
-    private PasswordField userNewPasswordField;  // Mật khẩu mới
+    private PasswordField userNewPasswordField; 
 
     @FXML
-    private PasswordField userConfirmPasswordField;  // Xác nhận mật khẩu mới
+    private PasswordField userConfirmPasswordField; 
 
     @FXML
     private AnchorPane editUserInfoContent;
@@ -49,60 +49,64 @@ public class UserSettingsController {
     private AnchorPane changeBackgroundContent;
 
     @FXML
-    private ImageView imageView; // ImageView hiển thị ảnh người dùng
+    private ImageView imageView; 
 
-    // Hàm khởi tạo, dùng để hiển thị thông tin người dùng hiện tại
-    
+    @FXML
+    private Button btnEditUserInfo, btnChangeBackground;
+
+    /**
+     * Initializes the controller by setting user data.
+     */
     public void initialize() {
-        User currentUser = loginController.getUser_now();  // Lấy người dùng hiện tại
+        User currentUser = loginController.getUser_now(); 
     
         if (currentUser != null) {
             userNameField.setText(currentUser.getName());
-            userPhoneField.setText(currentUser.getPhone());  // Hiển thị phone (chỉ đọc)
-            userEmailField.setText(currentUser.getEmail());  // Hiển thị email (chỉ đọc)
+            userPhoneField.setText(currentUser.getPhone());  
+            userEmailField.setText(currentUser.getEmail()); 
     
-            // Kiểm tra xem người dùng có ảnh đại diện hay không
             String profilePicture = currentUser.getProfilePicture();
             if (profilePicture != null && !profilePicture.isEmpty()) {
-                // Tạo đối tượng Image từ đường dẫn và hiển thị vào ImageView
                 Image image = new Image(profilePicture);
                 imageView.setImage(image);
-            // } else {
-            //     // Nếu không có ảnh đại diện, có thể hiển thị một ảnh mặc định
-            //     Image defaultImage = new Image("/Images/default_avatar.png");
-            //     imageView.setImage(defaultImage);
             }
         }
     }
 
+    /**
+     * Handles the click event for changing the profile picture.
+     * Allows the user to upload a new image.
+     * 
+     * @throws Exception if file upload fails.
+     */
     @FXML
     private void handleImageClick() throws Exception {
-        // Tạo một cửa sổ chọn tệp
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
 
-        // Mở cửa sổ chọn tệp và lấy tệp người dùng chọn
         File file = fileChooser.showOpenDialog(new Stage());
 
         if (file != null) {
-            // Tạo đối tượng Image từ tệp đã chọn
             String filePath = file.toURI().toString();
             Image image = new Image(filePath);
 
-            // Cập nhật hình ảnh vào ImageView
             imageView.setImage(image);
 
-            // Cập nhật lại đường dẫn ảnh cho người dùng
             User currentUser = loginController.getUser_now();
             if (currentUser != null) {
-                currentUser.setProfilePicture(filePath);  // Lưu đường dẫn ảnh mới vào người dùng
-                currentUser.Update();  // Cập nhật vào cơ sở dữ liệu nếu cần
+                currentUser.setProfilePicture(filePath);  
+                currentUser.Update();
             }
 
             showAlert(AlertType.INFORMATION, "Thông báo", "Ảnh đại diện đã được cập nhật.");
         }
     }
 
+    /**
+     * Updates the user's name if the new name is valid.
+     * 
+     * @throws Exception if the update fails.
+     */
     @FXML
     private void updateUserName() throws Exception {
         String name = userNameField.getText();
@@ -110,16 +114,19 @@ public class UserSettingsController {
         User currentUser = loginController.getUser_now();
         if (currentUser != null && !name.trim().isEmpty() && !name.equals(currentUser.getName())) {
             currentUser.setName(name);
-            currentUser.Update();  // Cập nhật vào cơ sở dữ liệu
+            currentUser.Update();  
             loginController.user_now = currentUser;
-
             showAlert(AlertType.INFORMATION, "Thông báo", "Tên người dùng đã được cập nhật.");
         } else {
             showAlert(AlertType.ERROR, "Lỗi", "Tên người dùng không hợp lệ hoặc không có thay đổi.");
         }
     }
 
-
+    /**
+     * Updates the user's password after validating the current password and new password.
+     * 
+     * @throws Exception if password update fails.
+     */
     @FXML
     private void updatePassword() throws Exception {
         String currentPassword = userCurrentPasswordField.getText();
@@ -146,28 +153,37 @@ public class UserSettingsController {
             return;
         }
 
-        // Cập nhật mật khẩu mới
         String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
         currentUser.setPassword(hashedPassword);
-        currentUser.Update();  // Cập nhật vào cơ sở dữ liệu
+        currentUser.Update(); 
         currentUser.UpdateAdmin();
         loginController.user_now = currentUser;
 
         showAlert(AlertType.INFORMATION, "Thông báo", "Mật khẩu đã được cập nhật.");
     }
 
+    /**
+     * Updates the user information (name and password).
+     * 
+     * @throws Exception if any update operation fails.
+     */
     @FXML
     private void updateUserInfo() throws Exception {
         if(userNameField.getText()!="") {
-            updateUserName();  // Thay đổi tên người dùng
+            updateUserName();  
         }
         if(userCurrentPasswordField.getText()!=""){
-            updatePassword();  // Thay đổi mật khẩu
+            updatePassword(); 
         }
     }
 
-
-    // Hàm hỗ trợ hiển thị các thông báo dạng Alert
+    /**
+     * Displays an alert with a specified type, header, and content.
+     * 
+     * @param type the alert type.
+     * @param header the alert header text.
+     * @param content the alert content text.
+     */
     private void showAlert(AlertType type, String header, String content) {
         Alert alert = new Alert(type);
         alert.setHeaderText(header);
@@ -175,14 +191,9 @@ public class UserSettingsController {
         alert.showAndWait();
     }
 
-    // Hàm xóa các trường nhập liệu mật khẩu
-    // private void clearPasswordFields() {
-    //     userCurrentPasswordField.clear();
-    //     userNewPasswordField.clear();
-    //     userConfirmPasswordField.clear();
-    // }
-
-    // Các phương thức xử lý sự kiện cho các tab khác nhau
+    /**
+     * Handles the event to show the user info edit section.
+     */
     @FXML
     private void handleEditUserInfo() {
         btnEditUserInfo.getStyleClass().add("selected");
@@ -191,6 +202,9 @@ public class UserSettingsController {
         changeBackgroundContent.setVisible(false);
     }
 
+    /**
+     * Handles the event to show the background change section.
+     */
     @FXML
     private void handleChangeBackground() {
         btnChangeBackground.getStyleClass().add("selected");
@@ -199,6 +213,9 @@ public class UserSettingsController {
         changeBackgroundContent.setVisible(true);
     }
 
+    /**
+     * Handles the event to hide both sections and show the default view.
+     */
     @FXML
     private void handleHelpAndSupport() {
         btnEditUserInfo.getStyleClass().remove("selected");
@@ -207,16 +224,16 @@ public class UserSettingsController {
         changeBackgroundContent.setVisible(false);
     }
 
-    @FXML
-    private Button btnEditUserInfo, btnChangeBackground;
-
+    /**
+     * Handles the selection of buttons and highlights the clicked button.
+     * 
+     * @param event the action event triggered by the button click.
+     */
     @FXML
     private void handleButtonClick(ActionEvent event) {
-        // Loại bỏ class selected khỏi tất cả các nút
         btnEditUserInfo.getStyleClass().remove("selected");
         btnChangeBackground.getStyleClass().remove("selected");
 
-        // Thêm class selected vào nút được click
         Button clickedButton = (Button) event.getSource();
         clickedButton.getStyleClass().add("selected");
     }   

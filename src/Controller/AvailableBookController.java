@@ -82,16 +82,13 @@ public class AvailableBookController {
         }
         Book selectedBook = availableBook_tableview.getSelectionModel().getSelectedItem();
         if (selectedBook != null) {
-            // Hiển thị hộp thoại xác nhận
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Xác nhận mượn sách");
             alert.setHeaderText("Bạn có chắc chắn muốn mượn sách này không?");
-            alert.setContentText(selectedBook.getName()); // Hiển thị tiêu đề sách
-
+            alert.setContentText(selectedBook.getName()); 
             DatePicker datePicker = new DatePicker();
-            datePicker.setValue(LocalDate.now()); // Set default value to current date
+            datePicker.setValue(LocalDate.now()); 
 
-            // Add the DatePicker to the Alert's content
             VBox vbox = new VBox();
             vbox.setSpacing(10);
             vbox.getChildren().addAll(new javafx.scene.control.Label("Xác nhận ngày trả sách"), datePicker);
@@ -124,9 +121,6 @@ public class AvailableBookController {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    // Xóa khỏi TableView
-                    // availableBook_tableview.getItems().remove(selectedBook);
-                    // availableBook_tableview.getSelectionModel().clearSelection();
                 }
             });
         } else {
@@ -155,10 +149,8 @@ public class AvailableBookController {
         available_col.setCellValueFactory(new PropertyValueFactory<>("available"));
         offerCollection_col.setCellValueFactory(new PropertyValueFactory<>("collection"));
 
-        // Set the column resize policy to constrained resize policy
         availableBook_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Set the preferred width for each column (proportional to the total width)
         id_col.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
         offerCollection_col.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
         bookTitle_col.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 30% width

@@ -3,9 +3,6 @@ package Controller;
 import java.io.IOException;
 import java.util.*;
 
-import javafx.animation.ScaleTransition;
-import javafx.scene.layout.Region;
-import javafx.util.Duration;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +18,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import library.Admin;
 import library.Book;
@@ -69,6 +65,7 @@ public class HelloController implements Initializable {
 
     @FXML
     private ImageView userImage;
+
     /**
      * Sets the displayed user name.
      *
@@ -81,16 +78,14 @@ public class HelloController implements Initializable {
     public void setImage(String imagePath) {
         if (imagePath != null && !imagePath.isEmpty()) {
             try {
-                Image image = new Image("file:" + imagePath); // Assuming imagePath is a valid file path
-                userImage.setImage(image); // Set the image to the ImageView
+                Image image = new Image("file:" + imagePath); 
+                userImage.setImage(image); 
             } catch (Exception e) {
                 System.out.println("Error loading image: " + e.getMessage());
-                // Optionally, set a default image in case of error
                 userImage.setImage(new Image("file:default_avatar.png"));
             }
         } else {
-            // Set a default image or leave empty
-            userImage.setImage(new Image("file:default_avatar.png"));
+            userImage.setImage(new Image("./design/images/default_avatar.png"));
         }
     }
 
@@ -129,7 +124,7 @@ public class HelloController implements Initializable {
             AnchorPane.setLeftAnchor(homeRoot, 0.0);
             AnchorPane.setRightAnchor(homeRoot, 0.0);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception here (e.g., logging or showing an error message)
+            e.printStackTrace();
         }
     }
 
@@ -146,9 +141,8 @@ public class HelloController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/borrowedBooks.fxml"));
             Parent borrowedBooksRoot = fxmlLoader.load();
 
-            // updating Borrowed Books
-            choosedScene.getChildren().clear(); // clear Home
-            choosedScene.getChildren().add(borrowedBooksRoot); // loading borrowedBooks.fxml
+            choosedScene.getChildren().clear();
+            choosedScene.getChildren().add(borrowedBooksRoot); 
 
             AnchorPane.setTopAnchor(borrowedBooksRoot, 0.0);
             AnchorPane.setBottomAnchor(borrowedBooksRoot, 0.0);
@@ -183,7 +177,7 @@ public class HelloController implements Initializable {
             AnchorPane.setLeftAnchor(homeRoot, 0.0);
             AnchorPane.setRightAnchor(homeRoot, 0.0);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception here (e.g., logging or showing an error message)
+            e.printStackTrace(); 
         }
     }
 
@@ -214,7 +208,6 @@ public class HelloController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("LIBRARY");
             stage.show();
-            // Consume the event
             event.consume();
         }
     }
@@ -233,10 +226,8 @@ public class HelloController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/bookManagement.fxml"));
                 Parent bookManagementRoot = fxmlLoader.load();
 
-                // updating Borrowed Books
-                choosedScene.getChildren().clear(); // clear Home
-                choosedScene.getChildren().add(bookManagementRoot); // loading borrowedBooks.fxml
-
+                choosedScene.getChildren().clear(); 
+                choosedScene.getChildren().add(bookManagementRoot); 
                 AnchorPane.setTopAnchor(bookManagementRoot, 0.0);
                 AnchorPane.setBottomAnchor(bookManagementRoot, 0.0);
                 AnchorPane.setLeftAnchor(bookManagementRoot, 0.0);
@@ -268,9 +259,8 @@ public class HelloController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/availableBook.fxml"));
             Parent availableBooksRoot = fxmlLoader.load();
 
-            // updating Borrowed Books
-            choosedScene.getChildren().clear(); // clear Home
-            choosedScene.getChildren().add(availableBooksRoot); // loading borrowedBooks.fxml
+            choosedScene.getChildren().clear(); 
+            choosedScene.getChildren().add(availableBooksRoot); 
             AnchorPane.setTopAnchor(availableBooksRoot, 0.0);
             AnchorPane.setBottomAnchor(availableBooksRoot, 0.0);
             AnchorPane.setLeftAnchor(availableBooksRoot, 0.0);
@@ -323,27 +313,20 @@ public class HelloController implements Initializable {
 
     @FXML
     public void showReports(MouseEvent event) {
-        resetMenuSelection(); // Reset lựa chọn menu
-        reports.getStyleClass().add("selected"); // Đánh dấu menu báo cáo được chọn
-
+        resetMenuSelection();
+        reports.getStyleClass().add("selected");
         try {
-            // Load the `reports.fxml` file
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/report.fxml"));
             Parent reportsRoot = fxmlLoader.load();
 
-            // Clear current scene content and add the new report view
             choosedScene.getChildren().clear();
             choosedScene.getChildren().add(reportsRoot);
 
-            // Set anchoring for the loaded FXML to match the parent container
             AnchorPane.setTopAnchor(reportsRoot, 0.0);
             AnchorPane.setBottomAnchor(reportsRoot, 0.0);
             AnchorPane.setLeftAnchor(reportsRoot, 0.0);
             AnchorPane.setRightAnchor(reportsRoot, 0.0);
-
-            // Since initialize() handles populating data, no manual calls to populate methods are needed
         } catch (IOException e) {
-            // Print stack trace in case of an error
             e.printStackTrace();
         }
     }
@@ -356,7 +339,6 @@ public class HelloController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/settings.fxml"));
             Parent homeRoot = fxmlLoader.load();
 
-            // Initially set the Home view
             choosedScene.getChildren().clear();
             choosedScene.getChildren().add(homeRoot);
             AnchorPane.setTopAnchor(homeRoot, 0.0);
@@ -364,7 +346,7 @@ public class HelloController implements Initializable {
             AnchorPane.setLeftAnchor(homeRoot, 0.0);
             AnchorPane.setRightAnchor(homeRoot, 0.0);
         } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception here (e.g., logging or showing an error message)
+            e.printStackTrace(); 
         }
     }
 
@@ -375,8 +357,7 @@ public class HelloController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/helpAndSupport.fxml"));
             Parent helpSupportRoot = fxmlLoader.load();
 
-            // updating Borrowed Books
-            choosedScene.getChildren().clear(); // clear Home
+            choosedScene.getChildren().clear();
             choosedScene.getChildren().add(helpSupportRoot);
 
             AnchorPane.setTopAnchor(helpSupportRoot, 0.0);

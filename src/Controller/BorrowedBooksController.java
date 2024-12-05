@@ -92,7 +92,7 @@ public class BorrowedBooksController {
         dueDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
         statusColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
 
-        borrowedBooksTable.setItems(borrowedList); // Hiển thị danh sách sách đã mượn
+        borrowedBooksTable.setItems(borrowedList);
     }
 
     /**
@@ -111,7 +111,6 @@ public class BorrowedBooksController {
                 alert.showAndWait();
                 return;
             }
-            // Hiển thị hộp thoại xác nhận
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Xác nhận trả sách");
             alert.setHeaderText("Bạn có chắc chắn muốn trả sách này không?");
@@ -119,22 +118,18 @@ public class BorrowedBooksController {
 
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    // Xóa ở database
                     try {
                         updateAvailableCount(selectedBook.getId());
                         deleteBookFromDatabase(selectedBook.getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    // Xóa khỏi TableView
                     borrowedBooksTable.getItems().remove(selectedBook);
                     borrowedBooksTable.getSelectionModel().clearSelection();
                 }
             });
         } else {
-            // Nếu chưa chọn quyển nào
             Alert alert = new Alert(AlertType.WARNING);
-            // alert.setTitle("");
             alert.setHeaderText("Không có sách nào được chọn.");
             alert.setContentText("Vui lòng chọn một sách để xóa.");
             alert.showAndWait();
@@ -181,15 +176,12 @@ public class BorrowedBooksController {
     @FXML
     public void initialize() {
         try {
-            // Hiển thị danh sách sách đã mượn
             showBorrowedBooks();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Xóa chọn khi click ra ngoài bảng
         anchorPane.setOnMouseClicked(event -> {
-            // Kiểm tra nếu click không nằm trên bảng
             if (!borrowedBooksTable.isHover()) {
                 borrowedBooksTable.getSelectionModel().clearSelection();
             }

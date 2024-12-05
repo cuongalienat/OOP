@@ -10,9 +10,6 @@ import library.DbConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.time.format.TextStyle;
-import java.util.Locale;
 
 public class ReportController {
 
@@ -41,11 +38,11 @@ public class ReportController {
     private void populateBorrowingTrends() {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Borrowing Trends (Last 6 Months)");
-    
+
         String query = """
                 WITH last_6_months AS (
                     SELECT DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL n MONTH), '%Y-%m') AS month
-                    FROM (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL 
+                    FROM (SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL
                           SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5) AS nums
                 )
                 SELECT m.month, IFNULL(COUNT(bl.book_id), 0) AS borrow_count
@@ -54,11 +51,11 @@ public class ReportController {
                 GROUP BY m.month
                 ORDER BY m.month ASC;
                 """;
-    
+
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-    
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 String month = rs.getString("month");
                 int borrowCount = rs.getInt("borrow_count");
@@ -67,7 +64,7 @@ public class ReportController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    
+
         borrowingTrendsLineChart.getData().add(series);
     }
 
@@ -87,30 +84,26 @@ public class ReportController {
                 """;
 
         try (Connection conn = DbConfig.connect()) {
-            // Get borrowed books count
             int borrowedBooks = 0;
             try (PreparedStatement stmt = conn.prepareStatement(queryBorrowedBooks);
-                 ResultSet rs = stmt.executeQuery()) {
+                    ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     borrowedBooks = rs.getInt("borrowed_books");
                 }
             }
 
-            // Get total books count
             int totalBooks = 0;
             try (PreparedStatement stmt = conn.prepareStatement(queryTotalBooks);
-                 ResultSet rs = stmt.executeQuery()) {
+                    ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     totalBooks = rs.getInt("total_books");
                 }
             }
 
-            // Add data to PieChart
             int availableBooks = totalBooks - borrowedBooks;
             currentMonthPerformancePieChart.getData().addAll(
                     new PieChart.Data("Borrowed Books", borrowedBooks),
-                    new PieChart.Data("Available Books", availableBooks)
-            );
+                    new PieChart.Data("Available Books", availableBooks));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,17 +114,17 @@ public class ReportController {
      */
     private void populateOfferCollectionDistribution() {
         String query = """
-            SELECT b.`Offer Collection` AS collection, COUNT(bl.book_id) AS borrow_count
-            FROM booklogs bl
-            JOIN book b ON bl.book_id = b.ID
-            WHERE MONTH(bl.borrowedDate) = MONTH(CURDATE()) AND YEAR(bl.borrowedDate) = YEAR(CURDATE())
-            GROUP BY b.`Offer Collection`
-            ORDER BY borrow_count DESC;
-            """;
+                SELECT b.`Offer Collection` AS collection, COUNT(bl.book_id) AS borrow_count
+                FROM booklogs bl
+                JOIN book b ON bl.book_id = b.ID
+                WHERE MONTH(bl.borrowedDate) = MONTH(CURDATE()) AND YEAR(bl.borrowedDate) = YEAR(CURDATE())
+                GROUP BY b.`Offer Collection`
+                ORDER BY borrow_count DESC;
+                """;
 
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 String collection = rs.getString("collection");
