@@ -124,28 +124,12 @@ public class BookManagementController {
         searchOptions.setItems(SearchOptions);
     }
 
-    // private void addToEditedBooks(Book book) {
-    // editedBooks.add(book);
-    // System.out.println("da them sach duoc sua: " + book.getName());
-    // }
-
     /**
      * Handles the addition of a new book.
      *
      * @param event The mouse event triggering the addition.
      * @throws Exception If an error occurs during the addition.
      */
-    
-    // @FXML
-    // private void addNewBook(MouseEvent event) throws Exception {
-    //     id_newbook = generateNewId();
-    //     Book newBook = new Book("", "", "", id_newbook, 0);
-    //     Platform.runLater(() -> {
-    //         bookManagementTableView.getItems().add(newBook);
-    //         bookManagementTableView.scrollTo(newBook);
-    //         System.out.println("Thêm dòng thành công");
-    //     });
-    // }
 
     /**
      * Handles editing commits in the table view.
@@ -167,23 +151,12 @@ public class BookManagementController {
             book.setAvailable((Integer) newValue);
         }
 
-        // if (book.getId() == id_newbook) {
-        //     if (isBookDataComplete(book)) {
-        //         try {
-        //             book.addData();
-        //         } catch (Exception e) {
-        //             e.printStackTrace();
-        //             showAlert(AlertType.ERROR, "Lỗi", "Không thể thêm sách vào cơ sở dữ liệu.");
-        //         }
-        //     }
-        // } else {
-        //     try {
-        //         book.updateBookInDatabase(); // Cập nhật sách đã có ID vào cơ sở dữ liệu
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //         showAlert(AlertType.ERROR, "Lỗi", "Không thể cập nhật sách trong cơ sở dữ liệu.");
-        //     }
-        // }
+        try {
+            book.updateBookInDatabase(); // Cập nhật sách đã có ID vào cơ sở dữ liệu
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(AlertType.ERROR, "Lỗi", "Không thể cập nhật sách trong cơ sở dữ liệu.");
+        }
     }
 
     // private boolean isBookDataComplete(Book book) {
@@ -242,21 +215,6 @@ public class BookManagementController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
-    // private int generateNewId() throws Exception {
-
-    //     String query = "SELECT MAX(ID) FROM book";
-    //     try (Connection conn = DbConfig.connect();
-    //             PreparedStatement stmt = conn.prepareStatement(query)) {
-    //         ResultSet rs = stmt.executeQuery();
-    //         if (rs.next()) {
-    //             return rs.getInt(1) + 1; // Tăng ID lớn nhất thêm 1
-    //         } else {
-    //             return 1; // Nếu bảng trống, bắt đầu từ ID 1
-    //         }
-    //     }
-    // }
-
     /**
      * Handles the search functionality based on user input.
      *

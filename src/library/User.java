@@ -293,6 +293,31 @@ public class User {
     }
 
     /**
+     * Updates the user's information in the database.
+     *
+     * @throws Exception if an error occurs during the operation
+     */
+    public void UpdateAdmin() throws Exception {
+        String query = "UPDATE librarymanagement.admin SET name = ?, password = ?, profile_picture = ? WHERE phone = ?";
+
+        try (Connection conn = DbConfig.connect();
+                PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set giá trị cho các trường cần cập nhật
+            stmt.setString(1, this.getName()); // Cập nhật tên người dùng
+            stmt.setString(2, this.getPassword()); // Cập nhật mật khẩu đã mã hóa
+            stmt.setString(3, this.getProfilePicture()); // Cập nhật ảnh đại diện (nếu có thay đổi)
+            stmt.setString(4, this.getPhone()); // Dùng số điện thoại làm điều kiện cập nhật
+
+            // Thực hiện cập nhật
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Lỗi cập nhật thông tin người dùng.");
+        }
+    }
+    /**
      * Deletes a user from the database.
      *
      * @param phone_user the phone number of the user to delete

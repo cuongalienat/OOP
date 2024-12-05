@@ -150,6 +150,7 @@ public class UserSettingsController {
         String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
         currentUser.setPassword(hashedPassword);
         currentUser.Update();  // Cập nhật vào cơ sở dữ liệu
+        currentUser.UpdateAdmin();
         loginController.user_now = currentUser;
 
         showAlert(AlertType.INFORMATION, "Thông báo", "Mật khẩu đã được cập nhật.");
