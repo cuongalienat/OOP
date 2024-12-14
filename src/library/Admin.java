@@ -43,8 +43,10 @@ public class Admin extends User {
                 String phone = rs.getString("phone");
                 String password = rs.getString("password");
                 String email = rs.getString("email");
+                String profilePicture = rs.getString("profile_picture"); // Đảm bảo lấy đúng cột
 
                 Admin admin = new Admin(name, email, phone, password);
+                admin.setProfilePicture(profilePicture);
                 return admin;
             }
         } catch (SQLException e) {

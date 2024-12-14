@@ -76,17 +76,7 @@ public class HelloController implements Initializable {
     }
 
     public void setImage(String imagePath) {
-        if (imagePath != null && !imagePath.isEmpty()) {
-            try {
-                Image image = new Image("file:" + imagePath); 
-                userImage.setImage(image); 
-            } catch (Exception e) {
-                System.out.println("Error loading image: " + e.getMessage());
-                userImage.setImage(new Image("file:default_avatar.png"));
-            }
-        } else {
-            userImage.setImage(new Image("./design/images/default_avatar.png"));
-        }
+        userImage.setImage(new Image(".\\design\\Images\\bookavt.png"));
     }
 
     /**
@@ -101,6 +91,7 @@ public class HelloController implements Initializable {
         setting.getStyleClass().remove("selected");
         logout.getStyleClass().remove("selected");
         bookManagementBox.getStyleClass().remove("selected");
+        helpSupport.getStyleClass().remove("selected");
     }
 
     /**
@@ -219,9 +210,9 @@ public class HelloController implements Initializable {
      */
     @FXML
     public void bookManagement(MouseEvent event) throws Exception {
-        resetMenuSelection();
-        bookManagementBox.getStyleClass().add("selected");
         if (loginController.getUser_now() instanceof Admin) {
+            resetMenuSelection();
+            bookManagementBox.getStyleClass().add("selected");
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/bookManagement.fxml"));
                 Parent bookManagementRoot = fxmlLoader.load();
@@ -280,11 +271,11 @@ public class HelloController implements Initializable {
      */
     @FXML
     public void userManagement(MouseEvent event) throws Exception {
-        resetMenuSelection();
-        userManagement.getStyleClass().add("selected");
         if (loginController.getUser_now() instanceof Admin) {
             Admin admin = (Admin) loginController.getUser_now();
             List<User> List_user = admin.showUserData();
+            resetMenuSelection();
+            userManagement.getStyleClass().add("selected");
 
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/UserManagement.fxml"));
@@ -334,7 +325,7 @@ public class HelloController implements Initializable {
     @FXML
     private void settings(MouseEvent event) {
         resetMenuSelection();
-        home.getStyleClass().add("selected");
+        setting.getStyleClass().add("selected");
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/settings.fxml"));
             Parent homeRoot = fxmlLoader.load();
@@ -353,6 +344,7 @@ public class HelloController implements Initializable {
     @FXML
     private void openHelpSupport() throws Exception {
         resetMenuSelection();
+        helpSupport.getStyleClass().add("selected");
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/helpAndSupport.fxml"));
             Parent helpSupportRoot = fxmlLoader.load();

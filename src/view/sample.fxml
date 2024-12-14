@@ -39,7 +39,7 @@
                         <Insets bottom="3.0" top="3.0" />
                      </HBox.margin>
                      <image>
-                        <Image url="@../design/Images/user-verification.png" />
+                        <Image url="@../design/Images/bookavt.png" />
                      </image>
                   </ImageView>
                </children>

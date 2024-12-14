@@ -96,6 +96,7 @@ public class UserSettingsController {
             if (currentUser != null) {
                 currentUser.setProfilePicture(filePath);  
                 currentUser.Update();
+                currentUser.UpdateAdmin();
             }
 
             showAlert(AlertType.INFORMATION, "Thông báo", "Ảnh đại diện đã được cập nhật.");
@@ -115,6 +116,7 @@ public class UserSettingsController {
         if (currentUser != null && !name.trim().isEmpty() && !name.equals(currentUser.getName())) {
             currentUser.setName(name);
             currentUser.Update();  
+            currentUser.UpdateAdmin();
             loginController.user_now = currentUser;
             showAlert(AlertType.INFORMATION, "Thông báo", "Tên người dùng đã được cập nhật.");
         } else {
