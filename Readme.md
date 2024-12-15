@@ -23,6 +23,7 @@
 - Xây dựng `ReportController` với chức năng chính: Thống kê hiệu suất thư viện.
 - Xây dựng `HomeController`: Đề xuất gợi ý tài liệu.
 - Xây dựng `BorrowedBooksController`: Lưu những yêu cầu mượn sách của người dùng.
+- Xử lý Đa luồng + JUnit.
 
 ### 3. Nguyễn Thời Trí:
 - Xây dựng giao diện, đồ họa cho ứng dụng.
