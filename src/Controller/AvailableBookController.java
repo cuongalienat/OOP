@@ -85,9 +85,9 @@ public class AvailableBookController {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Xác nhận mượn sách");
             alert.setHeaderText("Bạn có chắc chắn muốn mượn sách này không?");
-            alert.setContentText(selectedBook.getName()); 
+            alert.setContentText(selectedBook.getName());
             DatePicker datePicker = new DatePicker();
-            datePicker.setValue(LocalDate.now()); 
+            datePicker.setValue(LocalDate.now());
 
             VBox vbox = new VBox();
             vbox.setSpacing(10);
@@ -138,7 +138,7 @@ public class AvailableBookController {
      * @param bookData The list of available books to display.
      */
     public void setBookData(List<Book> bookData) {
-        ObservableList<String> searchOptions = FXCollections.observableArrayList("Id", "Title", "Collection",
+        ObservableList<String> searchOptions = FXCollections.observableArrayList("Id", "Title", "Collections",
                 "Contributors");
         SearchOptions.setItems(searchOptions);
         books = FXCollections.observableArrayList(bookData);
@@ -181,7 +181,7 @@ public class AvailableBookController {
 
             stage.initModality(Modality.APPLICATION_MODAL); // Đặt cửa sổ modal
             stage.setOnCloseRequest(event -> {
-                setBookData(Book.getAvailableBooks());  // đặt lại data cho tableview
+                setBookData(Book.getAvailableBooks()); // đặt lại data cho tableview
             });
 
             stage.show(); // Hiển thị cửa sổ
@@ -224,7 +224,7 @@ public class AvailableBookController {
 
         if ("Title".equals(SearchOptions.getValue())) {
             result = Book.searchBookByTitle(Search.getText().trim());
-        } else if ("Collection".equals(SearchOptions.getValue())) {
+        } else if ("Collections".equals(SearchOptions.getValue())) {
             result = Book.searchBookByCollections(Search.getText().trim());
         } else if ("Contributors".equals(SearchOptions.getValue())) {
             result = Book.searchBookByAuthor(Search.getText().trim());

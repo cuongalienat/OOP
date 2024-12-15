@@ -145,8 +145,8 @@ public class UserManagementController {
             BorrowedBooks log = cellEditEvent.getRowValue();
             String newStatus = cellEditEvent.getNewValue();
             if ("Overdue".equals(newStatus)) {
-                LocalDate dueDate = log.getDueDate(); 
-                LocalDate currentDate = LocalDate.now(); 
+                LocalDate dueDate = log.getDueDate();
+                LocalDate currentDate = LocalDate.now();
 
                 if (!dueDate.isBefore(currentDate)) {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -272,7 +272,6 @@ public class UserManagementController {
         setUserData(allUsers);
         setBookLogsData(allBookLogs);
     }
-
 
     /**
      * Handles the search functionality for both users and book logs.

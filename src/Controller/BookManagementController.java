@@ -71,6 +71,7 @@ public class BookManagementController {
     private TextField Search;
 
     private ObservableList<Book> allBooks = FXCollections.observableArrayList();
+
     /**
      * Sets the data for the book management table.
      *
@@ -213,7 +214,7 @@ public class BookManagementController {
 
         if ("Title".equals(searchOptions.getValue())) {
             result = Book.searchBookByTitle(Search.getText().trim());
-        } else if ("Collection".equals(searchOptions.getValue())) {
+        } else if ("Collections".equals(searchOptions.getValue())) {
             result = Book.searchBookByCollections(Search.getText().trim());
         } else if ("Contributors".equals(searchOptions.getValue())) {
             result = Book.searchBookByAuthor(Search.getText().trim());

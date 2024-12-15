@@ -5,7 +5,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,8 +25,8 @@ public class GoogleBooksAPITest {
             System.out.println("Callback invoked. Response received: " + response);
             assertNotNull(response, "Response should not be null.");
             assertTrue(response.contains("items") || response.contains("error"),
-                "Response should contain 'items' or 'error'.");
-            latch.countDown(); 
+                    "Response should contain 'items' or 'error'.");
+            latch.countDown();
         });
 
         // boolean completed = latch.await(30, TimeUnit.SECONDS);

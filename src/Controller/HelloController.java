@@ -133,7 +133,7 @@ public class HelloController implements Initializable {
             Parent borrowedBooksRoot = fxmlLoader.load();
 
             choosedScene.getChildren().clear();
-            choosedScene.getChildren().add(borrowedBooksRoot); 
+            choosedScene.getChildren().add(borrowedBooksRoot);
 
             AnchorPane.setTopAnchor(borrowedBooksRoot, 0.0);
             AnchorPane.setBottomAnchor(borrowedBooksRoot, 0.0);
@@ -168,7 +168,7 @@ public class HelloController implements Initializable {
             AnchorPane.setLeftAnchor(homeRoot, 0.0);
             AnchorPane.setRightAnchor(homeRoot, 0.0);
         } catch (IOException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
     }
 
@@ -217,8 +217,8 @@ public class HelloController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/bookManagement.fxml"));
                 Parent bookManagementRoot = fxmlLoader.load();
 
-                choosedScene.getChildren().clear(); 
-                choosedScene.getChildren().add(bookManagementRoot); 
+                choosedScene.getChildren().clear();
+                choosedScene.getChildren().add(bookManagementRoot);
                 AnchorPane.setTopAnchor(bookManagementRoot, 0.0);
                 AnchorPane.setBottomAnchor(bookManagementRoot, 0.0);
                 AnchorPane.setLeftAnchor(bookManagementRoot, 0.0);
@@ -250,8 +250,8 @@ public class HelloController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/availableBook.fxml"));
             Parent availableBooksRoot = fxmlLoader.load();
 
-            choosedScene.getChildren().clear(); 
-            choosedScene.getChildren().add(availableBooksRoot); 
+            choosedScene.getChildren().clear();
+            choosedScene.getChildren().add(availableBooksRoot);
             AnchorPane.setTopAnchor(availableBooksRoot, 0.0);
             AnchorPane.setBottomAnchor(availableBooksRoot, 0.0);
             AnchorPane.setLeftAnchor(availableBooksRoot, 0.0);
@@ -337,7 +337,7 @@ public class HelloController implements Initializable {
             AnchorPane.setLeftAnchor(homeRoot, 0.0);
             AnchorPane.setRightAnchor(homeRoot, 0.0);
         } catch (IOException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
     }
 

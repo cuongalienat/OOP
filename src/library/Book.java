@@ -86,7 +86,8 @@ public class Book {
         this.available = available;
     }
 
-    public Book(Integer id, String collection, String name, String author, Integer available, String imageUrl, String description){
+    public Book(Integer id, String collection, String name, String author, Integer available, String imageUrl,
+            String description) {
         this.collection = collection;
         this.name = name;
         this.author = author;
@@ -202,39 +203,38 @@ public class Book {
     }
 
     public void addToDatabase() throws Exception {
-    String checkQuery = "SELECT Available FROM book WHERE ID = ?";
-    String updateQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
-    String insertQuery = "INSERT INTO book (ID, `Offer Collection`, `Book Title`, Contributors, Available, ImageLink, Description) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String checkQuery = "SELECT Available FROM book WHERE ID = ?";
+        String updateQuery = "UPDATE book SET Available = Available + 1 WHERE ID = ?";
+        String insertQuery = "INSERT INTO book (ID, `Offer Collection`, `Book Title`, Contributors, Available, ImageLink, Description) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    try (Connection conn = DbConfig.connect()) {
-        try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
-            checkStmt.setInt(1, id);
-            ResultSet rs = checkStmt.executeQuery();
+        try (Connection conn = DbConfig.connect()) {
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+                checkStmt.setInt(1, id);
+                ResultSet rs = checkStmt.executeQuery();
 
-            if (rs.next()) {
-                try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
-                    updateStmt.setInt(1, id);
-                    updateStmt.executeUpdate();
-                }
-            } else {
-                try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
-                    insertStmt.setInt(1, id);
-                    insertStmt.setString(2, collection);
-                    insertStmt.setString(3, name);
-                    insertStmt.setString(4, author);
-                    insertStmt.setInt(5, available);
-                    insertStmt.setString(6, imageSrc);
-                    insertStmt.setString(7, description);
-                    insertStmt.executeUpdate();
+                if (rs.next()) {
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+                        updateStmt.setInt(1, id);
+                        updateStmt.executeUpdate();
+                    }
+                } else {
+                    try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+                        insertStmt.setInt(1, id);
+                        insertStmt.setString(2, collection);
+                        insertStmt.setString(3, name);
+                        insertStmt.setString(4, author);
+                        insertStmt.setInt(5, available);
+                        insertStmt.setString(6, imageSrc);
+                        insertStmt.setString(7, description);
+                        insertStmt.executeUpdate();
+                    }
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Exception("Error adding/updating book in database.");
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        throw new Exception("Error adding/updating book in database.");
     }
-}
-
 
     /**
      * Retrieves a book by its ID.
@@ -286,11 +286,11 @@ public class Book {
                 Integer available = rs.getInt("Available");
 
                 Book book = new Book(collection, name, author, id, available);
-                bookList.add(book); 
+                bookList.add(book);
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace(); 
+            e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
@@ -307,31 +307,30 @@ public class Book {
         List<Book> bookList = new ArrayList<>();
         String query = "SELECT ID, `Offer Collection`, `Book Title`, Contributors, Available, ImageLink, Description FROM book WHERE Available > 0";
         try (Connection conn = DbConfig.connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-    
+                PreparedStatement stmt = conn.prepareStatement(query);
+                ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 Integer id = rs.getInt("ID");
                 String collection = rs.getString("Offer Collection");
                 String name = rs.getString("Book Title");
                 String author = rs.getString("Contributors");
                 Integer available = rs.getInt("Available");
-                String imageLink = rs.getString("ImageLink"); 
+                String imageLink = rs.getString("ImageLink");
                 String description = rs.getString("Description");
-    
+
                 Book book = new Book(id, collection, name, author, available, imageLink, description);
                 bookList.add(book);
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace(); 
+            e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         return bookList;
     }
-    
 
     /**
      * Adds a borrowed book to the database.
@@ -347,7 +346,7 @@ public class Book {
         String insertQuery = "INSERT INTO booklogs (book_id, phone_user, borrowedDate, dueDate, status) VALUES (?, ?, ?, ?, ?)";
         String updateAvailableQuery = "UPDATE book SET Available = Available - 1 WHERE ID = ?";
 
-        try (Connection conn = DbConfig.connect()) { 
+        try (Connection conn = DbConfig.connect()) {
             String userPhone = nUser.getPhone();
             int available = 0;
 
@@ -422,13 +421,13 @@ public class Book {
 
                 String imageUrl = rs.getString("ImageLink");
                 String description = rs.getString("Description");
-    
+
                 Book book = new Book(id, collection, name, author, available, imageUrl, description);
-                bookList.add(book); 
+                bookList.add(book);
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace(); 
+            e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
@@ -458,8 +457,8 @@ public class Book {
                 Integer available = rs.getInt("Available");
                 String imageUrl = rs.getString("ImageLink");
                 String description = rs.getString("Description"); // Lấy mô tả
-    
-                Book book = new Book(id, collection, name, author, available, imageUrl, description);             
+
+                Book book = new Book(id, collection, name, author, available, imageUrl, description);
                 bookList.add(book); // Thêm vào danh sách
             }
         } catch (SQLException e) {
@@ -494,7 +493,7 @@ public class Book {
                 Integer available = rs.getInt("Available");
                 String imageUrl = rs.getString("ImageLink");
                 String description = rs.getString("Description"); // Lấy mô tả
-    
+
                 Book book = new Book(id, collection, name, author, available, imageUrl, description);
                 bookList.add(book); // Thêm vào danh s��ch
             }
@@ -516,11 +515,11 @@ public class Book {
      */
     public static List<Book> searchBookByID(int ID) {
         List<Book> bookList = new ArrayList<>();
-        String query = "SELECT * FROM book WHERE Id =  ?";
+        String query = "SELECT * FROM book WHERE Id like ?";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, ID);
+            stmt.setString(1, "%" + ID + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String collection = rs.getString("Offer Collection");
@@ -530,16 +529,16 @@ public class Book {
                 Integer available = rs.getInt("Available");
                 String imageUrl = rs.getString("ImageLink");
                 String description = rs.getString("Description");
-    
+
                 Book book = new Book(id, collection, name, author, available, imageUrl, description);
-                bookList.add(book); 
+                bookList.add(book);
             }
         } catch (SQLException e) {
             System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace(); 
+            e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         return bookList;
     }

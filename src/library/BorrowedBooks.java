@@ -400,11 +400,11 @@ public class BorrowedBooks extends Book {
      */
     public static ObservableList<BorrowedBooks> searchIdBookLogs(int Id) throws Exception {
         ObservableList<BorrowedBooks> bookLogsList = FXCollections.observableArrayList();
-        String query = "SELECT * FROM booklogs where book_id = ?";
+        String query = "SELECT * FROM booklogs where book_id like ?";
         try (Connection conn = DbConfig.connect();
                 PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            stmt.setInt(1, Id);
+            stmt.setString(1, "%" + Id + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String phone_user = rs.getString("phone_user");

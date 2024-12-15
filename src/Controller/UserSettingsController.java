@@ -2,18 +2,14 @@ package Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import library.User;
@@ -25,22 +21,22 @@ import org.mindrot.jbcrypt.BCrypt;
 public class UserSettingsController {
 
     @FXML
-    private TextField userNameField;  
-    
-    @FXML
-    private TextField userPhoneField;  
-    
-    @FXML
-    private TextField userEmailField; 
-    
-    @FXML
-    private PasswordField userCurrentPasswordField; 
-    
-    @FXML
-    private PasswordField userNewPasswordField; 
+    private TextField userNameField;
 
     @FXML
-    private PasswordField userConfirmPasswordField; 
+    private TextField userPhoneField;
+
+    @FXML
+    private TextField userEmailField;
+
+    @FXML
+    private PasswordField userCurrentPasswordField;
+
+    @FXML
+    private PasswordField userNewPasswordField;
+
+    @FXML
+    private PasswordField userConfirmPasswordField;
 
     @FXML
     private AnchorPane editUserInfoContent;
@@ -49,7 +45,7 @@ public class UserSettingsController {
     private AnchorPane changeBackgroundContent;
 
     @FXML
-    private ImageView imageView; 
+    private ImageView imageView;
 
     @FXML
     private Button btnEditUserInfo, btnChangeBackground;
@@ -58,13 +54,13 @@ public class UserSettingsController {
      * Initializes the controller by setting user data.
      */
     public void initialize() {
-        User currentUser = loginController.getUser_now(); 
-    
+        User currentUser = loginController.getUser_now();
+
         if (currentUser != null) {
             userNameField.setText(currentUser.getName());
-            userPhoneField.setText(currentUser.getPhone());  
-            userEmailField.setText(currentUser.getEmail()); 
-    
+            userPhoneField.setText(currentUser.getPhone());
+            userEmailField.setText(currentUser.getEmail());
+
             String profilePicture = currentUser.getProfilePicture();
             if (profilePicture != null && !profilePicture.isEmpty()) {
                 Image image = new Image(profilePicture);
@@ -82,7 +78,8 @@ public class UserSettingsController {
     @FXML
     private void handleImageClick() throws Exception {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        fileChooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
 
         File file = fileChooser.showOpenDialog(new Stage());
 
@@ -94,7 +91,7 @@ public class UserSettingsController {
 
             User currentUser = loginController.getUser_now();
             if (currentUser != null) {
-                currentUser.setProfilePicture(filePath);  
+                currentUser.setProfilePicture(filePath);
                 currentUser.Update();
                 currentUser.UpdateAdmin();
             }
@@ -115,7 +112,7 @@ public class UserSettingsController {
         User currentUser = loginController.getUser_now();
         if (currentUser != null && !name.trim().isEmpty() && !name.equals(currentUser.getName())) {
             currentUser.setName(name);
-            currentUser.Update();  
+            currentUser.Update();
             currentUser.UpdateAdmin();
             loginController.user_now = currentUser;
             showAlert(AlertType.INFORMATION, "Thông báo", "Tên người dùng đã được cập nhật.");
@@ -125,14 +122,15 @@ public class UserSettingsController {
     }
 
     /**
-     * Updates the user's password after validating the current password and new password.
+     * Updates the user's password after validating the current password and new
+     * password.
      * 
      * @throws Exception if password update fails.
      */
     @FXML
     private void updatePassword() throws Exception {
         String currentPassword = userCurrentPasswordField.getText();
-        if(currentPassword!=null) {
+        if (currentPassword != null) {
 
         }
         String newPassword = userNewPasswordField.getText();
@@ -157,7 +155,7 @@ public class UserSettingsController {
 
         String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
         currentUser.setPassword(hashedPassword);
-        currentUser.Update(); 
+        currentUser.Update();
         currentUser.UpdateAdmin();
         loginController.user_now = currentUser;
 
@@ -171,19 +169,19 @@ public class UserSettingsController {
      */
     @FXML
     private void updateUserInfo() throws Exception {
-        if(userNameField.getText()!="") {
-            updateUserName();  
+        if (userNameField.getText() != "") {
+            updateUserName();
         }
-        if(userCurrentPasswordField.getText()!=""){
-            updatePassword(); 
+        if (userCurrentPasswordField.getText() != "") {
+            updatePassword();
         }
     }
 
     /**
      * Displays an alert with a specified type, header, and content.
      * 
-     * @param type the alert type.
-     * @param header the alert header text.
+     * @param type    the alert type.
+     * @param header  the alert header text.
      * @param content the alert content text.
      */
     private void showAlert(AlertType type, String header, String content) {
@@ -238,5 +236,5 @@ public class UserSettingsController {
 
         Button clickedButton = (Button) event.getSource();
         clickedButton.getStyleClass().add("selected");
-    }   
+    }
 }

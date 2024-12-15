@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import library.Admin;
 import library.User;
 
-
 /**
  * Controller for handling user login operations.
  */
@@ -136,9 +135,9 @@ public class loginController {
     public boolean checkPhone(String phone) {
         if (phone.length() != 10)
             return false;
-        if (phone.charAt(0) != '0' && phone.charAt(1) != '9')
+        if (phone.charAt(0) != '0')
             return false;
-        for (int i = 2; i < 10; i++) {
+        for (int i = 1; i < 10; i++) {
             if (phone.charAt(i) < '0' || phone.charAt(i) > '9') {
                 return false;
             }
@@ -194,7 +193,7 @@ public class loginController {
 
             if (!checkPhone(user.getPhone())) {
                 alert = new Alert(AlertType.ERROR);
-                alert.setContentText("Số điện thoại phải có định dạng 09 và có đúng 10 số");
+                alert.setContentText("Số điện thoại phải có định dạng 0 và có đúng 10 số");
                 alert.setHeaderText(null);
                 alert.showAndWait();
                 signup_phone.clear();
@@ -231,7 +230,7 @@ public class loginController {
             user.addData();
 
             alert = new Alert(AlertType.CONFIRMATION);
-            alert.setContentText("Đăng kí thành công");
+            alert.setContentText("Successfull register !");
             alert.setHeaderText(null);
             alert.showAndWait();
 
@@ -300,7 +299,7 @@ public class loginController {
 
             Stage newStage = new Stage();
             Scene scene = new Scene(newRoot);
-    
+
             newStage.setScene(scene);
             newStage.setTitle("LIBRARY");
             newStage.setMinWidth(1040);
@@ -373,7 +372,8 @@ public class loginController {
                 alert.showAndWait();
                 return;
             }
-            user.setPassword(cfPassword);
+            String hashedPassword = BCrypt.hashpw(cfPassword, BCrypt.gensalt());
+            user.setPassword(hashedPassword);
             user.Update();
             signup_toLogin.setVisible(false);
             login_toSignup.setVisible(true);
